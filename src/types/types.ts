@@ -10,3 +10,12 @@ export interface TitleInfo {
   url: string
   releaseYear: number
 }
+
+export interface User {
+  status: 'chequeando' | 'autenticado' | 'no-autenticado'
+  uid: string | null
+  email: string | null
+  displayName: string | null
+  photoURL: string | null
+  errorMessage: string | null
+}

@@ -1,15 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { User } from '../../types/types'
+
+const initialState: User = {
+  status: 'chequeando',
+  uid: null,
+  email: null,
+  displayName: null,
+  photoURL: null,
+  errorMessage: null,
+}
 
 export const authSlice = createSlice({
   name: 'auth',
-  initialState: {
-    status: 'checking',
-    uid: null,
-    email: null,
-    displayName: null,
-    photoURL: null,
-    errorMessage: null,
-  },
+  initialState,
   reducers: {
     login: (state, { payload }) => {
       state.status = 'autenticado'
