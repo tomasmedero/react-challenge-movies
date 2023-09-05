@@ -7,3 +7,6 @@ export const getData = (titletype: string): TitleInfo[] => {
       data.programType === titletype && data.releaseYear >= 2010
   )
 }
+
+//TODO
+// Crear un getApi que traiga cosas

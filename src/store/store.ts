@@ -7,4 +7,6 @@ export const store = configureStore({
   },
 })
 
+//TODO
+//Crear una store para series y pelis ver que onda que trae la API
 export type RootState = ReturnType<typeof store.getState>

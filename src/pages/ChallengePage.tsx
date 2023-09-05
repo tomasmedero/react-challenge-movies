@@ -27,3 +27,7 @@ export const ChallengePage = () => {
     </>
   )
 }
+
+//TODO
+// Crear un componente donde cuando toques el movie o serie te traiga la info
+//Agregar un buscador
