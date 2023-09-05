@@ -5,6 +5,8 @@ import {
 import { FirebaseAuth } from './config'
 import { updateProfile } from 'firebase/auth'
 
+//TODO
+//Hacer login con google
 export const loginWithEmail = async ({
   email,
   password,

@@ -46,7 +46,7 @@ export const startLoginWithEmail = ({
 }: {
   email: string
   password: string
-}) => {
+}): any => {
   return async (dispatch: any) => {
     dispatch(checkingCredentials())
     const res = await loginWithEmail({ email, password })
@@ -54,10 +54,11 @@ export const startLoginWithEmail = ({
     if (!res.ok) return dispatch(logout(res))
 
     dispatch(login(res))
+    return {} as AnyAction // Devuelve una acción vacía como fallback
   }
 }
 
-export const startLogout = () => {
+export const startLogout: any = () => {
   return async (dispatch: any) => {
     await logoutFirebase()
 

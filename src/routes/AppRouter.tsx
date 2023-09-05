@@ -3,12 +3,18 @@ import { ChallengePage, MoviesPage, SeriesPage } from '../pages'
 import { InfoBar, Navbar } from '../components'
 import { useEffect, useState } from 'react'
 import { AuthRoutes } from '../auth/routes/AuthRoutes'
+import { useCheckAuth } from '../hooks/useCheckAuth'
 
 export const AppRouter = () => {
   const [info, setInfo] = useState<string>('Titles')
   const location = useLocation()
 
-  const status = 'autenticado'
+  const status = useCheckAuth()
+
+  //TODO
+  // if (status === 'chequeando') {
+  //   return <CheckingStatus/>
+  // }
 
   useEffect(() => {
     let pageInfo: string = 'Titles'
@@ -25,11 +31,6 @@ export const AppRouter = () => {
   return (
     <>
       {status === 'autenticado' ? (
-        <Routes>
-          <Route path='/auth/*' element={<AuthRoutes />} />
-          <Route path='/*' element={<Navigate to='/auth/login' />} />
-        </Routes>
-      ) : (
         <>
           <Navbar />
           <InfoBar pageInfo={info} />
@@ -42,6 +43,11 @@ export const AppRouter = () => {
             </Routes>
           </div>
         </>
+      ) : (
+        <Routes>
+          <Route path='/auth/*' element={<AuthRoutes />} />
+          <Route path='/*' element={<Navigate to='/auth/login' />} />
+        </Routes>
       )}
     </>
   )

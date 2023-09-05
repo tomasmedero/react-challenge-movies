@@ -1,6 +1,14 @@
+import { useDispatch } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
+import { startLogout } from '../store/auth/thunks'
 
 export const Navbar = () => {
+  const dispatch = useDispatch()
+
+  const onLogout = async () => {
+    dispatch(startLogout())
+  }
+
   return (
     <>
       <nav className='border-gray-200 bg-gray-300 dark:bg-gray-800 dark:border-gray-700'>
@@ -33,6 +41,12 @@ export const Navbar = () => {
               </li>
             </ul>
           </div>
+          <button
+            onClick={onLogout}
+            className='bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-blue-500 rounded'
+          >
+            Logout
+          </button>
         </div>
       </nav>
     </>

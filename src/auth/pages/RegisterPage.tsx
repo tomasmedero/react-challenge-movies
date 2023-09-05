@@ -8,8 +8,6 @@ import { startEmailRegister } from '../../store/auth/thunks'
 export const RegisterPage = () => {
   const dispatch = useDispatch()
 
-  const [formSubmiteado, setFormSubmiteado] = useState<boolean>(false)
-
   const { status, errorMessage } = useSelector((state: RootState) => state.auth)
 
   const isChequeandoAutenticacion = useMemo(
@@ -26,10 +24,20 @@ export const RegisterPage = () => {
   const onSubmit = (event: any) => {
     event.preventDefault()
 
-    setFormSubmiteado(true)
-
     dispatch(startEmailRegister(formData))
   }
+
+  // <input
+  //   type='text'
+  //   placeholder='Name'
+  //   name='name'
+  //   value={name}
+  //   onChange={onChange}
+  //   className={`${name.trim().length <= 0 && 'has-error'}`}
+  // />
+  // {
+  //   name.trim().length <= 0 && <span>Este campo es necesario</span>
+  // }
 
   return (
     <>
