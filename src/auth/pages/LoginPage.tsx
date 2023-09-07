@@ -3,10 +3,16 @@ import { Link } from 'react-router-dom'
 import { RootState } from '../../store/store'
 import { useForm } from '../../hooks/useForm'
 import { startLoginWithEmail } from '../../store/auth/thunks'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
+import Swal from 'sweetalert2'
 
 export const LoginPage = () => {
   const dispatch = useDispatch()
+
+  const loginFormFields = {
+    loginEmail: '',
+    loginPassword: '',
+  }
 
   const { status, errorMessage } = useSelector((state: RootState) => state.auth)
 
@@ -15,16 +21,19 @@ export const LoginPage = () => {
     [status]
   )
 
-  const { email, password, formData, onChange } = useForm({
-    email: '',
-    password: '',
-  })
+  const { email, password, formData, onChange } = useForm(loginFormFields)
 
   const onSubmit = (event: any) => {
     event.preventDefault()
 
     dispatch(startLoginWithEmail(formData))
   }
+  //TODO ver que hacer con esto
+  // useEffect(() => {
+  //   if (errorMessage !== null) {
+  //     Swal.fire('Error en la autenticacion', errorMessage, 'error')
+  //   }
+  // }, [errorMessage])
 
   return (
     <>
