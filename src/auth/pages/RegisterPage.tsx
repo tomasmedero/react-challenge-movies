@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import { RootState } from '../../store/store'
 
 import {
@@ -20,7 +20,7 @@ type Inputs = {
 export const RegisterPage = () => {
   const dispatch = useDispatch()
 
-  const { status, errorMessage } = useSelector((state: RootState) => state.auth)
+  const { errorMessage } = useSelector((state: RootState) => state.auth)
 
   //TODO
   // const isChequeandoAutenticacion = useMemo(

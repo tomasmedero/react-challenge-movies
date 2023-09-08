@@ -6,7 +6,7 @@ import {
   startLoginWithEmail,
   startTwitterLogin,
 } from '../../store/auth/thunks'
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import Swal from 'sweetalert2'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
@@ -18,17 +18,17 @@ type Inputs = {
 export const LoginPage = () => {
   const dispatch = useDispatch()
 
-  const { status, errorMessage } = useSelector((state: RootState) => state.auth)
+  const { errorMessage } = useSelector((state: RootState) => state.auth)
 
-  const isChequeandoAutenticacion = useMemo(
-    () => status === 'chequeando',
-    [status]
-  )
+  // const isChequeandoAutenticacion = useMemo(
+  //   () => status === 'chequeando',
+  //   [status]
+  // )
 
   const {
     register,
     handleSubmit,
-    setError,
+    // setError,
     formState: { errors },
   } = useForm<Inputs>()
 
