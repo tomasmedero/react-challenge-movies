@@ -1,18 +1,22 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { RootState } from '../../store/store'
-import { useForm } from '../../hooks/useForm'
-import { startLoginWithEmail } from '../../store/auth/thunks'
+import {
+  startGoogleLogin,
+  startLoginWithEmail,
+  startTwitterLogin,
+} from '../../store/auth/thunks'
 import { useEffect, useMemo } from 'react'
 import Swal from 'sweetalert2'
+import { SubmitHandler, useForm } from 'react-hook-form'
+
+type Inputs = {
+  email: string
+  password: string
+}
 
 export const LoginPage = () => {
   const dispatch = useDispatch()
-
-  const loginFormFields = {
-    loginEmail: '',
-    loginPassword: '',
-  }
 
   const { status, errorMessage } = useSelector((state: RootState) => state.auth)
 
@@ -21,19 +25,41 @@ export const LoginPage = () => {
     [status]
   )
 
-  const { email, password, formData, onChange } = useForm(loginFormFields)
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<Inputs>()
 
-  const onSubmit = (event: any) => {
-    event.preventDefault()
-
-    dispatch(startLoginWithEmail(formData))
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    dispatch(startLoginWithEmail(data))
   }
-  //TODO ver que hacer con esto
+
   // useEffect(() => {
-  //   if (errorMessage !== null) {
-  //     Swal.fire('Error en la autenticacion', errorMessage, 'error')
-  //   }
-  // }, [errorMessage])
+  //   setError('email', {
+  //     types: {
+  //       required: 'El email es requerido',
+  //       minLength: 'Deben ser minino 10 caracteres',
+  //     },
+  //   })
+  // }, [setValue])
+
+  const onGoogleLogin = () => {
+    const thunkAction = startGoogleLogin()
+    thunkAction(dispatch)
+  }
+
+  const onTwitterSignIn = () => {
+    const thunkAction = startTwitterLogin()
+    thunkAction(dispatch)
+  }
+
+  useEffect(() => {
+    if (errorMessage !== undefined && errorMessage !== null) {
+      Swal.fire('Error en la autenticacion', errorMessage, 'error')
+    }
+  }, [errorMessage])
 
   return (
     <>
@@ -42,7 +68,7 @@ export const LoginPage = () => {
           <h1 className='text-3xl font-semibold text-center text-purple-700 uppercase'>
             Iniciar Sesion
           </h1>
-          <form action='' className='mt-6' onSubmit={onSubmit}>
+          <form action='' className='mt-6' onSubmit={handleSubmit(onSubmit)}>
             <div className='mb-2'>
               <label
                 htmlFor='email'
@@ -54,11 +80,10 @@ export const LoginPage = () => {
                 type='email'
                 id='email'
                 placeholder='Email'
-                name='email'
-                value={email}
-                onChange={onChange}
-                className='block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40'
+                {...register('email', { required: true, minLength: 10 })}
+                className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40'
               />
+              {errors.email && <span>{errors.email.message}</span>}
             </div>
             <div className='mb-2'>
               <label
@@ -71,11 +96,10 @@ export const LoginPage = () => {
                 type='password'
                 id='password'
                 placeholder='Contraseña'
-                name='password'
-                value={password}
-                onChange={onChange}
-                className='block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40'
+                {...register('password', { required: true, minLength: 5 })}
+                className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40'
               />
+              {errors.password && <span>{errors.password.message}</span>}
             </div>
 
             <div className='mt-6'>
@@ -96,6 +120,7 @@ export const LoginPage = () => {
           {/* Login con redes sociales */}
           <div className='flex mt-4 gap-x-2'>
             <button
+              onClick={onGoogleLogin}
               type='button'
               className='flex items-center justify-center w-full p-2 border border-gray-600 rounded-md focus:ring-2 focus:ring-offset-1 focus:ring-violet-600'
             >
@@ -108,7 +133,11 @@ export const LoginPage = () => {
               </svg>
             </button>
 
-            <button className='flex items-center justify-center w-full p-2 border border-gray-600 rounded-md focus:ring-2 focus:ring-offset-1 focus:ring-violet-600'>
+            <button
+              onClick={onTwitterSignIn}
+              type='button'
+              className='flex items-center justify-center w-full p-2 border border-gray-600 rounded-md focus:ring-2 focus:ring-offset-1 focus:ring-violet-600'
+            >
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 viewBox='0 0 32 32'

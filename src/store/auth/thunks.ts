@@ -4,11 +4,51 @@ import {
   registerWithEmail,
   loginWithEmail,
   logoutFirebase,
+  loginWithGoogle,
+  loginWithTwitter,
 } from '../../firebase/providers'
 
 export const checkingAuth = () => {
   return async (dispatch: any) => {
     dispatch(checkingCredentials())
+  }
+}
+
+export const startGoogleLogin = () => {
+  return async (dispatch: any) => {
+    dispatch(checkingCredentials())
+
+    const res = await loginWithGoogle()
+
+    if (res === undefined) {
+      return {} as AnyAction
+    }
+
+    if (!res.ok) {
+      dispatch(logout({ errorMessage: res.errorMessage }))
+      return {} as AnyAction // Devuelve una acción vacía como fallback
+    }
+
+    dispatch(login(res))
+  }
+}
+
+export const startTwitterLogin = () => {
+  return async (dispatch: any) => {
+    dispatch(checkingCredentials())
+
+    const res = await loginWithTwitter()
+
+    if (res === undefined) {
+      return {} as AnyAction
+    }
+
+    if (!res.ok) {
+      dispatch(logout({ errorMessage: res.errorMessage }))
+      return {} as AnyAction // Devuelve una acción vacía como fallback
+    }
+
+    dispatch(login(res))
   }
 }
 

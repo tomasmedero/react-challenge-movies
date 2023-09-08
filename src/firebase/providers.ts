@@ -3,10 +3,62 @@ import {
   createUserWithEmailAndPassword,
 } from 'firebase/auth/cordova'
 import { FirebaseAuth } from './config'
-import { updateProfile } from 'firebase/auth'
+import {
+  GoogleAuthProvider,
+  TwitterAuthProvider,
+  signInWithPopup,
+  updateProfile,
+} from 'firebase/auth'
 
 //TODO
-//Hacer login con google
+//Hacer login con google twitter
+
+const googleProvider = new GoogleAuthProvider()
+
+const twitterProvider = new TwitterAuthProvider()
+
+export const loginWithGoogle = async () => {
+  try {
+    const res = await signInWithPopup(FirebaseAuth, googleProvider)
+
+    const { displayName, email, photoURL, uid } = res.user
+
+    return {
+      ok: true,
+      displayName,
+      email,
+      photoURL,
+      uid,
+    }
+  } catch (error: any) {
+    return {
+      ok: false,
+      errorMessage: error.message,
+    }
+  }
+}
+
+export const loginWithTwitter = async () => {
+  try {
+    const res = await signInWithPopup(FirebaseAuth, twitterProvider)
+
+    const { displayName, email, photoURL, uid } = res.user
+
+    return {
+      ok: true,
+      displayName,
+      email,
+      photoURL,
+      uid,
+    }
+  } catch (error: any) {
+    return {
+      ok: false,
+      errorMessage: error.message,
+    }
+  }
+}
+
 export const loginWithEmail = async ({
   email,
   password,

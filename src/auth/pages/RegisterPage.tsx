@@ -1,43 +1,57 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { RootState } from '../../store/store'
-import { useForm } from '../../hooks/useForm'
-import { startEmailRegister } from '../../store/auth/thunks'
+
+import {
+  startEmailRegister,
+  startGoogleLogin,
+  startTwitterLogin,
+} from '../../store/auth/thunks'
+import Swal from 'sweetalert2'
+import { useForm, SubmitHandler } from 'react-hook-form'
+
+type Inputs = {
+  email: string
+  password: string
+  displayName: string
+}
 
 export const RegisterPage = () => {
   const dispatch = useDispatch()
 
   const { status, errorMessage } = useSelector((state: RootState) => state.auth)
 
-  const isChequeandoAutenticacion = useMemo(
-    () => status === 'chequeando',
-    [status]
-  )
+  //TODO
+  // const isChequeandoAutenticacion = useMemo(
+  //   () => status === 'chequeando',
+  //   [status]
+  // )
 
-  const { displayName, email, password, formData, onChange } = useForm({
-    email: '',
-    password: '',
-    displayName: '',
-  })
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>()
 
-  const onSubmit = (event: any) => {
-    event.preventDefault()
+  const onSubmit: SubmitHandler<Inputs> = (data) =>
+    dispatch(startEmailRegister(data))
 
-    dispatch(startEmailRegister(formData))
+  const onGoogleLogin = () => {
+    const thunkAction = startGoogleLogin()
+    thunkAction(dispatch)
   }
 
-  // <input
-  //   type='text'
-  //   placeholder='Name'
-  //   name='name'
-  //   value={name}
-  //   onChange={onChange}
-  //   className={`${name.trim().length <= 0 && 'has-error'}`}
-  // />
-  // {
-  //   name.trim().length <= 0 && <span>Este campo es necesario</span>
-  // }
+  const onTwitterSignIn = () => {
+    const thunkAction = startTwitterLogin()
+    thunkAction(dispatch)
+  }
+
+  useEffect(() => {
+    if (errorMessage !== undefined && errorMessage !== null) {
+      Swal.fire('Error en la autenticacion', errorMessage, 'error')
+    }
+  }, [errorMessage])
 
   return (
     <>
@@ -46,7 +60,7 @@ export const RegisterPage = () => {
           <h1 className='text-3xl font-semibold text-center text-purple-700 uppercase'>
             Crear Cuenta
           </h1>
-          <form action='' className='mt-6' onSubmit={onSubmit}>
+          <form action='' className='mt-6' onSubmit={handleSubmit(onSubmit)}>
             <div className='mb-2'>
               <label
                 htmlFor='displayName'
@@ -58,11 +72,10 @@ export const RegisterPage = () => {
                 type='text'
                 id='displayName'
                 placeholder='Nombre'
-                name='displayName'
-                value={displayName}
-                onChange={onChange}
+                {...register('displayName', { required: true })}
                 className='block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40'
               />
+              {errors.displayName && <span>This field is required</span>}
             </div>
             <div className='mb-2'>
               <label
@@ -75,11 +88,10 @@ export const RegisterPage = () => {
                 type='email'
                 id='email'
                 placeholder='Email'
-                name='email'
-                value={email}
-                onChange={onChange}
+                {...register('email', { required: true })}
                 className='block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40'
               />
+              {errors.email && <span>This field is required</span>}
             </div>
             <div className='mb-2'>
               <label
@@ -92,11 +104,10 @@ export const RegisterPage = () => {
                 type='password'
                 id='password'
                 placeholder='Contraseña'
-                name='password'
-                value={password}
-                onChange={onChange}
+                {...register('password', { required: true })}
                 className='block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40'
               />
+              {errors.password && <span>This field is required</span>}
             </div>
 
             <div className='mt-6'>
@@ -117,6 +128,7 @@ export const RegisterPage = () => {
           {/* Login con redes sociales */}
           <div className='flex mt-4 gap-x-2'>
             <button
+              onClick={onGoogleLogin}
               type='button'
               className='flex items-center justify-center w-full p-2 border border-gray-600 rounded-md focus:ring-2 focus:ring-offset-1 focus:ring-violet-600'
             >
@@ -129,7 +141,11 @@ export const RegisterPage = () => {
               </svg>
             </button>
 
-            <button className='flex items-center justify-center w-full p-2 border border-gray-600 rounded-md focus:ring-2 focus:ring-offset-1 focus:ring-violet-600'>
+            <button
+              onClick={onTwitterSignIn}
+              type='button'
+              className='flex items-center justify-center w-full p-2 border border-gray-600 rounded-md focus:ring-2 focus:ring-offset-1 focus:ring-violet-600'
+            >
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 viewBox='0 0 32 32'
