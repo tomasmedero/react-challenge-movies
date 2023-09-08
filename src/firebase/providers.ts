@@ -9,9 +9,6 @@ import {
   updateProfile,
 } from 'firebase/auth'
 
-//TODO
-//Hacer login con google twitter
-
 const googleProvider = new GoogleAuthProvider()
 
 export const loginWithGoogle = async () => {

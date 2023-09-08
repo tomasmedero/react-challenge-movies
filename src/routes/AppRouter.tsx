@@ -4,17 +4,12 @@ import { InfoBar, Navbar } from '../components'
 import { useEffect, useState } from 'react'
 import { AuthRoutes } from '../auth/routes/AuthRoutes'
 import { useCheckAuth } from '../hooks/useCheckAuth'
+import { LoadingPage } from '../auth/pages'
 
 export const AppRouter = () => {
   const [info, setInfo] = useState<string>('Titles')
   const location = useLocation()
-
   const status = useCheckAuth()
-
-  //TODO
-  // if (status === 'chequeando') {
-  //   return <CheckingStatus/>
-  // }
 
   useEffect(() => {
     let pageInfo: string = 'Titles'
@@ -27,6 +22,10 @@ export const AppRouter = () => {
     }
     setInfo(pageInfo)
   }, [location.pathname])
+
+  if (status === 'chequeando') {
+    return <LoadingPage />
+  }
 
   return (
     <>
