@@ -26,7 +26,7 @@ export const MoviesPage = () => {
         {movies.map((movie) => (
           <div className='flex justify-left mt-5 ml-3 w-40' key={movie.id}>
             <div className='max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 '>
-              <img className='rounded-t-lg mx-auto' src={movie.url} alt='' />
+              <img className=' rounded-t-lg mx-auto' src={movie.url} alt='' />
 
               <div className='p-5'>
                 <h6 className='mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white'>
