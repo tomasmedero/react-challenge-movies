@@ -13,7 +13,7 @@ type Inputs = {
 
 //TODO
 // Poner boton de flowbite
-export const LoginPage = () => {
+export const Login2Page = () => {
   const dispatch = useDispatch()
 
   const { status, errorMessage } = useSelector((state: RootState) => state.auth)

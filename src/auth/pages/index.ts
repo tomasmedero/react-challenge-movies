@@ -1,3 +1,5 @@
 export * from './LoadingPage'
+export * from './Login2Page'
 export * from './LoginPage'
+export * from './Register2Page'
 export * from './RegisterPage'

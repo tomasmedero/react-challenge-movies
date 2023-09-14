@@ -1,19 +1,18 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { RootState } from '../../store/store'
-import { startGoogleLogin, startLoginWithEmail } from '../../store/auth/thunks'
 import { useEffect, useMemo } from 'react'
+import { RootState } from '../../store/store'
+import { startEmailRegister, startGoogleLogin } from '../../store/auth/thunks'
 import Swal from 'sweetalert2'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 
 type Inputs = {
   email: string
   password: string
+  displayName: string
 }
 
-//TODO
-// Poner boton de flowbite
-export const LoginPage = () => {
+export const Register2Page = () => {
   const dispatch = useDispatch()
 
   const { status, errorMessage } = useSelector((state: RootState) => state.auth)
@@ -31,9 +30,8 @@ export const LoginPage = () => {
     criteriaMode: 'all',
   })
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    dispatch(startLoginWithEmail(data))
-  }
+  const onSubmit: SubmitHandler<Inputs> = (data) =>
+    dispatch(startEmailRegister(data))
 
   const onGoogleLogin = () => {
     const thunkAction = startGoogleLogin()
@@ -51,9 +49,35 @@ export const LoginPage = () => {
       <div className='bg-slate-700 relative flex flex-col justify-center min-h-screen overflow-hidden'>
         <div className='bg-stone-100 w-full p-6 m-auto rounded-md shadow-xl lg:max-w-xl'>
           <h1 className='text-3xl font-semibold text-center text-purple-700 uppercase'>
-            Iniciar Sesion
+            Crear Cuenta
           </h1>
           <form action='' className='mt-6' onSubmit={handleSubmit(onSubmit)}>
+            <div className='mb-2'>
+              <label
+                htmlFor='displayName'
+                className='block text-sm font-semibold text-gray-800'
+              >
+                Nombre
+              </label>
+              <input
+                type='text'
+                id='displayName'
+                placeholder='Nombre'
+                {...register('displayName', {
+                  required: 'Este campo es requerido',
+                  minLength: {
+                    value: 5,
+                    message: 'El nombre debe tener al menos 5 caracteres',
+                  },
+                })}
+                className='block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40'
+              />
+              {errors.displayName && (
+                <span className='text-red-700'>
+                  {errors.displayName.message}
+                </span>
+              )}
+            </div>
             <div className='mb-2'>
               <label
                 htmlFor='email'
@@ -72,7 +96,7 @@ export const LoginPage = () => {
                     message: 'Ingrese un email válido',
                   },
                 })}
-                className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40'
+                className='block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40'
               />
               {errors.email && (
                 <span className='text-red-700'>{errors.email.message}</span>
@@ -96,20 +120,20 @@ export const LoginPage = () => {
                     message: 'La contaseña debe tener al menos 6 caracteres',
                   },
                 })}
-                className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40'
+                className='block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40'
               />
               {errors.password && (
                 <span className='text-red-700'>{errors.password.message}</span>
-              )}{' '}
+              )}
             </div>
 
             <div className='mt-6'>
               <button
-                disabled={isChequeandoAutenticacion}
                 type='submit'
                 className='w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600'
+                disabled={isChequeandoAutenticacion}
               >
-                Login
+                Registrar
               </button>
             </div>
           </form>
@@ -139,12 +163,12 @@ export const LoginPage = () => {
 
           <p className='mt-8 text-xs font-light text-center text-gray-700'>
             {' '}
-            No tienes una cuenta?{' '}
+            Ya tienes una cuenta?{' '}
             <Link
-              to='/auth/register'
+              to='/auth/login'
               className='font-medium text-purple-600 hover:underline'
             >
-              Registrate{' '}
+              Inicia Sesion
             </Link>
           </p>
         </div>

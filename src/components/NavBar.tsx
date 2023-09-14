@@ -1,9 +1,40 @@
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
 import { startLogout } from '../store/auth/thunks'
+import { useEffect, useRef, useState } from 'react'
+import { RootState } from '../store/store'
 
 export const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement | null>(null)
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen)
+  }
+  const closeDropdown = () => {
+    setIsOpen(false)
+  }
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        closeDropdown()
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
   const dispatch = useDispatch()
+
+  const { status, photoURL } = useSelector((state: RootState) => state.auth)
 
   const onLogout = async () => {
     dispatch(startLogout())
@@ -41,12 +72,55 @@ export const Navbar = () => {
               </li>
             </ul>
           </div>
-          <button
-            onClick={onLogout}
-            className='bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-blue-500 rounded'
-          >
-            Logout
-          </button>
+          {status === 'autenticado' ? (
+            <div className='relative inline-block text-left' ref={dropdownRef}>
+              <div>
+                <button
+                  onClick={toggleDropdown}
+                  className=' flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300'
+                >
+                  {photoURL ? (
+                    <img
+                      className='w-8 h-8 rounded-full'
+                      src='photoURL'
+                      alt='Avatar'
+                    />
+                  ) : (
+                    <img
+                      className='w-8 h-8 rounded-full'
+                      src='/default-avatar.png'
+                      alt='Avatar'
+                    />
+                  )}
+                </button>
+              </div>
+
+              {isOpen && (
+                <div className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5'>
+                  <div
+                    className='py-1'
+                    role='menu'
+                    aria-orientation='vertical'
+                    aria-labelledby='options-menu'
+                  >
+                    <a
+                      onClick={onLogout}
+                      className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                      role='menuitem'
+                    >
+                      Logout
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link to='/auth/login'>
+              <button className='bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded'>
+                Ingresar
+              </button>
+            </Link>
+          )}
         </div>
       </nav>
     </>
