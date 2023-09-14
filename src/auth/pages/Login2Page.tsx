@@ -12,7 +12,7 @@ type Inputs = {
 }
 
 //TODO
-// Poner boton de flowbite
+// Hacer validadores del video
 export const Login2Page = () => {
   const dispatch = useDispatch()
 

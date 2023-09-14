@@ -11,8 +11,6 @@ type Inputs = {
   password: string
 }
 
-//TODO
-// Poner boton de flowbite
 export const LoginPage = () => {
   const dispatch = useDispatch()
 
