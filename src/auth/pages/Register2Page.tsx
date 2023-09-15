@@ -1,10 +1,15 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { useEffect, useMemo } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from 'react'
 import { RootState } from '../../store/store'
-import { startEmailRegister, startGoogleLogin } from '../../store/auth/thunks'
+import {
+  startEmailRegister,
+  startGoogleLogin,
+  startResetErrorMsg,
+} from '../../store/auth/thunks'
 import Swal from 'sweetalert2'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import { FormInput } from '../components/FormInput'
+import { FormInterfaceProps } from '../types/types'
 
 type Inputs = {
   email: string
@@ -13,6 +18,45 @@ type Inputs = {
 }
 
 export const Register2Page = () => {
+  const [values, setValues] = useState<Inputs>({
+    displayName: '',
+    email: '',
+    password: '',
+  })
+
+  const inputs: FormInterfaceProps[] = [
+    {
+      id: 'displayName',
+      name: 'displayName',
+      placeholder: 'Nombre',
+      type: 'text',
+      label: 'Nombre',
+      errorForm:
+        'El nombre debe ser de 3 a 16 caracteres sin ningun simbolo especial',
+      required: true,
+      pattern: '^[A-Za-z0-9]{3,16}$',
+    },
+    {
+      id: 'email',
+      name: 'email',
+      placeholder: 'Email',
+      type: 'email',
+      label: 'Email',
+      errorForm: 'Debe ser un email valido',
+      required: true,
+    },
+    {
+      id: 'password',
+      name: 'password',
+      placeholder: 'Contraseña',
+      type: 'password',
+      label: 'Contraseña',
+      errorForm: 'La contraseña debe ser de 5 a 12 caracteres',
+      required: true,
+      pattern: '^[A-Za-z0-9]{5,12}$',
+    },
+  ]
+
   const dispatch = useDispatch()
 
   const { status, errorMessage } = useSelector((state: RootState) => state.auth)
@@ -22,16 +66,15 @@ export const Register2Page = () => {
     [status]
   )
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>({
-    criteriaMode: 'all',
-  })
+  const handleSubmit = (e: any) => {
+    e.preventDefault()
 
-  const onSubmit: SubmitHandler<Inputs> = (data) =>
-    dispatch(startEmailRegister(data))
+    dispatch(startEmailRegister(values))
+  }
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setValues({ ...values, [e.target.name]: e.target.value })
+  }
 
   const onGoogleLogin = () => {
     const thunkAction = startGoogleLogin()
@@ -41,6 +84,8 @@ export const Register2Page = () => {
   useEffect(() => {
     if (errorMessage !== undefined && errorMessage !== null) {
       Swal.fire('Error en la autenticacion', errorMessage, 'error')
+      const thunkAction = startResetErrorMsg()
+      thunkAction(dispatch)
     }
   }, [errorMessage])
 
@@ -49,83 +94,12 @@ export const Register2Page = () => {
       <div className='bg-slate-700 relative flex flex-col justify-center min-h-screen overflow-hidden'>
         <div className='bg-stone-100 w-full p-6 m-auto rounded-md shadow-xl lg:max-w-xl'>
           <h1 className='text-3xl font-semibold text-center text-purple-700 uppercase'>
-            Crear Cuenta
+            Crear Cuenta 2
           </h1>
-          <form action='' className='mt-6' onSubmit={handleSubmit(onSubmit)}>
-            <div className='mb-2'>
-              <label
-                htmlFor='displayName'
-                className='block text-sm font-semibold text-gray-800'
-              >
-                Nombre
-              </label>
-              <input
-                type='text'
-                id='displayName'
-                placeholder='Nombre'
-                {...register('displayName', {
-                  required: 'Este campo es requerido',
-                  minLength: {
-                    value: 5,
-                    message: 'El nombre debe tener al menos 5 caracteres',
-                  },
-                })}
-                className='block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40'
-              />
-              {errors.displayName && (
-                <span className='text-red-700'>
-                  {errors.displayName.message}
-                </span>
-              )}
-            </div>
-            <div className='mb-2'>
-              <label
-                htmlFor='email'
-                className='block text-sm font-semibold text-gray-800'
-              >
-                Email
-              </label>
-              <input
-                type='email'
-                id='email'
-                placeholder='Email'
-                {...register('email', {
-                  required: 'Este campo es requerido',
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: 'Ingrese un email válido',
-                  },
-                })}
-                className='block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40'
-              />
-              {errors.email && (
-                <span className='text-red-700'>{errors.email.message}</span>
-              )}
-            </div>
-            <div className='mb-2'>
-              <label
-                htmlFor='password'
-                className='block text-sm font-semibold text-gray-800'
-              >
-                Contraseña
-              </label>
-              <input
-                type='password'
-                id='password'
-                placeholder='Contraseña'
-                {...register('password', {
-                  required: 'Este campo es requerido',
-                  minLength: {
-                    value: 6,
-                    message: 'La contaseña debe tener al menos 6 caracteres',
-                  },
-                })}
-                className='block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40'
-              />
-              {errors.password && (
-                <span className='text-red-700'>{errors.password.message}</span>
-              )}
-            </div>
+          <form action='' className='mt-6' onSubmit={handleSubmit}>
+            {inputs.map((input) => (
+              <FormInput key={input.id} {...input} onChange={onChange} />
+            ))}
 
             <div className='mt-6'>
               <button

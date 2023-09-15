@@ -1,5 +1,5 @@
 import { AnyAction } from 'redux'
-import { checkingCredentials, login, logout } from '.'
+import { checkingCredentials, login, logout, resetErrorMsg } from '.'
 import {
   registerWithEmail,
   loginWithEmail,
@@ -10,6 +10,12 @@ import {
 export const checkingAuth = () => {
   return async (dispatch: any) => {
     dispatch(checkingCredentials())
+  }
+}
+
+export const startResetErrorMsg = () => {
+  return async (dispatch: any) => {
+    dispatch(resetErrorMsg())
   }
 }
 

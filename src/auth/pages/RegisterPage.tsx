@@ -2,7 +2,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { useEffect, useMemo } from 'react'
 import { RootState } from '../../store/store'
-import { startEmailRegister, startGoogleLogin } from '../../store/auth/thunks'
+import {
+  startEmailRegister,
+  startGoogleLogin,
+  startResetErrorMsg,
+} from '../../store/auth/thunks'
 import Swal from 'sweetalert2'
 import { useForm, SubmitHandler } from 'react-hook-form'
 
@@ -41,6 +45,8 @@ export const RegisterPage = () => {
   useEffect(() => {
     if (errorMessage !== undefined && errorMessage !== null) {
       Swal.fire('Error en la autenticacion', errorMessage, 'error')
+      const thunkAction = startResetErrorMsg()
+      thunkAction(dispatch)
     }
   }, [errorMessage])
 

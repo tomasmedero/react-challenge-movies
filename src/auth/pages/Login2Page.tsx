@@ -1,20 +1,50 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { RootState } from '../../store/store'
-import { startGoogleLogin, startLoginWithEmail } from '../../store/auth/thunks'
-import { useEffect, useMemo } from 'react'
+import {
+  startGoogleLogin,
+  startLoginWithEmail,
+  startResetErrorMsg,
+} from '../../store/auth/thunks'
+import { ChangeEvent, useEffect, useMemo, useState } from 'react'
 import Swal from 'sweetalert2'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { FormInterfaceProps } from '../types/types'
+import { FormInput } from '../components/FormInput'
 
 type Inputs = {
   email: string
   password: string
 }
 
-//TODO
-// Hacer validadores del video
 export const Login2Page = () => {
   const dispatch = useDispatch()
+
+  const [values, setValues] = useState<Inputs>({
+    email: '',
+    password: '',
+  })
+
+  const inputs: FormInterfaceProps[] = [
+    {
+      id: 'email',
+      name: 'email',
+      placeholder: 'Email',
+      type: 'email',
+      label: 'Email',
+      errorForm: 'Debe ser un email valido',
+      required: true,
+    },
+    {
+      id: 'password',
+      name: 'password',
+      placeholder: 'Contraseña',
+      type: 'password',
+      label: 'Contraseña',
+      errorForm: 'La contraseña debe ser de 5 a 12 caracteres',
+      required: true,
+      pattern: '^[A-Za-z0-9]{5,12}$',
+    },
+  ]
 
   const { status, errorMessage } = useSelector((state: RootState) => state.auth)
 
@@ -23,16 +53,14 @@ export const Login2Page = () => {
     [status]
   )
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>({
-    criteriaMode: 'all',
-  })
+  const handleSubmit = (e: any) => {
+    e.preventDefault()
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    dispatch(startLoginWithEmail(data))
+    dispatch(startLoginWithEmail(values))
+  }
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setValues({ ...values, [e.target.name]: e.target.value })
   }
 
   const onGoogleLogin = () => {
@@ -43,66 +71,21 @@ export const Login2Page = () => {
   useEffect(() => {
     if (errorMessage !== undefined && errorMessage !== null) {
       Swal.fire('Error en la autenticacion', errorMessage, 'error')
+      const thunkAction = startResetErrorMsg()
+      thunkAction(dispatch)
     }
   }, [errorMessage])
-
   return (
     <>
       <div className='bg-slate-700 relative flex flex-col justify-center min-h-screen overflow-hidden'>
         <div className='bg-stone-100 w-full p-6 m-auto rounded-md shadow-xl lg:max-w-xl'>
           <h1 className='text-3xl font-semibold text-center text-purple-700 uppercase'>
-            Iniciar Sesion
+            Iniciar Sesion 2
           </h1>
-          <form action='' className='mt-6' onSubmit={handleSubmit(onSubmit)}>
-            <div className='mb-2'>
-              <label
-                htmlFor='email'
-                className='block text-sm font-semibold text-gray-800'
-              >
-                Email
-              </label>
-              <input
-                type='email'
-                id='email'
-                placeholder='Email'
-                {...register('email', {
-                  required: 'Este campo es requerido',
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: 'Ingrese un email válido',
-                  },
-                })}
-                className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40'
-              />
-              {errors.email && (
-                <span className='text-red-700'>{errors.email.message}</span>
-              )}
-            </div>
-            <div className='mb-2'>
-              <label
-                htmlFor='password'
-                className='block text-sm font-semibold text-gray-800'
-              >
-                Contraseña
-              </label>
-              <input
-                type='password'
-                id='password'
-                placeholder='Contraseña'
-                {...register('password', {
-                  required: 'Este campo es requerido',
-                  minLength: {
-                    value: 6,
-                    message: 'La contaseña debe tener al menos 6 caracteres',
-                  },
-                })}
-                className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40'
-              />
-              {errors.password && (
-                <span className='text-red-700'>{errors.password.message}</span>
-              )}{' '}
-            </div>
-
+          <form action='' className='mt-6' onSubmit={handleSubmit}>
+            {inputs.map((input) => (
+              <FormInput key={input.id} {...input} onChange={onChange} />
+            ))}
             <div className='mt-6'>
               <button
                 disabled={isChequeandoAutenticacion}
@@ -116,10 +99,11 @@ export const Login2Page = () => {
 
           {/* Barra separadora de redes sociales */}
           <div className='relative flex items-center justify-center w-full mt-6 border border-t'>
-            <div className='absolute px-5 bg-white'>Ingresa con</div>
+            <div className='absolute px-5 bg-white bg-opacity-50'>O</div>
           </div>
 
           {/* Login con redes sociales */}
+
           <div className='flex mt-4 gap-x-2'>
             <button
               disabled={isChequeandoAutenticacion}

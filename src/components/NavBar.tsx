@@ -82,7 +82,7 @@ export const Navbar = () => {
                   {photoURL ? (
                     <img
                       className='w-8 h-8 rounded-full'
-                      src='photoURL'
+                      src={photoURL}
                       alt='Avatar'
                     />
                   ) : (
@@ -116,7 +116,7 @@ export const Navbar = () => {
             </div>
           ) : (
             <Link to='/auth/login'>
-              <button className='bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded'>
+              <button className='mt-2 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded'>
                 Ingresar
               </button>
             </Link>

@@ -35,7 +35,12 @@ export const authSlice = createSlice({
     checkingCredentials: (state) => {
       state.status = 'chequeando'
     },
+
+    resetErrorMsg: (state) => {
+      state.errorMessage = null
+    },
   },
 })
 
-export const { login, logout, checkingCredentials } = authSlice.actions
+export const { login, logout, checkingCredentials, resetErrorMsg } =
+  authSlice.actions
