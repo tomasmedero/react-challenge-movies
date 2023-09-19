@@ -9,7 +9,7 @@ export const ChallengePage = () => {
           </NavLink>
           <div className='p-5'>
             <h6 className='mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white'>
-              Popular Series
+              Top 20 Popular Series
             </h6>
           </div>
         </div>
@@ -19,7 +19,7 @@ export const ChallengePage = () => {
           </NavLink>
           <div className='p-5'>
             <h6 className='mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white'>
-              Popular Movies
+              Top 20 Popular Movies
             </h6>
           </div>
         </div>
