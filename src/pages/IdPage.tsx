@@ -1,8 +1,16 @@
+import { useMemo } from 'react'
+import { useParams } from 'react-router-dom'
+import { getTitleById } from '../helpers'
+
 export const IdPage = () => {
+  const { id } = useParams()
+
+  //const title = useMemo(() => getTitleById(id), [id])
+
   return (
     <>
-      <div className='min-h-screen grid place-items-center font-mono bg-gray-800'>
-        <div className='bg-white rounded-md bg-gray-600 shadow-lg'>
+      <div className='min-h-screen grid place-items-center font-mono'>
+        <div className='rounded-md bg-white shadow-lg border-gray-100 rounded-3xl space-x-2 shadow-lg'>
           <div className='md:flex px-4 leading-none max-w-4xl'>
             <div className='flex-none '>
               <img
@@ -13,7 +21,9 @@ export const IdPage = () => {
             </div>
 
             <div className='flex-col text-gray-300'>
-              <p className='pt-4 text-2xl font-bold'>Joker (2020)</p>
+              <p className='pt-4 text-2xl font-bold text-center'>
+                Joker (2020)
+              </p>
               <hr className='hr-text' data-content='' />
               <div className='text-md flex justify-between px-4 my-2'>
                 <span className='font-bold'>
@@ -28,11 +38,7 @@ export const IdPage = () => {
                 him face-to-face with his alter-ego: the Joker.{' '}
               </p>
 
-              <p className='flex text-md px-4 my-2'>
-                Rating: 9.0/10
-                <span className='font-bold px-2'>|</span>
-                Mood: Dark
-              </p>
+              <p className='flex text-md px-4 my-2'>Rating: 9.0/10</p>
 
               <div className='text-xs'>
                 <button

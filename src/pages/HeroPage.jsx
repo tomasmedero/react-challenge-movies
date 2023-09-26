@@ -17,7 +17,6 @@ export const HeroPage = () => {
     return <Navigate to='/naruto' />
   }
 
-  // <Link to={`/hero/${id}`}>Mas Info..</Link>
   return (
     <>
       <div className='row mt-5'>
