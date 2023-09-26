@@ -23,11 +23,13 @@ export const AppRouter = () => {
           </div>
         </>
       ) : (
-        <Routes>
-          <Route path='/*' element={<ChallengeRoutes />} />
-          <Route path='/auth/*' element={<AuthRoutes />} />
-          <Route path='/*' element={<Navigate to='/' />} />
-        </Routes>
+        <div>
+          <Routes>
+            <Route path='/*' element={<ChallengeRoutes />} />
+            <Route path='/auth/*' element={<AuthRoutes />} />
+            <Route path='/*' element={<Navigate to='/' />} />
+          </Routes>
+        </div>
       )}
     </>
   )

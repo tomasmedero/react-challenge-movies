@@ -1,12 +1,25 @@
 import { useEffect, useState } from 'react'
 import { getAPIMovies, getAPISeries } from '../helpers'
 import { TitleInfo } from '../types/types'
-import { TitleCard } from '../components'
+import { InfoBar, TitleCard } from '../components'
 import { useLocation } from 'react-router-dom'
 
 export const TitlePage = () => {
   const [titles, setTitles] = useState<TitleInfo[]>([])
   const location = useLocation()
+  const [info, setInfo] = useState<string>('Titles')
+
+  useEffect(() => {
+    let pageInfo: string = 'Titulos'
+    if (location.pathname === '/series') {
+      pageInfo = 'Series'
+    } else if (location.pathname === '/peliculas') {
+      pageInfo = 'Peliculas'
+    } else if (location.pathname === '/') {
+      pageInfo = 'Titulos'
+    }
+    setInfo(pageInfo)
+  }, [location.pathname])
 
   useEffect(() => {
     async function fetchTitles() {
@@ -26,7 +39,12 @@ export const TitlePage = () => {
     }
 
     fetchTitles()
-  }, [])
+  }, [location.pathname])
 
-  return <TitleCard titles={titles} />
+  return (
+    <>
+      <InfoBar pageInfo={info} />
+      <TitleCard titles={titles} />
+    </>
+  )
 }

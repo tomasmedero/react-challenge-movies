@@ -1,27 +1,8 @@
-import { useLocation } from 'react-router-dom'
-import { ChallengeComponent, InfoBar, Navbar } from '../components'
-import { useEffect, useState } from 'react'
+import { ChallengeComponent } from '../components'
 
 export const ChallengePage = () => {
-  const [info, setInfo] = useState<string>('Titles')
-  const location = useLocation()
-
-  useEffect(() => {
-    let pageInfo: string = 'Titulos'
-    if (location.pathname === '/series') {
-      pageInfo = 'Series'
-    } else if (location.pathname === '/peliculas') {
-      pageInfo = 'Peliculas'
-    } else if (location.pathname === '/') {
-      pageInfo = 'Titulos'
-    }
-    setInfo(pageInfo)
-  }, [location.pathname])
-
   return (
     <>
-      <Navbar />
-      <InfoBar pageInfo={info} />
       <ChallengeComponent />
     </>
   )
