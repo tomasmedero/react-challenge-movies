@@ -2,7 +2,7 @@ export interface InfoBarProps {
   pageInfo: string
 }
 
-export interface SeriesInfo {
+export interface TitleInfo {
   id: number
   name: string
   originalName: string
@@ -10,16 +10,11 @@ export interface SeriesInfo {
   programType: string
   posterUrl: string
   releaseDay: number
+  rating: number
 }
 
-export interface MovieInfo {
-  id: number
-  title: string
-  originalTitle: string
-  description: string
-  programType: string
-  posterUrl: string
-  releaseDay: number
+export interface TitleCardProps {
+  titles: TitleInfo[]
 }
 
 export interface User {

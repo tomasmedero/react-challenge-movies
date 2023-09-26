@@ -1,29 +1,28 @@
-import { NavLink } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
+import { ChallengeComponent, InfoBar, Navbar } from '../components'
+import { useEffect, useState } from 'react'
+
 export const ChallengePage = () => {
+  const [info, setInfo] = useState<string>('Titles')
+  const location = useLocation()
+
+  useEffect(() => {
+    let pageInfo: string = 'Titulos'
+    if (location.pathname === '/series') {
+      pageInfo = 'Series'
+    } else if (location.pathname === '/peliculas') {
+      pageInfo = 'Peliculas'
+    } else if (location.pathname === '/') {
+      pageInfo = 'Titulos'
+    }
+    setInfo(pageInfo)
+  }, [location.pathname])
+
   return (
     <>
-      <div className='flex justify-left mt-5 ml-3'>
-        <div className='max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 '>
-          <NavLink to='/series'>
-            <img className='rounded-t-lg mx-auto' src='/seriesPH.jpg' alt='' />
-          </NavLink>
-          <div className='p-5'>
-            <h6 className='mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white'>
-              Top 20 Popular Series
-            </h6>
-          </div>
-        </div>
-        <div className='max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 ml-3'>
-          <NavLink to='/movies'>
-            <img className='rounded-t-lg mx-auto' src='/moviesPH.jpg' alt='' />
-          </NavLink>
-          <div className='p-5'>
-            <h6 className='mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white'>
-              Top 20 Popular Movies
-            </h6>
-          </div>
-        </div>
-      </div>
+      <Navbar />
+      <InfoBar pageInfo={info} />
+      <ChallengeComponent />
     </>
   )
 }

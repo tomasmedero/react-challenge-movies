@@ -1,8 +1,8 @@
-import { MovieInfo } from '../types/types'
-
 //API eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NWVmZWE5YmY0ZDE2YTI4MjUyM2MzN2IzMGNiNTY0MyIsInN1YiI6IjY0ZjdkMzFkNGNjYzUwMDEzODhkMTUzYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.h-99PXOZw4FE5uFD613iE26WD81LEeycSyirgNJ99OQ
 
-export const getAPIMovies = async (): Promise<MovieInfo[]> => {
+import { TitleInfo } from '../types/types'
+
+export const getAPIMovies = async (): Promise<TitleInfo[]> => {
   const url = 'https://api.themoviedb.org/3/trending/movie/week?language=es-ES'
 
   const options = {
@@ -19,25 +19,28 @@ export const getAPIMovies = async (): Promise<MovieInfo[]> => {
 
   const data = await res.json()
 
-  const movieData: MovieInfo[] = []
+  const movieData: TitleInfo[] = []
 
   data.results.forEach((movie: any) => {
     const id = movie.id
-    const title = movie.title
-    const originalTitle = movie.original_title
+    const name = movie.title
+    const originalName = movie.original_title
     const description = movie.overview
-    const programType = movie.media_type
+    const programType =
+      movie.media_type.charAt(0).toUpperCase() + movie.media_type.slice(1)
     const posterUrl = movie.poster_path
     const releaseDay = movie.release_date
+    const rating = movie.vote_average.toFixed(1)
 
-    const movieRes: MovieInfo = {
+    const movieRes: TitleInfo = {
       id: id,
-      title: title,
-      originalTitle: originalTitle,
+      name: name,
+      originalName: originalName,
       description: description,
       programType: programType,
       posterUrl: posterUrl,
       releaseDay: releaseDay,
+      rating: rating,
     }
 
     movieData.push(movieRes)

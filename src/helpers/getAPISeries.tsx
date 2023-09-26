@@ -1,12 +1,12 @@
-import { SeriesInfo } from '../types/types'
-
 //API
 // eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NWVmZWE5YmY0ZDE2YTI4MjUyM2MzN2IzMGNiNTY0MyIsInN1YiI6IjY0ZjdkMzFkNGNjYzUwMDEzODhkMTUzYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.h-99PXOZw4FE5uFD613iE26WD81LEeycSyirgNJ99OQ
+
+import { TitleInfo } from '../types/types'
 
 //Poster
 //https://image.tmdb.org/t/p/w500/[PosterLink]
 
-export const getAPISeries = async (): Promise<SeriesInfo[]> => {
+export const getAPISeries = async (): Promise<TitleInfo[]> => {
   const url = 'https://api.themoviedb.org/3/trending/tv/week?language=es-ES'
   const options = {
     method: 'GET',
@@ -21,18 +21,20 @@ export const getAPISeries = async (): Promise<SeriesInfo[]> => {
 
   const data = await res.json()
 
-  const seriesData: SeriesInfo[] = []
+  const seriesData: TitleInfo[] = []
 
   data.results.forEach((serie: any) => {
     const id = serie.id
     const name = serie.name
     const originalName = serie.original_name
     const description = serie.overview
-    const programType = serie.media_type
+    const programType =
+      serie.media_type.charAt(0).toUpperCase() + serie.media_type.slice(1)
     const posterUrl = serie.poster_path
     const releaseDay = serie.first_air_date
+    const rating = serie.vote_average.toFixed(1)
 
-    const seriesRes: SeriesInfo = {
+    const seriesRes: TitleInfo = {
       id: id,
       name: name,
       originalName: originalName,
@@ -40,6 +42,7 @@ export const getAPISeries = async (): Promise<SeriesInfo[]> => {
       programType: programType,
       posterUrl: posterUrl,
       releaseDay: releaseDay,
+      rating: rating,
     }
 
     seriesData.push(seriesRes)

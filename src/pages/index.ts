@@ -1,3 +1,3 @@
 export * from './ChallengePage'
-export * from './MoviesPage'
-export * from './SeriesPage'
+export * from './IdPage'
+export * from './TitlePage'
