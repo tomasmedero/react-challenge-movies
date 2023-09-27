@@ -17,6 +17,10 @@ export interface TitleCardProps {
   titles: TitleInfo[]
 }
 
+export interface IdCardProps {
+  title?: TitleInfo
+}
+
 export interface User {
   status: 'chequeando' | 'autenticado' | 'no-autenticado'
   uid: string | null

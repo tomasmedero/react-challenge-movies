@@ -3,7 +3,7 @@
 import { TitleInfo } from '../types/types'
 
 export const getTitleById = async (
-  id: number,
+  id: any,
   titleTypeInfo: string
 ): Promise<TitleInfo | null> => {
   const url = `https://api.themoviedb.org/3/${titleTypeInfo}/${id}?language=en-US`
