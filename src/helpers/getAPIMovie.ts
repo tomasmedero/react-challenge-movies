@@ -14,7 +14,6 @@ export const getAPIMovies = async (): Promise<TitleInfo[]> => {
     },
   }
 
-  fetch(url, options)
   const res = await fetch(url, options)
 
   const data = await res.json()
@@ -26,8 +25,7 @@ export const getAPIMovies = async (): Promise<TitleInfo[]> => {
     const name = movie.title
     const originalName = movie.original_title
     const description = movie.overview
-    const programType =
-      movie.media_type.charAt(0).toUpperCase() + movie.media_type.slice(1)
+    const programType = movie.media_type
     const posterUrl = movie.poster_path
     const releaseDay = movie.release_date
     const rating = movie.vote_average.toFixed(1)

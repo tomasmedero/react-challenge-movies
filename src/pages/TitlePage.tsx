@@ -11,9 +11,9 @@ export const TitlePage = () => {
 
   useEffect(() => {
     let pageInfo: string = 'Titulos'
-    if (location.pathname === '/series') {
+    if (location.pathname === '/tv') {
       pageInfo = 'Series'
-    } else if (location.pathname === '/peliculas') {
+    } else if (location.pathname === '/movie') {
       pageInfo = 'Peliculas'
     } else if (location.pathname === '/') {
       pageInfo = 'Titulos'
@@ -26,9 +26,9 @@ export const TitlePage = () => {
       try {
         let data: TitleInfo[] = []
 
-        if (location.pathname === '/peliculas') {
+        if (location.pathname === '/movie') {
           data = await getAPIMovies()
-        } else if (location.pathname === '/series') {
+        } else if (location.pathname === '/tv') {
           data = await getAPISeries()
         }
 

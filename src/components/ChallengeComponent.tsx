@@ -5,7 +5,7 @@ export const ChallengeComponent = () => {
     <>
       <div className='flex justify-left mt-5 ml-3'>
         <div className='max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 '>
-          <NavLink to='/series'>
+          <NavLink to='/tv'>
             <img
               className='rounded-t-lg mt-3 mx-auto'
               src='/seriesPH.jpg'
@@ -19,7 +19,7 @@ export const ChallengeComponent = () => {
           </div>
         </div>
         <div className='max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 ml-3'>
-          <NavLink to='/peliculas'>
+          <NavLink to='/movie'>
             <img
               className='rounded-t-lg mt-3 mx-auto'
               src='/moviesPH.jpg'

@@ -28,8 +28,7 @@ export const getAPISeries = async (): Promise<TitleInfo[]> => {
     const name = serie.name
     const originalName = serie.original_name
     const description = serie.overview
-    const programType =
-      serie.media_type.charAt(0).toUpperCase() + serie.media_type.slice(1)
+    const programType = serie.media_type
     const posterUrl = serie.poster_path
     const releaseDay = serie.first_air_date
     const rating = serie.vote_average.toFixed(1)

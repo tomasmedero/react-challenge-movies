@@ -1,11 +1,37 @@
-import { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { getTitleById } from '../helpers'
+import { useEffect, useState } from 'react'
+import { TitleInfo } from '../types/types'
 
 export const IdPage = () => {
-  const { id } = useParams()
+  const [title, setTitle] = useState<TitleInfo | null>(null)
+  let { id } = useParams()
 
-  //const title = useMemo(() => getTitleById(id), [id])
+  useEffect(() => {
+    async function fetchTitle() {
+      try {
+        let titleTypeInfo: string = ''
+        const path = location.pathname
+
+        if (path.startsWith('/movie/')) {
+          titleTypeInfo = 'movie'
+        } else if (path.startsWith('/tv/')) {
+          titleTypeInfo = 'tv'
+        }
+
+        // Convierte id en un número utilizando parseInt
+        const numericId = id ? parseInt(id, 10) : 1
+
+        let data = await getTitleById(numericId, titleTypeInfo)
+
+        setTitle(data)
+      } catch (error) {
+        console.error('Error fetching the data fix please:', error)
+      }
+    }
+
+    fetchTitle()
+  }, [])
 
   return (
     <>
@@ -14,7 +40,7 @@ export const IdPage = () => {
           <div className='md:flex px-4 leading-none max-w-4xl'>
             <div className='flex-none '>
               <img
-                src='https://creativereview.imgix.net/content/uploads/2019/12/joker_full.jpg?auto=compress,format&q=60&w=1012&h=1500'
+                src={`https://image.tmdb.org/t/p/w500${title?.posterUrl}`}
                 alt='pic'
                 className='h-72 w-56 rounded-md shadow-2xl transform -translate-y-4 border-4 border-gray-300 shadow-lg'
               />
@@ -22,7 +48,7 @@ export const IdPage = () => {
 
             <div className='flex-col text-gray-300'>
               <p className='pt-4 text-2xl font-bold text-center'>
-                Joker (2020)
+                {title?.name}({title?.releaseDay})
               </p>
               <hr className='hr-text' data-content='' />
               <div className='text-md flex justify-between px-4 my-2'>
@@ -32,13 +58,12 @@ export const IdPage = () => {
                 <span className='font-bold'></span>
               </div>
               <p className='hidden md:block px-4 my-4 text-sm text-left'>
-                In Gotham City, mentally troubled comedian Arthur Fleck is
-                disregarded and mistreated by society. He then embarks on a
-                downward spiral of revolution and bloody crime. This path brings
-                him face-to-face with his alter-ego: the Joker.{' '}
+                {title?.description}
               </p>
 
-              <p className='flex text-md px-4 my-2'>Rating: 9.0/10</p>
+              <p className='flex text-md px-4 my-2'>
+                Rating: {title?.rating}/10
+              </p>
 
               <div className='text-xs'>
                 <button

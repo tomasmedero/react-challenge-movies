@@ -7,7 +7,7 @@ export interface TitleInfo {
   name: string
   originalName: string
   description: string
-  programType: string
+  programType?: string
   posterUrl: string
   releaseDay: number
   rating: number

@@ -8,9 +8,9 @@ export const ChallengeRoutes = () => {
       <div>
         <Navbar />
         <Routes>
-          <Route path='series' element={<TitlePage />} />
-          <Route path='peliculas' element={<TitlePage />} />
-          <Route path='/titulo/:id' element={<IdPage />} />
+          <Route path='tv' element={<TitlePage />} />
+          <Route path='movie' element={<TitlePage />} />
+          <Route path='/:titulo/:id' element={<IdPage />} />
           <Route path='/' element={<ChallengePage />} />
           <Route path='/*' element={<Navigate to='/' />} />
         </Routes>
