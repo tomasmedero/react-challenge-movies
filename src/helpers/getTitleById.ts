@@ -6,7 +6,7 @@ export const getTitleById = async (
   id: any,
   titleTypeInfo: string
 ): Promise<TitleInfo | null> => {
-  const url = `https://api.themoviedb.org/3/${titleTypeInfo}/${id}?language=en-US`
+  const url = `https://api.themoviedb.org/3/${titleTypeInfo}/${id}?language=es-ES`
 
   const options = {
     method: 'GET',
