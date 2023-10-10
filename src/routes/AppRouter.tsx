@@ -19,6 +19,7 @@ export const AppRouter = () => {
             <Routes>
               <Route path='/*' element={<ChallengeRoutes />} />
               <Route path='/*' element={<Navigate to='/' />} />
+              <Route path='/auth/*' element={<Navigate to='/' />} />
             </Routes>
           </div>
         </>

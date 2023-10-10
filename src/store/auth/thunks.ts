@@ -62,6 +62,7 @@ export const startEmailRegister = ({
     }
 
     dispatch(login({ uid, displayName, email, photoURL }))
+
     return {} as AnyAction // Devuelve una acción vacía como fallback
   }
 }
@@ -80,6 +81,7 @@ export const startLoginWithEmail = ({
     if (!res.ok) return dispatch(logout(res))
 
     dispatch(login(res))
+
     return {} as AnyAction // Devuelve una acción vacía como fallback
   }
 }

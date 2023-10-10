@@ -1,3 +1,4 @@
 export * from './ChallengePage'
-export * from './IdPage'
-export * from './TitlePage'
+export * from './TitleIdPage'
+export * from './TitleTypePage'
+export * from './TopTitlePage'

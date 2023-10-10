@@ -5,14 +5,14 @@ import { useEffect, useRef, useState } from 'react'
 import { RootState } from '../store/store'
 
 export const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpenProfile, setIsOpenProfile] = useState(false)
   const dropdownRef = useRef<HTMLDivElement | null>(null)
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen)
+  const toggleDropdownProfile = () => {
+    setIsOpenProfile(!isOpenProfile)
   }
-  const closeDropdown = () => {
-    setIsOpen(false)
+  const closeDropdownProfile = () => {
+    setIsOpenProfile(false)
   }
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export const Navbar = () => {
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        closeDropdown()
+        closeDropdownProfile()
       }
     }
 
@@ -76,7 +76,7 @@ export const Navbar = () => {
             <div className='relative inline-block text-left' ref={dropdownRef}>
               <div>
                 <button
-                  onClick={toggleDropdown}
+                  onClick={toggleDropdownProfile}
                   className=' flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300'
                 >
                   {photoURL ? (
@@ -95,7 +95,7 @@ export const Navbar = () => {
                 </button>
               </div>
 
-              {isOpen && (
+              {isOpenProfile && (
                 <div className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5'>
                   <div
                     className='py-1'

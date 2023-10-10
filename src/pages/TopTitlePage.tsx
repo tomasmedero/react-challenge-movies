@@ -4,19 +4,17 @@ import { TitleInfo } from '../types/types'
 import { InfoBar, TitleCard } from '../components'
 import { useLocation } from 'react-router-dom'
 
-export const TitlePage = () => {
+export const TopTitlePage = () => {
   const [titles, setTitles] = useState<TitleInfo[]>([])
   const location = useLocation()
   const [info, setInfo] = useState<string>('Titles')
 
   useEffect(() => {
     let pageInfo: string = 'Titulos'
-    if (location.pathname === '/tv') {
+    if (location.pathname === '/tv/top20') {
       pageInfo = 'Series'
-    } else if (location.pathname === '/movie') {
+    } else if (location.pathname === '/movie/top20') {
       pageInfo = 'Peliculas'
-    } else if (location.pathname === '/') {
-      pageInfo = 'Titulos'
     }
     setInfo(pageInfo)
   }, [location.pathname])
@@ -26,9 +24,9 @@ export const TitlePage = () => {
       try {
         let data: TitleInfo[] = []
 
-        if (location.pathname === '/movie') {
+        if (location.pathname === '/movie/top20') {
           data = await getAPIMovies()
-        } else if (location.pathname === '/tv') {
+        } else if (location.pathname === '/tv/top20') {
           data = await getAPISeries()
         }
 

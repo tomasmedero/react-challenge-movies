@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { RootState } from '../../store/store'
 import {
   startGoogleLogin,
@@ -17,13 +17,19 @@ type Inputs = {
 
 export const LoginPage = () => {
   const dispatch = useDispatch()
-
+  const navigate = useNavigate()
   const { status, errorMessage } = useSelector((state: RootState) => state.auth)
 
   const isChequeandoAutenticacion = useMemo(
     () => status === 'chequeando',
     [status]
   )
+
+  // useEffect(() => {
+  //   if (status === 'autenticado') {
+  //     navigate('/')
+  //   }
+  // }, [status])
 
   const {
     register,

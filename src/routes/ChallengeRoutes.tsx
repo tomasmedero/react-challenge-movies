@@ -1,5 +1,10 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { ChallengePage, IdPage, TitlePage } from '../pages'
+import {
+  ChallengePage,
+  TitleIdPage,
+  TitleTypePage,
+  TopTitlePage,
+} from '../pages'
 import { Navbar } from '../components'
 
 export const ChallengeRoutes = () => {
@@ -8,9 +13,14 @@ export const ChallengeRoutes = () => {
       <div>
         <Navbar />
         <Routes>
-          <Route path='tv' element={<TitlePage />} />
-          <Route path='movie' element={<TitlePage />} />
-          <Route path='/:titulo/:id' element={<IdPage />} />
+          <Route path='tv/top20' element={<TopTitlePage />} />
+          <Route path='movie/top20' element={<TopTitlePage />} />
+          <Route
+            path='movie'
+            element={<TitleTypePage pageInfo='Peliculas' />}
+          />
+          <Route path='tv' element={<TitleTypePage pageInfo='Series' />} />
+          <Route path='/:titulo/:id' element={<TitleIdPage />} />
           <Route path='/' element={<ChallengePage />} />
           <Route path='/*' element={<Navigate to='/' />} />
         </Routes>

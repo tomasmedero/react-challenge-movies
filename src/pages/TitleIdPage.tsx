@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { TitleInfo } from '../types/types'
 import { IdCard } from '../components/IdCard'
 
-export const IdPage = () => {
+export const TitleIdPage = () => {
   const [title, setTitle] = useState<TitleInfo | undefined>(undefined)
   let { id } = useParams()
 

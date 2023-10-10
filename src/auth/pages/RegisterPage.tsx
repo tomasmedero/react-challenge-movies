@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useMemo } from 'react'
 import { RootState } from '../../store/store'
 import {
@@ -18,6 +18,7 @@ type Inputs = {
 
 export const RegisterPage = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const { status, errorMessage } = useSelector((state: RootState) => state.auth)
 
@@ -34,8 +35,10 @@ export const RegisterPage = () => {
     criteriaMode: 'all',
   })
 
-  const onSubmit: SubmitHandler<Inputs> = (data) =>
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
     dispatch(startEmailRegister(data))
+    navigate('/')
+  }
 
   const onGoogleLogin = () => {
     const thunkAction = startGoogleLogin()
