@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import {
   ChallengePage,
+  SearchPage,
   TitleIdPage,
   TitleTypePage,
   TopTitlePage,
@@ -15,6 +16,8 @@ export const ChallengeRoutes = () => {
         <Routes>
           <Route path='tv/top20' element={<TopTitlePage />} />
           <Route path='movie/top20' element={<TopTitlePage />} />
+          <Route path='movie/search' element={<SearchPage />} />
+          <Route path='tv/search' element={<SearchPage />} />
           <Route
             path='movie'
             element={<TitleTypePage pageInfo='Peliculas' />}

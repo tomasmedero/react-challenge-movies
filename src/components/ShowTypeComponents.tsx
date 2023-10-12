@@ -29,6 +29,20 @@ export const ShowTypeComponent: React.FC<InfoBarProps> = ({ pageInfo }) => {
           </div>
         </div>
         <div className='max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 ml-3'>
+          <NavLink to={`/${titleTypeInfo}/search`}>
+            <img
+              className='rounded-t-lg mt-3 mx-auto'
+              src='/otros.jpg'
+              alt=''
+            />
+          </NavLink>
+          <div className='p-5'>
+            <h6 className='mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white'>
+              Buscar {pageInfo}
+            </h6>
+          </div>
+        </div>
+        <div className='max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 ml-3'>
           <NavLink to='/'>
             <img
               className='rounded-t-lg mt-3 mx-auto'
@@ -38,7 +52,7 @@ export const ShowTypeComponent: React.FC<InfoBarProps> = ({ pageInfo }) => {
           </NavLink>
           <div className='p-5'>
             <h6 className='mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white'>
-              En construccion
+              En Construccion
             </h6>
           </div>
         </div>

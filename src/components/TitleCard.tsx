@@ -15,7 +15,7 @@ export const TitleCard: React.FC<TitleCardProps> = ({ titles }) => {
                 className='bg-white shadow-lg border-gray-100 
             h-full border rounded-3xl p-2 items-center flex space-x-4'
               >
-                {/* Columna Izquierda */}
+                {/* Columna Izquierda  */}
                 <div className='overflow-visible w-1/2  '>
                   <img
                     className=' shadow-lg object-contain rounded-3xl'
