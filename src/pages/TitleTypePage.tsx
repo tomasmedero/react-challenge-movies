@@ -1,10 +1,9 @@
 import { ShowTypeComponent } from '../components'
-import { InfoBarProps } from '../types/types'
 
-export const TitleTypePage: React.FC<InfoBarProps> = ({ pageInfo }) => {
+export const TitleTypePage = () => {
   return (
     <>
-      <ShowTypeComponent pageInfo={pageInfo} />
+      <ShowTypeComponent />
     </>
   )
 }

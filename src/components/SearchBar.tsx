@@ -1,4 +1,15 @@
 export const SearchBar = () => {
+  let pageInfo: string = ''
+  const path = location.pathname
+
+  if (path.startsWith('/movie')) {
+    pageInfo = 'Peliculas'
+  } else if (path.startsWith('/tv')) {
+    pageInfo = 'Series'
+  }
+
+  //TODO Hacer una funcion directamente para todos
+
   return (
     <form className='m-3'>
       <label
@@ -29,7 +40,7 @@ export const SearchBar = () => {
           type='search'
           id='default-search'
           className='block ml-2 w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-          placeholder='Bucar Peliculas o Series...'
+          placeholder={`Buscar ${pageInfo}...`}
           required
         />
         <button

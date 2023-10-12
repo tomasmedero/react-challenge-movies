@@ -18,11 +18,8 @@ export const ChallengeRoutes = () => {
           <Route path='movie/top20' element={<TopTitlePage />} />
           <Route path='movie/search' element={<SearchPage />} />
           <Route path='tv/search' element={<SearchPage />} />
-          <Route
-            path='movie'
-            element={<TitleTypePage pageInfo='Peliculas' />}
-          />
-          <Route path='tv' element={<TitleTypePage pageInfo='Series' />} />
+          <Route path='movie' element={<TitleTypePage />} />
+          <Route path='tv' element={<TitleTypePage />} />
           <Route path='/:titulo/:id' element={<TitleIdPage />} />
           <Route path='/' element={<ChallengePage />} />
           <Route path='/*' element={<Navigate to='/' />} />

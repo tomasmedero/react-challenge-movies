@@ -1,14 +1,16 @@
 import { NavLink } from 'react-router-dom'
-import { InfoBarProps } from '../types/types'
 
-export const ShowTypeComponent: React.FC<InfoBarProps> = ({ pageInfo }) => {
+export const ShowTypeComponent = () => {
   let titleTypeInfo: string = ''
+  let pageInfo: string = ''
   const path = location.pathname
 
   if (path.startsWith('/movie')) {
     titleTypeInfo = 'movie'
+    pageInfo = 'Peliculas'
   } else if (path.startsWith('/tv')) {
     titleTypeInfo = 'tv'
+    pageInfo = 'Series'
   }
 
   return (
@@ -32,7 +34,7 @@ export const ShowTypeComponent: React.FC<InfoBarProps> = ({ pageInfo }) => {
           <NavLink to={`/${titleTypeInfo}/search`}>
             <img
               className='rounded-t-lg mt-3 mx-auto'
-              src='/otros.jpg'
+              src={`/${titleTypeInfo}PHSearch.jpg`}
               alt=''
             />
           </NavLink>

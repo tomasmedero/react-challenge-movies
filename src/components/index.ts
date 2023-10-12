@@ -1,6 +1,5 @@
 export * from './ChallengeComponent'
 export * from './IdCard'
-export * from './InfoBar'
 export * from './NavBar'
 export * from './SearchBar'
 export * from './ShowTypeComponents'
