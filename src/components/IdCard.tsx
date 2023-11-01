@@ -2,7 +2,7 @@ import { LoadingPage } from '../auth/pages'
 import { IdCardProps } from '../types/types'
 import { MdOutlineStarOutline, MdOutlineStar } from 'react-icons/md'
 
-//TODO Agregar mas informacion
+//TODO  Hacer funcional el Boton de Favorito y el de Viendo
 
 export const IdCard: React.FC<IdCardProps> = ({ title }) => {
   return (
