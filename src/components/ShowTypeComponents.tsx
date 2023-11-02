@@ -24,7 +24,7 @@ export const ShowTypeComponent = () => {
               alt=''
             />
           </NavLink>
-          <div className='p-5'>
+          <div className='p-5 text-center'>
             <h6 className='mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white'>
               Top 20 {pageInfo}
             </h6>
@@ -38,7 +38,7 @@ export const ShowTypeComponent = () => {
               alt=''
             />
           </NavLink>
-          <div className='p-5'>
+          <div className='p-5 text-center'>
             <h6 className='mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white'>
               Buscar {pageInfo}
             </h6>
@@ -52,7 +52,7 @@ export const ShowTypeComponent = () => {
               alt=''
             />
           </NavLink>
-          <div className='p-5'>
+          <div className='p-5 text-center'>
             <h6 className='mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white'>
               En Construccion
             </h6>
