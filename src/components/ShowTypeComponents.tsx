@@ -15,7 +15,7 @@ export const ShowTypeComponent = () => {
 
   return (
     <>
-      <div className='  grid sm:grid-cols-2 md:grid-cols-4   gap-2 mt-5 ml-3 '>
+      <div className='  grid sm:grid-cols-2 md:grid-cols-4 gap-2 m-5 '>
         <div className='max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 '>
           <NavLink to={`/${titleTypeInfo}/top20`}>
             <img
