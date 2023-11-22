@@ -20,13 +20,14 @@ export const TitleIdPage = () => {
           titleTypeInfo = 'tv'
         }
 
-        let data = await getTitleById(id, titleTypeInfo)
+        let data = await getTitleById({ id, titleTypeInfo })
 
         if (data !== null) {
           setTitle(data)
         } else {
           console.error('Error fetching the data fix please:')
         }
+        console.log(data)
       } catch (error) {
         console.error('Error fetching the data fix please:', error)
       }

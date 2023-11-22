@@ -16,7 +16,7 @@ export const IdCard: React.FC<IdCardProps> = ({ title }) => {
               <div className='md:flex px-4 leading-none max-w-4xl'>
                 <div className='flex-none '>
                   <img
-                    src={`https://image.tmdb.org/t/p/w500${title?.posterUrl}`}
+                    src={title?.posterUrl}
                     alt='pic'
                     className='h-96 w-58 rounded-md shadow-2xl transform -translate-y-4 border-4 border-gray-300 shadow-lg'
                   />

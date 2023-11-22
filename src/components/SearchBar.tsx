@@ -28,7 +28,6 @@ export const SearchBar = () => {
       console.error('Error fetching:', error)
     }
   }
-
   return (
     <>
       <form className='m-3' onSubmit={handleSubmit}>

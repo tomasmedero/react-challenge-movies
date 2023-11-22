@@ -53,7 +53,10 @@ export const getTitleById = async (props: Props): Promise<TitleInfo | null> => {
       originalName = data.original_title
       runtime = data.runtime
     }
+
     const posterUrl = data.poster_path
+      ? `https://image.tmdb.org/t/p/w500/${data.poster_path}`
+      : '/posterWhite.jpg'
     const year = parseInt(releaseDay.split('-')[0])
 
     const rating = parseFloat(data.vote_average.toFixed(1))

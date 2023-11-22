@@ -19,7 +19,7 @@ export const TitleCard: React.FC<TitleCardProps> = ({ titles }) => {
                 <div className='overflow-visible w-1/2  '>
                   <img
                     className=' shadow-lg object-contain rounded-3xl'
-                    src={`https://image.tmdb.org/t/p/w500${title.posterUrl}`}
+                    src={title.posterUrl}
                     alt=''
                   />
                 </div>

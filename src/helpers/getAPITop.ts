@@ -43,10 +43,12 @@ export const getAPITop = async (props: Props): Promise<TitleInfo[]> => {
       id,
       overview: description,
       media_type: programType,
-      poster_path: posterUrl,
       vote_average,
     } = title
     const rating = vote_average.toFixed(1)
+    const posterUrl = title.poster_path
+      ? `https://image.tmdb.org/t/p/w500/${title.poster_path}`
+      : '/posterWhite.jpg'
 
     return {
       id,
