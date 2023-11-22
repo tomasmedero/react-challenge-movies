@@ -1,3 +1,3 @@
-export * from './getAPIMovie'
-export * from './getAPISeries'
+export * from './getAPISearch'
+export * from './getAPITop'
 export * from './getTitleById'

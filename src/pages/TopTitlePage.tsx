@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getAPIMovies, getAPISeries } from '../helpers'
+import { getAPITop } from '../helpers'
 import { TitleInfo } from '../types/types'
 import { TitleCard } from '../components'
 import { useLocation } from 'react-router-dom'
@@ -9,25 +9,21 @@ export const TopTitlePage = () => {
   const location = useLocation()
 
   let pageInfo: string = ''
+  let titleType: string = ''
   const path = location.pathname
 
   if (path.startsWith('/movie')) {
     pageInfo = 'Peliculas'
+    titleType = 'movie'
   } else if (path.startsWith('/tv')) {
     pageInfo = 'Series'
+    titleType = 'tv'
   }
 
   useEffect(() => {
     async function fetchTitles() {
       try {
-        let data: TitleInfo[] = []
-
-        if (location.pathname === '/movie/top20') {
-          data = await getAPIMovies()
-        } else if (location.pathname === '/tv/top20') {
-          data = await getAPISeries()
-        }
-
+        const data = await getAPITop({ titleType })
         setTitles(data)
       } catch (error) {
         console.error('Error fetching movie name:', error)

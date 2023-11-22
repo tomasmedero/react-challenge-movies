@@ -4,6 +4,8 @@ import { MdOutlineStarOutline, MdOutlineStar } from 'react-icons/md'
 
 //TODO  Hacer funcional el Boton de Favorito y el de Viendo
 
+//TODO No funciona cuando pongo en el de buscar
+
 export const IdCard: React.FC<IdCardProps> = ({ title }) => {
   return (
     <>
