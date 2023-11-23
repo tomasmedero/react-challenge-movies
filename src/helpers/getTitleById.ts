@@ -4,11 +4,11 @@ import { TitleInfo } from '../types/types'
 
 type Props = {
   id: any
-  titleTypeInfo: string
+  searchType: string
 }
 
 export const getTitleById = async (props: Props): Promise<TitleInfo | null> => {
-  const { id, titleTypeInfo } = props
+  const { id, searchType: titleTypeInfo } = props
   const url = `https://api.themoviedb.org/3/${titleTypeInfo}/${id}?language=es-ES`
   const urlNetworks = `https://api.themoviedb.org/3/${titleTypeInfo}/${id}/watch/providers`
 

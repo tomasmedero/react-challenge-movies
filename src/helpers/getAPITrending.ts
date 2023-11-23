@@ -7,12 +7,12 @@ import { TitleInfo } from '../types/types'
 //https://image.tmdb.org/t/p/w500/[PosterLink]
 
 type Props = {
-  titleType: string
+  searchType: string
 }
 
-export const getAPITop = async (props: Props): Promise<TitleInfo[]> => {
-  const { titleType } = props
-  const url = `https://api.themoviedb.org/3/trending/${titleType}/week?language=es-ES`
+export const getAPITrending = async (props: Props): Promise<TitleInfo[]> => {
+  const { searchType } = props
+  const url = `https://api.themoviedb.org/3/trending/${searchType}/week?language=es-ES`
   const options = {
     method: 'GET',
     headers: {
@@ -29,11 +29,11 @@ export const getAPITop = async (props: Props): Promise<TitleInfo[]> => {
   const titleData: TitleInfo[] = data.results.map((title: any) => {
     let name, originalName, releaseDay
 
-    if (titleType === 'movie') {
+    if (searchType === 'movie') {
       name = title.title
       originalName = title.original_title
       releaseDay = title.release_date
-    } else if (titleType === 'tv') {
+    } else if (searchType === 'tv') {
       name = title.name
       originalName = title.original_name
       releaseDay = title.first_air_date

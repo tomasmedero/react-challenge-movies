@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import {
   ChallengePage,
   SearchPage,
+  TendencyPage,
   TitleIdPage,
   TitleTypePage,
   TopTitlePage,
@@ -19,6 +20,7 @@ export const ChallengeRoutes = () => {
           <Route path='movie/search' element={<SearchPage />} />
           <Route path='tv/search' element={<SearchPage />} />
           <Route path='movie' element={<TitleTypePage />} />
+          <Route path='tendency' element={<TendencyPage />} />
           <Route path='tv' element={<TitleTypePage />} />
           <Route path='/:titulo/:id' element={<TitleIdPage />} />
           <Route path='/' element={<ChallengePage />} />
