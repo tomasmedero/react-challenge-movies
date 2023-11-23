@@ -32,7 +32,7 @@ export const TopTitlePage = () => {
 
     fetchTitles()
   }, [location.pathname])
-  console.log(titles)
+
   return (
     <>
       <h2 className='text-4xl font-extrabold text-center dark:text-white mt-5 ml-3'>
