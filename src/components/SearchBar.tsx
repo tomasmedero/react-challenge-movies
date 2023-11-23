@@ -29,6 +29,8 @@ export const SearchBar = () => {
 
       if (result.length === 0) {
         setNoResult(true)
+      } else {
+        setNoResult(false)
       }
     } catch (error) {
       console.error('Error fetching:', error)
