@@ -27,7 +27,6 @@ export const TitleIdPage = () => {
         } else {
           console.error('Error fetching the data fix please:')
         }
-        console.log(data)
       } catch (error) {
         console.error('Error fetching the data fix please:', error)
       }
