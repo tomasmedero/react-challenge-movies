@@ -2,11 +2,13 @@ import { useState } from 'react'
 import { getAPISearch } from '../helpers'
 import { TitleInfo } from '../types/types'
 import { TitleCard } from './TitleCard'
+import { NoResultComponent } from './NoResultComponent'
 
 export const SearchBar = () => {
   let pageInfo: string = ''
   let searchType: string = ''
   const [searchQuery, setSearchQuery] = useState('')
+  const [noResult, setNoResult] = useState(false)
   const [titles, setTitles] = useState<TitleInfo[]>([])
   const path = location.pathname
 
@@ -24,10 +26,15 @@ export const SearchBar = () => {
       const result = await getAPISearch({ searchType, searchQuery })
       setTitles(result)
       setSearchQuery('')
+
+      if (result.length === 0) {
+        setNoResult(true)
+      }
     } catch (error) {
       console.error('Error fetching:', error)
     }
   }
+
   return (
     <>
       <form className='m-3' onSubmit={handleSubmit}>
@@ -73,8 +80,7 @@ export const SearchBar = () => {
           </button>
         </div>
       </form>
-
-      <TitleCard titles={titles} />
+      {noResult ? <NoResultComponent /> : <TitleCard titles={titles} />}
     </>
   )
 }
