@@ -30,9 +30,11 @@ export const getAPITrending = async (props: Props): Promise<TitleInfo[]> => {
   const titleData: TitleInfo[] = data.results.map((title: SearchData) => {
     let name, originalName, releaseDay, programType, rating, posterUrl
 
-    const { media_type, id, overview: description } = title
+    const { id, overview: description } = title
 
-    if (media_type === 'movie' || searchType === 'movie') {
+    const media_type = title.media_type ? title.media_type : searchType
+
+    if (media_type === 'movie') {
       name = title.title
       originalName = title.original_title
       releaseDay = title.release_date
@@ -41,7 +43,7 @@ export const getAPITrending = async (props: Props): Promise<TitleInfo[]> => {
       posterUrl = title.poster_path
         ? `https://image.tmdb.org/t/p/w500/${title.poster_path}`
         : '/posterWhite.jpg'
-    } else if (media_type === 'tv' || searchType === 'tv') {
+    } else if (media_type === 'tv') {
       name = title.name
       originalName = title.original_name
       releaseDay = title.first_air_date
@@ -50,7 +52,7 @@ export const getAPITrending = async (props: Props): Promise<TitleInfo[]> => {
       posterUrl = title.poster_path
         ? `https://image.tmdb.org/t/p/w500/${title.poster_path}`
         : '/posterWhite.jpg'
-    } else if (media_type === 'person' || searchType === 'person') {
+    } else if (media_type === 'person') {
       name = title.name
       originalName = title.original_name
       programType = 'Persona'

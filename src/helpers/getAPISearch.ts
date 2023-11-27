@@ -30,7 +30,7 @@ export const getAPISearch = async (props: Props): Promise<TitleInfo[]> => {
 
     const media_type = search.media_type ? search.media_type : searchType
 
-    if (media_type === 'movie' || searchType === 'movie') {
+    if (media_type === 'movie') {
       name = search.title
       originalName = search.original_title
       releaseDay = search.release_date
@@ -39,7 +39,7 @@ export const getAPISearch = async (props: Props): Promise<TitleInfo[]> => {
       posterUrl = search.poster_path
         ? `https://image.tmdb.org/t/p/w500/${search.poster_path}`
         : '/posterWhite.jpg'
-    } else if (media_type === 'tv' || searchType === 'tv') {
+    } else if (media_type === 'tv') {
       name = search.name
       originalName = search.original_name
       releaseDay = search.first_air_date
@@ -48,7 +48,7 @@ export const getAPISearch = async (props: Props): Promise<TitleInfo[]> => {
       posterUrl = search.poster_path
         ? `https://image.tmdb.org/t/p/w500/${search.poster_path}`
         : '/posterWhite.jpg'
-    } else if (media_type === 'person' || searchType === 'person') {
+    } else if (media_type === 'person') {
       name = search.name
       originalName = search.original_name
       programType = 'Persona'
