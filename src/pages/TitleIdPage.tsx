@@ -19,10 +19,10 @@ export const TitleIdPage = () => {
         if (data !== null) {
           setTitle(data)
         } else {
-          console.error('Error fetching the data fix please:')
+          console.error('Hiciste mal un error en el fetch:')
         }
       } catch (error) {
-        console.error('Error fetching the data fix please:', error)
+        console.error('Hubo un tremendo error en el catch:', error)
       }
     }
 

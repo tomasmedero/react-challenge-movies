@@ -27,28 +27,41 @@ export const getAPITrending = async (props: Props): Promise<TitleInfo[]> => {
   const data = await res.json()
 
   const titleData: TitleInfo[] = data.results.map((title: SearchData) => {
-    let name, originalName, releaseDay
+    let name, originalName, releaseDay, programType, rating, gender, posterUrl
 
-    if (searchType === 'movie') {
+    const { media_type, id, overview: description } = title
+
+    if (media_type === 'movie' || searchType === 'movie') {
       name = title.title
       originalName = title.original_title
       releaseDay = title.release_date
-    } else if (searchType === 'tv') {
+      programType = 'Pelicula'
+      rating = title.vote_average.toFixed(1)
+      posterUrl = title.poster_path
+        ? `https://image.tmdb.org/t/p/w500/${title.poster_path}`
+        : '/posterWhite.jpg'
+    } else if (media_type === 'tv' || searchType === 'tv') {
       name = title.name
       originalName = title.original_name
       releaseDay = title.first_air_date
+      programType = 'Serie Tv'
+      rating = title.vote_average.toFixed(1)
+      posterUrl = title.poster_path
+        ? `https://image.tmdb.org/t/p/w500/${title.poster_path}`
+        : '/posterWhite.jpg'
+    } else if (media_type === 'person' || searchType === 'person') {
+      name = title.name
+      originalName = title.original_name
+      programType = 'Persona'
+      posterUrl = title.profile_path
+        ? `https://image.tmdb.org/t/p/w500${title.profile_path}`
+        : '/posterWhite.jpg'
+      if (Number(title.gender) === 1) {
+        gender = 'Femenino'
+      } else if (Number(title.gender) === 2) {
+        gender = 'Masculino'
+      }
     }
-
-    const {
-      id,
-      overview: description,
-      media_type: programType,
-      vote_average,
-    } = title
-    const rating = vote_average.toFixed(1)
-    const posterUrl = title.poster_path
-      ? `https://image.tmdb.org/t/p/w500/${title.poster_path}`
-      : '/posterWhite.jpg'
 
     return {
       id,
@@ -59,6 +72,7 @@ export const getAPITrending = async (props: Props): Promise<TitleInfo[]> => {
       posterUrl,
       releaseDay,
       rating,
+      gender,
     }
   })
 

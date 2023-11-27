@@ -1,14 +1,15 @@
 import { SearchData, TitleInfo } from '../types/types'
 
 type Props = {
-  queryType: string
+  typeSearch?: string
+  typeMedia?: string
 }
 
 // now_playing, popular, top_rated, upcoming
-export const getAPImovie = async (props: Props): Promise<TitleInfo[]> => {
-  const { queryType } = props
+export const getAPIMedia = async (props: Props): Promise<TitleInfo[]> => {
+  const { typeSearch, typeMedia } = props
 
-  const url = `https://api.themoviedb.org/3/movie/${queryType}?language=es-ES&page=1'`
+  const url = `https://api.themoviedb.org/3/${typeMedia}/${typeSearch}?language=es-ES&page=1'`
 
   const options = {
     method: 'GET',

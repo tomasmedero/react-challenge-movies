@@ -18,7 +18,7 @@ export const TitleCard: React.FC<TitleCardProps> = ({ titles }) => {
             // Card
 
             <div className='py-2 sm:max-w-xl sm:mx-auto h-max-150' key={id}>
-              <Link to={`/${programType}/${id}`}>
+              <Link to={`/card/${programType}/${id}`}>
                 {/* Contenido de la card */}
                 <div
                   className='bg-white shadow-lg border-gray-100 
@@ -44,9 +44,12 @@ export const TitleCard: React.FC<TitleCardProps> = ({ titles }) => {
                       >
                         {name}
                       </h2>
-                      <div className='bg-green-300 font-bold rounded-xl p-1'>
-                        {rating}
-                      </div>
+
+                      {rating && (
+                        <div className='bg-green-300 font-bold rounded-xl p-1'>
+                          {rating}
+                        </div>
+                      )}
                     </div>
 
                     <div className='max-h-20 overflow-hidden line-clamp-3'>

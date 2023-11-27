@@ -24,25 +24,41 @@ export const getAPISearch = async (props: Props): Promise<TitleInfo[]> => {
   const data = await res.json()
 
   const searchData: TitleInfo[] = data.results.map((search: SearchData) => {
-    let name, originalName, releaseDay, programType
+    let name, originalName, releaseDay, programType, rating, gender, posterUrl
 
-    if (searchType === 'movie') {
+    const { media_type, id, overview: description } = search
+
+    if (media_type === 'movie' || searchType === 'movie') {
       name = search.title
       originalName = search.original_title
       releaseDay = search.release_date
-      programType = 'movie'
-    } else if (searchType === 'tv') {
+      programType = 'Pelicula'
+      rating = search.vote_average.toFixed(1)
+      posterUrl = search.poster_path
+        ? `https://image.tmdb.org/t/p/w500/${search.poster_path}`
+        : '/posterWhite.jpg'
+    } else if (media_type === 'tv' || searchType === 'tv') {
       name = search.name
       originalName = search.original_name
       releaseDay = search.first_air_date
-      programType = 'tv'
+      programType = 'Serie Tv'
+      rating = search.vote_average.toFixed(1)
+      posterUrl = search.poster_path
+        ? `https://image.tmdb.org/t/p/w500/${search.poster_path}`
+        : '/posterWhite.jpg'
+    } else if (media_type === 'person' || searchType === 'person') {
+      name = search.name
+      originalName = search.original_name
+      programType = 'Persona'
+      posterUrl = search.profile_path
+        ? `https://image.tmdb.org/t/p/w500${search.profile_path}`
+        : '/posterWhite.jpg'
+      if (Number(search.gender) === 1) {
+        gender = 'Femenino'
+      } else if (Number(search.gender) === 2) {
+        gender = 'Masculino'
+      }
     }
-
-    const { id, overview: description, vote_average } = search
-    const rating = vote_average.toFixed(1)
-    const posterUrl = search.poster_path
-      ? `https://image.tmdb.org/t/p/w500/${search.poster_path}`
-      : '/posterWhite.jpg'
 
     return {
       id,
@@ -53,7 +69,9 @@ export const getAPISearch = async (props: Props): Promise<TitleInfo[]> => {
       posterUrl,
       releaseDay,
       rating,
+      gender,
     }
   })
+
   return searchData
 }

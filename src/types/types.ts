@@ -17,6 +17,7 @@ export interface TitleInfo {
   genres?: GenresProps[]
   watchProviderFlatrate?: FlatRateProps[]
   watchProviderLink?: string
+  gender?: string
 }
 
 export interface SearchData {
@@ -32,6 +33,8 @@ export interface SearchData {
   original_title?: string
   first_air_date?: string
   media_type?: string
+  gender?: string
+  profile_path?: string
 }
 
 export interface TitleCardProps {

@@ -33,8 +33,8 @@ export const TitleTypePage = () => {
         <CardTypeComponent
           titleTypeInfo={searchType}
           pageInfo='Personas'
-          link='people'
-          image='People'
+          link='person'
+          image='Person'
         />
       </>
     )
@@ -55,13 +55,13 @@ export const TitleTypePage = () => {
         />
         <CardTypeComponent
           titleTypeInfo={searchType}
-          pageInfo='Mejores votados'
+          pageInfo='Mejor Valorados'
           link='top_rated'
           image='TopRated'
         />
         <CardTypeComponent
           titleTypeInfo={searchType}
-          pageInfo='Más populares'
+          pageInfo='Más Populares'
           link='popular'
           image='Popular'
         />
@@ -84,7 +84,7 @@ export const TitleTypePage = () => {
         />
         <CardTypeComponent
           titleTypeInfo={searchType}
-          pageInfo='Mejor votados'
+          pageInfo='Mejor Valorados'
           link='top_rated'
           image='TopRated'
         />
@@ -102,7 +102,7 @@ export const TitleTypePage = () => {
         <CardTypeComponent
           titleTypeInfo={searchType}
           pageInfo='Buscar Todos'
-          link='all'
+          link='multi'
           image='All'
         />
         <CardTypeComponent

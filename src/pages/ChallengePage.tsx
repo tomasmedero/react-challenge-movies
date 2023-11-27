@@ -19,13 +19,4 @@ export const ChallengePage = () => {
 //TODO
 // En el componente de la movie o serie que tenga una parte de comentarios y solo te deje comentar si esta logueado
 
-//Hacer que funcione Tv
-//Hacer que funcione Movie
-
-//Hacer que funcione tendencia Personas
-
-//Hacer que funcione Buscar Todos
-
-//Hacer que fuuncione Buscar Personas
-
 // Hacer que funcione el ID Card
