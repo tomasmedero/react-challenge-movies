@@ -28,7 +28,7 @@ export const SearchPage = () => {
     }
   }
 
-  //TOD0 solucionar que no se muestre el componente de no resultados cuando esta buscando los resultados
+  //TODO solucionar que no se muestre el componente de no resultados cuando esta buscando los resultados
   return (
     <>
       <form className='m-3' onSubmit={handleSubmit}>
