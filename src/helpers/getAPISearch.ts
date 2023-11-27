@@ -24,9 +24,11 @@ export const getAPISearch = async (props: Props): Promise<TitleInfo[]> => {
   const data = await res.json()
 
   const searchData: TitleInfo[] = data.results.map((search: SearchData) => {
-    let name, originalName, releaseDay, programType, rating, gender, posterUrl
+    let name, originalName, releaseDay, programType, rating, posterUrl
 
-    const { media_type, id, overview: description } = search
+    const { id, overview: description } = search
+
+    const media_type = search.media_type ? search.media_type : searchType
 
     if (media_type === 'movie' || searchType === 'movie') {
       name = search.title
@@ -53,11 +55,6 @@ export const getAPISearch = async (props: Props): Promise<TitleInfo[]> => {
       posterUrl = search.profile_path
         ? `https://image.tmdb.org/t/p/w500${search.profile_path}`
         : '/posterWhite.jpg'
-      if (Number(search.gender) === 1) {
-        gender = 'Femenino'
-      } else if (Number(search.gender) === 2) {
-        gender = 'Masculino'
-      }
     }
 
     return {
@@ -69,7 +66,7 @@ export const getAPISearch = async (props: Props): Promise<TitleInfo[]> => {
       posterUrl,
       releaseDay,
       rating,
-      gender,
+      media_type,
     }
   })
 

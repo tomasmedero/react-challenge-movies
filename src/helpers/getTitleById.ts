@@ -4,13 +4,13 @@ import { TitleInfo } from '../types/types'
 
 type Props = {
   id: number
-  searchType: string
+  typeMedia: string
 }
 
 export const getTitleById = async (props: Props): Promise<TitleInfo | null> => {
-  const { id, searchType: titleTypeInfo } = props
-  const url = `https://api.themoviedb.org/3/${titleTypeInfo}/${id}?language=es-ES`
-  const urlNetworks = `https://api.themoviedb.org/3/${titleTypeInfo}/${id}/watch/providers`
+  const { id, typeMedia } = props
+  const url = `https://api.themoviedb.org/3/${typeMedia}/${id}?language=es-ES`
+  const urlNetworks = `https://api.themoviedb.org/3/${typeMedia}/${id}/watch/providers`
 
   const options = {
     method: 'GET',
@@ -41,13 +41,13 @@ export const getTitleById = async (props: Props): Promise<TitleInfo | null> => {
     let watchProviderLink = ''
     let watchProviderFlatrate = []
 
-    if (titleTypeInfo === 'tv') {
+    if (typeMedia === 'tv') {
       releaseDay = data.first_air_date
       name = data.name
       originalName = data.original_name
       seasons = data.number_of_seasons
       episodes = data.number_of_episodes
-    } else if (titleTypeInfo === 'movie') {
+    } else if (typeMedia === 'movie') {
       releaseDay = data.release_date
       name = data.title
       originalName = data.original_title

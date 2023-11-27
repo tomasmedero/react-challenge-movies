@@ -14,11 +14,12 @@ export const TitleCard: React.FC<TitleCardProps> = ({ titles }) => {
             rating,
             description,
             releaseDay,
+            media_type,
           }) => (
             // Card
 
             <div className='py-2 sm:max-w-xl sm:mx-auto h-max-150' key={id}>
-              <Link to={`/card/${programType}/${id}`}>
+              <Link to={`/card/${media_type}/${id}`}>
                 {/* Contenido de la card */}
                 <div
                   className='bg-white shadow-lg border-gray-100 

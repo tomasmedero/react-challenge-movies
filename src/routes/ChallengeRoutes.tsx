@@ -19,7 +19,7 @@ export const ChallengeRoutes = () => {
           <Route path='search/:typeMedia' element={<SearchPage />} />
           <Route path=':typeMedia' element={<TitleTypePage />} />
           <Route path=':typeMedia/:typeSearch' element={<TypeMediaPage />} />
-          <Route path='/card/:titulo/:id' element={<TitleIdPage />} />
+          <Route path='/card/:typeMedia/:id' element={<TitleIdPage />} />
           <Route path='/' element={<ChallengePage />} />
           <Route path='/*' element={<Navigate to='/' />} />
         </Routes>

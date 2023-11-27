@@ -24,21 +24,38 @@ export const getAPIMedia = async (props: Props): Promise<TitleInfo[]> => {
 
   const data = await res.json()
 
-  const movieData: TitleInfo[] = data.results.map((movie: SearchData) => {
-    const programType = 'movie'
+  const mediaData: TitleInfo[] = data.results.map((media: SearchData) => {
+    let name,
+      originalName,
+      releaseDay,
+      programType,
+      rating,
+      posterUrl,
+      media_type
 
-    const {
-      id,
-      overview: description,
-      vote_average,
-      title: name,
-      original_title: originalName,
-      release_date: releaseDay,
-    } = movie
-    const rating = vote_average.toFixed(1)
-    const posterUrl = movie.poster_path
-      ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-      : '/posterWhite.jpg'
+    const { id, overview: description } = media
+
+    if (typeMedia === 'movie') {
+      name = media.title
+      originalName = media.original_title
+      releaseDay = media.release_date
+      programType = 'Pelicula'
+      media_type = 'movie'
+      rating = media.vote_average.toFixed(1)
+      posterUrl = media.poster_path
+        ? `https://image.tmdb.org/t/p/w500/${media.poster_path}`
+        : '/posterWhite.jpg'
+    } else if (typeMedia === 'tv') {
+      name = media.name
+      originalName = media.original_name
+      releaseDay = media.first_air_date
+      programType = 'Serie Tv'
+      media_type = 'tv'
+      rating = media.vote_average.toFixed(1)
+      posterUrl = media.poster_path
+        ? `https://image.tmdb.org/t/p/w500/${media.poster_path}`
+        : '/posterWhite.jpg'
+    }
 
     return {
       id,
@@ -49,7 +66,8 @@ export const getAPIMedia = async (props: Props): Promise<TitleInfo[]> => {
       posterUrl,
       releaseDay,
       rating,
+      media_type,
     }
   })
-  return movieData
+  return mediaData
 }

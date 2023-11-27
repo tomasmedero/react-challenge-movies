@@ -5,10 +5,12 @@ import { TitleInfo } from '../types/types'
 import { usePageInfo } from '../hooks/usePageInfo'
 import { NoResultComponent, TitleCard } from '../components'
 import { useParams } from 'react-router-dom'
+import { LoadingPage } from '../auth/pages'
 
 export const SearchPage = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [titles, setTitles] = useState<TitleInfo[]>([])
 
   const { typeMedia } = useParams()
@@ -17,6 +19,7 @@ export const SearchPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
     setSubmitted(true)
     setTitles([])
     try {
@@ -26,9 +29,9 @@ export const SearchPage = () => {
     } catch (error) {
       console.error('Error fetching:', error)
     }
+    setIsLoading(false)
   }
 
-  //TODO solucionar que no se muestre el componente de no resultados cuando esta buscando los resultados
   return (
     <>
       <form className='m-3' onSubmit={handleSubmit}>
@@ -74,12 +77,16 @@ export const SearchPage = () => {
           </button>
         </div>
       </form>
-      {submitted &&
+      {isLoading ? (
+        <LoadingPage />
+      ) : (
+        submitted &&
         (titles.length === 0 ? (
           <NoResultComponent />
         ) : (
           <TitleCard titles={titles} />
-        ))}
+        ))
+      )}
     </>
   )
 }

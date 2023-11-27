@@ -25,9 +25,10 @@ export const getAPITrending = async (props: Props): Promise<TitleInfo[]> => {
   const res = await fetch(url, options)
 
   const data = await res.json()
+  console.log(data)
 
   const titleData: TitleInfo[] = data.results.map((title: SearchData) => {
-    let name, originalName, releaseDay, programType, rating, gender, posterUrl
+    let name, originalName, releaseDay, programType, rating, posterUrl
 
     const { media_type, id, overview: description } = title
 
@@ -56,11 +57,6 @@ export const getAPITrending = async (props: Props): Promise<TitleInfo[]> => {
       posterUrl = title.profile_path
         ? `https://image.tmdb.org/t/p/w500${title.profile_path}`
         : '/posterWhite.jpg'
-      if (Number(title.gender) === 1) {
-        gender = 'Femenino'
-      } else if (Number(title.gender) === 2) {
-        gender = 'Masculino'
-      }
     }
 
     return {
@@ -72,7 +68,7 @@ export const getAPITrending = async (props: Props): Promise<TitleInfo[]> => {
       posterUrl,
       releaseDay,
       rating,
-      gender,
+      media_type,
     }
   })
 

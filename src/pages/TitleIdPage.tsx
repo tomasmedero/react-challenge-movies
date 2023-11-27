@@ -3,31 +3,30 @@ import { getTitleById } from '../helpers'
 import { useEffect, useState } from 'react'
 import { TitleInfo } from '../types/types'
 import { IdCard } from '../components/IdCard'
-import { usePageInfo } from '../hooks/usePageInfo'
 
 export const TitleIdPage = () => {
   const [title, setTitle] = useState<TitleInfo | undefined>(undefined)
-  const { id } = useParams()
-  const path = location.pathname
-  const { searchType } = usePageInfo(path)
+  const { id, typeMedia } = useParams()
 
   useEffect(() => {
     async function fetchTitle() {
-      try {
-        const data = await getTitleById({ id: Number(id), searchType })
+      if (id !== undefined && typeMedia !== undefined) {
+        try {
+          const data = await getTitleById({ id: Number(id), typeMedia })
 
-        if (data !== null) {
-          setTitle(data)
-        } else {
-          console.error('Hiciste mal un error en el fetch:')
+          if (data !== null) {
+            setTitle(data)
+          } else {
+            console.error('Hiciste mal un error en el fetch:')
+          }
+        } catch (error) {
+          console.error('Hubo un tremendo error en el catch:', error)
         }
-      } catch (error) {
-        console.error('Hubo un tremendo error en el catch:', error)
       }
     }
 
     fetchTitle()
-  }, [id, path, searchType])
+  }, [id, typeMedia])
 
   return (
     <>
