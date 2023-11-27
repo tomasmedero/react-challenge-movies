@@ -1,10 +1,8 @@
-import { TitleInfo } from '../types/types'
+import { SearchData, TitleInfo } from '../types/types'
 
 type Props = {
   queryType: string
 }
-
-// TODO airing_today - on_the_air - popular - top_rated
 
 export const getAPItv = async (props: Props): Promise<TitleInfo[]> => {
   const { queryType } = props
@@ -24,7 +22,7 @@ export const getAPItv = async (props: Props): Promise<TitleInfo[]> => {
 
   const data = await res.json()
 
-  const tvData: TitleInfo[] = data.results.map((tv: any) => {
+  const tvData: TitleInfo[] = data.results.map((tv: SearchData) => {
     const programType = 'tv'
 
     const {

@@ -1,4 +1,4 @@
-import { TitleInfo } from '../types/types'
+import { SearchData, TitleInfo } from '../types/types'
 
 type Props = {
   searchType: string
@@ -23,7 +23,7 @@ export const getAPISearch = async (props: Props): Promise<TitleInfo[]> => {
 
   const data = await res.json()
 
-  const searchData: TitleInfo[] = data.results.map((search: any) => {
+  const searchData: TitleInfo[] = data.results.map((search: SearchData) => {
     let name, originalName, releaseDay, programType
 
     if (searchType === 'movie') {

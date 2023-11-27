@@ -48,7 +48,7 @@ export const LoginPage = () => {
       const thunkAction = startResetErrorMsg()
       thunkAction(dispatch)
     }
-  }, [errorMessage])
+  }, [errorMessage, dispatch])
 
   return (
     <>

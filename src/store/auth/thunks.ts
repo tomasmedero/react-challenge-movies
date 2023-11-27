@@ -1,4 +1,5 @@
-import { AnyAction } from 'redux'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { AnyAction, Dispatch } from 'redux'
 import { checkingCredentials, login, logout, resetErrorMsg } from '.'
 import {
   registerWithEmail,
@@ -8,19 +9,19 @@ import {
 } from '../../firebase/providers'
 
 export const checkingAuth = () => {
-  return async (dispatch: any) => {
+  return async (dispatch: Dispatch) => {
     dispatch(checkingCredentials())
   }
 }
 
 export const startResetErrorMsg = () => {
-  return async (dispatch: any) => {
+  return async (dispatch: Dispatch) => {
     dispatch(resetErrorMsg())
   }
 }
 
 export const startGoogleLogin = () => {
-  return async (dispatch: any) => {
+  return async (dispatch: Dispatch) => {
     dispatch(checkingCredentials())
 
     const res = await loginWithGoogle()
@@ -47,7 +48,7 @@ export const startEmailRegister = ({
   password: string
   displayName: string
 }): any => {
-  return async (dispatch: any) => {
+  return async (dispatch: Dispatch) => {
     dispatch(checkingCredentials())
 
     const { ok, uid, photoURL, errorMessage } = await registerWithEmail({
@@ -74,7 +75,7 @@ export const startLoginWithEmail = ({
   email: string
   password: string
 }): any => {
-  return async (dispatch: any) => {
+  return async (dispatch: Dispatch) => {
     dispatch(checkingCredentials())
     const res = await loginWithEmail({ email, password })
 
@@ -87,7 +88,7 @@ export const startLoginWithEmail = ({
 }
 
 export const startLogout: any = () => {
-  return async (dispatch: any) => {
+  return async (dispatch: Dispatch) => {
     await logoutFirebase()
 
     dispatch(logout({}))

@@ -7,15 +7,14 @@ import { usePageInfo } from '../hooks/usePageInfo'
 
 export const TitleIdPage = () => {
   const [title, setTitle] = useState<TitleInfo | undefined>(undefined)
-  let { id } = useParams()
+  const { id } = useParams()
   const path = location.pathname
+  const { searchType } = usePageInfo(path)
 
   useEffect(() => {
     async function fetchTitle() {
       try {
-        const { searchType } = usePageInfo(path)
-
-        let data = await getTitleById({ id, searchType })
+        const data = await getTitleById({ id: Number(id), searchType })
 
         if (data !== null) {
           setTitle(data)
@@ -28,7 +27,7 @@ export const TitleIdPage = () => {
     }
 
     fetchTitle()
-  }, [id])
+  }, [id, path, searchType])
 
   return (
     <>

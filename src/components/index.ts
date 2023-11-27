@@ -1,5 +1,4 @@
 export * from './CardTypeComponent'
-export * from './ChallengeComponent'
 export * from './IdCard'
 export * from './NavBar'
 export * from './NoResultComponent'

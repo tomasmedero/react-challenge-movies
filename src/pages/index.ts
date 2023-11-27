@@ -1,6 +1,5 @@
 export * from './ChallengePage'
 export * from './SearchPage'
-export * from './TendencyPage'
 export * from './TitleIdPage'
 export * from './TitleTypePage'
 export * from './TopTitlePage'

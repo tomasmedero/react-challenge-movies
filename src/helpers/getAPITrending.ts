@@ -1,7 +1,7 @@
 //API
 // eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NWVmZWE5YmY0ZDE2YTI4MjUyM2MzN2IzMGNiNTY0MyIsInN1YiI6IjY0ZjdkMzFkNGNjYzUwMDEzODhkMTUzYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.h-99PXOZw4FE5uFD613iE26WD81LEeycSyirgNJ99OQ
 
-import { TitleInfo } from '../types/types'
+import { SearchData, TitleInfo } from '../types/types'
 
 //Poster
 //https://image.tmdb.org/t/p/w500/[PosterLink]
@@ -26,7 +26,7 @@ export const getAPITrending = async (props: Props): Promise<TitleInfo[]> => {
 
   const data = await res.json()
 
-  const titleData: TitleInfo[] = data.results.map((title: any) => {
+  const titleData: TitleInfo[] = data.results.map((title: SearchData) => {
     let name, originalName, releaseDay
 
     if (searchType === 'movie') {

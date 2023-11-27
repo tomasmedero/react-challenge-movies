@@ -19,6 +19,21 @@ export interface TitleInfo {
   watchProviderLink?: string
 }
 
+export interface SearchData {
+  id: number
+  overview: string
+  vote_average: number
+  name?: string
+  original_name?: string
+  release_date?: string
+  popularity: number
+  poster_path: string
+  title?: string
+  original_title?: string
+  first_air_date?: string
+  media_type?: string
+}
+
 export interface TitleCardProps {
   titles: TitleInfo[]
 }

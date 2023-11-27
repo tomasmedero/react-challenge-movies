@@ -1,4 +1,4 @@
-import { TitleInfo } from '../types/types'
+import { SearchData, TitleInfo } from '../types/types'
 
 type Props = {
   queryType: string
@@ -23,7 +23,7 @@ export const getAPImovie = async (props: Props): Promise<TitleInfo[]> => {
 
   const data = await res.json()
 
-  const movieData: TitleInfo[] = data.results.map((movie: any) => {
+  const movieData: TitleInfo[] = data.results.map((movie: SearchData) => {
     const programType = 'movie'
 
     const {

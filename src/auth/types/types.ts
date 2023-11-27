@@ -1,7 +1,7 @@
 export interface FormInterfaceProps {
   label: string
   errorForm?: string
-  onChange?: any
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
   id: string
   name: string
   type: string

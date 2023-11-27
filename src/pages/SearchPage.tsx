@@ -4,14 +4,16 @@ import { TitleInfo } from '../types/types'
 
 import { usePageInfo } from '../hooks/usePageInfo'
 import { NoResultComponent, TitleCard } from '../components'
+import { useParams } from 'react-router-dom'
 
 export const SearchPage = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [titles, setTitles] = useState<TitleInfo[]>([])
-  const path = location.pathname
 
-  const { pageInfo, searchType } = usePageInfo(path)
+  const { typeMedia } = useParams()
+
+  const { pageInfo, searchType } = usePageInfo(typeMedia)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

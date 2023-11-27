@@ -3,7 +3,7 @@
 import { TitleInfo } from '../types/types'
 
 type Props = {
-  id: any
+  id: number
   searchType: string
 }
 

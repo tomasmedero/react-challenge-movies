@@ -2,16 +2,15 @@ import { useEffect, useState } from 'react'
 import { getAPITrending } from '../helpers'
 import { TitleInfo } from '../types/types'
 import { TitleCard } from '../components'
-import { useLocation } from 'react-router-dom'
 import { usePageInfo } from '../hooks/usePageInfo'
+import { useParams } from 'react-router-dom'
 
 export const TopTitlePage = () => {
   const [titles, setTitles] = useState<TitleInfo[]>([])
-  const location = useLocation()
 
-  const path = location.pathname
+  const { typeMedia } = useParams()
 
-  const { pageInfo, searchType } = usePageInfo(path)
+  const { pageInfo, searchType } = usePageInfo(typeMedia)
 
   useEffect(() => {
     async function fetchTitles() {
@@ -24,7 +23,7 @@ export const TopTitlePage = () => {
     }
 
     fetchTitles()
-  }, [location.pathname])
+  }, [searchType])
 
   return (
     <>
