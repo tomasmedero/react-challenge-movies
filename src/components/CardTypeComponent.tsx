@@ -21,7 +21,11 @@ export const CardTypeComponent = (props: Props) => {
           />
         </NavLink>
         <div className='p-5 text-center'>
-          <h6 className='mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white text-center'>
+          <h6
+            className='mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white text-center w-full overflow-hidden whitespace-nowrap'
+            style={{ textOverflow: 'ellipsis' }}
+          >
+            {' '}
             {pageInfo}
           </h6>
         </div>

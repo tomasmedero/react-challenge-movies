@@ -16,7 +16,10 @@ export const CardComponent = (props: Props) => {
           <img className='rounded-t-lg mt-3 mx-auto' src={`/${image}`} alt='' />
         </NavLink>
         <div className='p-5'>
-          <h6 className='mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white text-center w-full text-fit '>
+          <h6
+            className='mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white text-center w-full overflow-hidden whitespace-nowrap'
+            style={{ textOverflow: 'ellipsis' }}
+          >
             {title}
           </h6>
         </div>
