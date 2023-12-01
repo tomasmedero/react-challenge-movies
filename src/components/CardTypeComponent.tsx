@@ -11,7 +11,7 @@ export const CardTypeComponent = (props: Props) => {
   const { titleTypeInfo, pageInfo, link, image } = props
 
   return (
-    <div className='w-1/4 p-3'>
+    <div className='w-1/4 p-3 items-center'>
       <div className='max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 '>
         <NavLink to={`/${titleTypeInfo}/${link}`}>
           <img

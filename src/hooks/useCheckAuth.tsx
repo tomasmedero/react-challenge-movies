@@ -18,7 +18,7 @@ export const useCheckAuth = () => {
 
       dispatch(login({ uid, email, displayName, photoURL }))
     })
-  }, [])
+  }, [dispatch])
 
   return status
 }

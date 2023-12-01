@@ -1,6 +1,7 @@
 import { LoadingPage } from '../auth/pages'
 import { IdCardProps } from '../types/types'
 import { MdOutlineStarOutline, MdOutlineStar } from 'react-icons/md'
+import { CommentComponent } from './CommentComponent'
 
 //TODO  Hacer funcional el Boton de Favorito y el de Viendo
 
@@ -9,7 +10,7 @@ export const IdCard: React.FC<IdCardProps> = ({ title }) => {
     <>
       {title ? (
         <>
-          <div className='min-h-screen grid place-items-center font-mono'>
+          <div className='min-h-screen grid place-items-center font-mono mt-5'>
             <div className=' border-2 border-gray-400  rounded-md bg-zinc-100 shadow-lg  rounded-3xl space-x-2 shadow-lg'>
               <div className='md:flex px-4 leading-none max-w-4xl'>
                 <div className='flex-none '>
@@ -99,6 +100,7 @@ export const IdCard: React.FC<IdCardProps> = ({ title }) => {
                 </div>
               </div>
             </div>
+            <CommentComponent />
           </div>
         </>
       ) : (

@@ -49,7 +49,7 @@ export const RegisterPage = () => {
       const thunkAction = startResetErrorMsg()
       thunkAction(dispatch)
     }
-  }, [errorMessage])
+  }, [errorMessage, dispatch])
 
   return (
     <>

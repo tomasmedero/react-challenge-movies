@@ -17,3 +17,4 @@ export const ChallengePage = () => {
 }
 
 //TODO En el componente de la movie o serie que tenga una parte de comentarios y solo te deje comentar si esta logueado
+//Hacer que los cuadraditos al achicar la pantalla se vean bien
