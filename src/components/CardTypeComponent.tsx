@@ -2,33 +2,24 @@ import { NavLink } from 'react-router-dom'
 
 type Props = {
   titleTypeInfo: string
-  pageInfo: string
+
   link: string
   image: string
 }
 
 export const CardTypeComponent = (props: Props) => {
-  const { titleTypeInfo, pageInfo, link, image } = props
+  const { titleTypeInfo, link, image } = props
 
   return (
-    <div className='w-1/4 p-3 items-center'>
-      <div className='max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 '>
-        <NavLink to={`/${titleTypeInfo}/${link}`}>
+    <div className='w-full sm:w-1/2 md:w-1/2 lg:w-1/4 p-3 items-center flex justify-center'>
+      <div className='max-w-sm bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out dark:bg-gray-800 dark:border-gray-700 '>
+        <NavLink to={`/${titleTypeInfo}/${link}`} className='block'>
           <img
-            className='rounded-t-lg mt-3 mx-auto'
+            className='rounded-t-lg mt-3 mx-auto w-full h-auto object-cover'
             src={`/${titleTypeInfo}${image}.jpg`}
             alt=''
           />
         </NavLink>
-        <div className='p-5 text-center'>
-          <h6
-            className='mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white text-center w-full overflow-hidden whitespace-nowrap'
-            style={{ textOverflow: 'ellipsis' }}
-          >
-            {' '}
-            {pageInfo}
-          </h6>
-        </div>
       </div>
     </div>
   )

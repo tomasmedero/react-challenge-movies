@@ -36,9 +36,14 @@ export const Navbar = () => {
 
   const { status, photoURL } = useSelector((state: RootState) => state.auth)
 
+
+
   const onLogout = async () => {
     dispatch(startLogout())
   }
+
+  const countries = ['Argentina', 'Brasil', 'Chile', 'Colombia', 'México', 'Perú'];
+
 
   return (
     <>
@@ -88,6 +93,17 @@ export const Navbar = () => {
               </li>
             </ul>
           </div>
+
+          <div className="relative inline-flex">
+            <select className="border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none" style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}>
+              {countries.map((country, index) => (
+                <option key={index} value={country}>
+                  {country}
+                </option>
+              ))}
+            </select>
+          </div>
+
           {status === 'autenticado' ? (
             <div className='relative inline-block text-left' ref={dropdownRef}>
               <div>
@@ -110,6 +126,9 @@ export const Navbar = () => {
                   )}
                 </button>
               </div>
+
+
+
 
               {isOpenProfile && (
                 <div className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5'>
