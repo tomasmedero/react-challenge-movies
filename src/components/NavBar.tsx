@@ -94,7 +94,7 @@ export const Navbar = () => {
             </ul>
           </div>
 
-          <div className="relative inline-flex">
+          <div className="relative inline-flex mt-3">
             <select className="border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none" style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}>
               {countries.map((country, index) => (
                 <option key={index} value={country}>
@@ -105,7 +105,7 @@ export const Navbar = () => {
           </div>
 
           {status === 'autenticado' ? (
-            <div className='relative inline-block text-left' ref={dropdownRef}>
+            <div className='relative inline-block text-left mt-3' ref={dropdownRef}>
               <div>
                 <button
                   onClick={toggleDropdownProfile}
@@ -131,7 +131,7 @@ export const Navbar = () => {
 
 
               {isOpenProfile && (
-                <div className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5'>
+                <div className='origin-top-right absolute right-0 mt-3 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5'>
                   <div
                     className='py-1'
                     role='menu'
@@ -151,7 +151,7 @@ export const Navbar = () => {
             </div>
           ) : (
             <Link to='/auth/login'>
-              <button className='mt-2 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded'>
+              <button className='mt-3 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded'>
                 Ingresar
               </button>
             </Link>

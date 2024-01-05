@@ -64,3 +64,7 @@ export interface User {
   photoURL: string | null
   errorMessage: string | null
 }
+
+export interface Country {
+  name?: string
+}
