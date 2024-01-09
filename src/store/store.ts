@@ -7,6 +7,10 @@ export const store = configureStore({
     auth: authSlice.reducer,
     country: countrySlice.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      thunk: true,
+    }),
 })
 
 export type RootState = ReturnType<typeof store.getState>

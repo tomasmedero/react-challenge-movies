@@ -17,4 +17,8 @@ export const ChallengePage = () => {
 }
 
 //TODO En el componente de la movie o serie que tenga una parte de comentarios y solo te deje comentar si esta logueado
-//Hacer que los cuadraditos al achicar la pantalla se vean bien
+//TODO Hacer que los cuadraditos al achicar la pantalla se vean bien
+//TODO Tendria que hacer que si no acepta la geolocalizacion entonces que tome argentina y todo eso
+//TODO hacer banderas
+//TODO  Hacer funcional el Boton de Favorito y el de Viendo
+

@@ -25,7 +25,6 @@ export const getAPITrending = async (props: Props): Promise<TitleInfo[]> => {
   const res = await fetch(url, options)
 
   const data = await res.json()
-  console.log(data)
 
   const titleData: TitleInfo[] = data.results.map((title: SearchData) => {
     let name, originalName, releaseDay, programType, rating, posterUrl

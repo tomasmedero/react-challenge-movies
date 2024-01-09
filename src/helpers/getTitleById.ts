@@ -1,14 +1,16 @@
 //API eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NWVmZWE5YmY0ZDE2YTI4MjUyM2MzN2IzMGNiNTY0MyIsInN1YiI6IjY0ZjdkMzFkNGNjYzUwMDEzODhkMTUzYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.h-99PXOZw4FE5uFD613iE26WD81LEeycSyirgNJ99OQ
 
 import { TitleInfo } from '../types/types'
+import { countryCode } from './countryCode'
 
 type Props = {
   id: number
   typeMedia: string
+  countryName?: string
 }
 
 export const getTitleById = async (props: Props): Promise<TitleInfo | null> => {
-  const { id, typeMedia } = props
+  const { id, typeMedia, countryName } = props
   const url = `https://api.themoviedb.org/3/${typeMedia}/${id}?language=es-ES`
   const urlNetworks = `https://api.themoviedb.org/3/${typeMedia}/${id}/watch/providers`
 
@@ -20,6 +22,8 @@ export const getTitleById = async (props: Props): Promise<TitleInfo | null> => {
         'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NWVmZWE5YmY0ZDE2YTI4MjUyM2MzN2IzMGNiNTY0MyIsInN1YiI6IjY0ZjdkMzFkNGNjYzUwMDEzODhkMTUzYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.h-99PXOZw4FE5uFD613iE26WD81LEeycSyirgNJ99OQ',
     },
   }
+
+  const countryCodeName = countryCode[countryName || 'Argentina']
 
   try {
     const res = await fetch(url, options)
@@ -62,25 +66,26 @@ export const getTitleById = async (props: Props): Promise<TitleInfo | null> => {
     const rating = parseFloat(data.vote_average.toFixed(1))
     const genres = data.genres
 
-    if (dataNetwork.results && dataNetwork.results.AR) {
-      watchProviderLink = dataNetwork.results.AR.link || ''
-      watchProviderFlatrate = dataNetwork.results.AR.flatrate || ''
+    if (dataNetwork.results && dataNetwork.results[countryCodeName]) {
+      watchProviderLink = dataNetwork.results[countryCodeName].link || ''
+      watchProviderFlatrate =
+        dataNetwork.results[countryCodeName].flatrate || ''
     }
 
     const titleRes: TitleInfo = {
-      id: id,
-      name: name,
-      originalName: originalName,
-      description: description,
-      posterUrl: posterUrl,
+      id,
+      name,
+      originalName,
+      description,
+      posterUrl,
       releaseDay: year,
-      rating: rating,
-      seasons: seasons,
-      episodes: episodes,
-      runtime: runtime,
-      genres: genres,
-      watchProviderLink: watchProviderLink,
-      watchProviderFlatrate: watchProviderFlatrate,
+      rating,
+      seasons,
+      episodes,
+      runtime,
+      genres,
+      watchProviderLink,
+      watchProviderFlatrate,
     }
 
     return titleRes

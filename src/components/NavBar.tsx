@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { startLogout } from '../store/auth/thunks'
 import { useEffect, useRef, useState } from 'react'
 import { RootState } from '../store/store'
+import { setCountry } from '../store/country/countrySlice'
 
 export const Navbar = () => {
   const [isOpenProfile, setIsOpenProfile] = useState(false)
@@ -33,17 +34,29 @@ export const Navbar = () => {
   }, [])
 
   const dispatch = useDispatch()
+  const location = useLocation()
+  const isCardRoute = location.pathname.startsWith('/card/')
 
   const { status, photoURL } = useSelector((state: RootState) => state.auth)
-
-
+  const { name } = useSelector((state: RootState) => state.country)
 
   const onLogout = async () => {
     dispatch(startLogout())
   }
 
-  const countries = ['Argentina', 'Brasil', 'Chile', 'Colombia', 'México', 'Perú'];
+  const countries = [
+    { name: 'Argentina', abbreviation: 'AR' },
+    { name: 'España', abbreviation: 'ES' },
+    { name: 'Irlanda', abbreviation: 'IE' },
+    { name: 'USA', abbreviation: 'US' }
+  ];
 
+  const onChangeCountry = (e: React.ChangeEvent<HTMLSelectElement>) => {
+
+    dispatch(setCountry({ name: e.target.value }));
+    localStorage.setItem('countryName', e.target.value);
+
+  }
 
   return (
     <>
@@ -95,10 +108,10 @@ export const Navbar = () => {
           </div>
 
           <div className="relative inline-flex mt-3">
-            <select className="border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none" style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}>
-              {countries.map((country, index) => (
-                <option key={index} value={country}>
-                  {country}
+            <select value={name} disabled={isCardRoute} onChange={(e) => onChangeCountry(e)} className={`border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none ${isCardRoute && 'text-gray-400 cursor-not-allowed'}`} style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}>
+              {countries.map(({ name, abbreviation }) => (
+                <option key={abbreviation} value={name}>
+                  {name}
                 </option>
               ))}
             </select>

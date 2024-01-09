@@ -2,22 +2,27 @@ import { LoadingPage } from '../auth/pages'
 import { IdCardProps } from '../types/types'
 import { MdOutlineStarOutline, MdOutlineStar } from 'react-icons/md'
 import { CommentComponent } from './CommentComponent'
+import { useSelector } from 'react-redux'
+import { RootState } from '../store/store'
 
-//TODO  Hacer funcional el Boton de Favorito y el de Viendo
+
 
 export const IdCard: React.FC<IdCardProps> = ({ title }) => {
+
+  const { status } = useSelector((state: RootState) => state.auth)
+
   return (
     <>
       {title ? (
         <>
           <div className='min-h-screen grid place-items-center font-mono mt-5'>
-            <div className=' border-2 border-gray-400  rounded-md bg-zinc-100 shadow-lg  rounded-3xl space-x-2 shadow-lg'>
+            <div className=' border-2 border-gray-400  rounded-md bg-zinc-100 shadow-lg  space-x-2'>
               <div className='md:flex px-4 leading-none max-w-4xl'>
                 <div className='flex-none '>
                   <img
                     src={title?.posterUrl}
                     alt='pic'
-                    className='h-96 w-58 rounded-md shadow-2xl transform -translate-y-4 border-4 border-gray-300 shadow-lg'
+                    className='h-96 w-58 rounded-md transform -translate-y-4 border-4 border-gray-300 shadow-lg'
                   />
                 </div>
 
@@ -57,7 +62,7 @@ export const IdCard: React.FC<IdCardProps> = ({ title }) => {
 
                   <div className='text-sm'>
                     {title.watchProviderFlatrate &&
-                    title.watchProviderFlatrate.length > 0 ? (
+                      title.watchProviderFlatrate.length > 0 ? (
                       <>
                         <p className='flex text-base px-4 my-2 mt-3'>
                           Plataformas:
@@ -100,7 +105,7 @@ export const IdCard: React.FC<IdCardProps> = ({ title }) => {
                 </div>
               </div>
             </div>
-            <CommentComponent />
+            {status === 'autenticado' && <CommentComponent />}
           </div>
         </>
       ) : (
