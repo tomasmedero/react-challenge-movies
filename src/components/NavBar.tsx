@@ -1,9 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { startLogout } from '../store/auth/thunks'
 import { useEffect, useRef, useState } from 'react'
 import { RootState } from '../store/store'
 import { setCountry } from '../store/country/countrySlice'
+import { NavOptions } from '.'
+
+
 
 export const Navbar = () => {
   const [isOpenProfile, setIsOpenProfile] = useState(false)
@@ -71,40 +74,14 @@ export const Navbar = () => {
 
           <div className='w-full md:flex md:w-auto' id='navbar-default'>
             <ul className='flex flex-col font-medium mt-4 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700'>
-              <li>
-                <NavLink
-                  className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
-                  to='/tv'
-                >
-                  Series
-                </NavLink>
-              </li>
 
-              <li>
-                <NavLink
-                  className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
-                  to='/movie'
-                >
-                  Peliculas
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
-                  to='/tendency'
-                >
-                  Tendencias
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
-                  to='/search'
-                >
-                  Buscar
-                </NavLink>
-              </li>
+              <NavOptions optionlink='tv' title='Series' />
+              <NavOptions optionlink='movie' title='Peliculas' />
+              <NavOptions optionlink='tendency' title='Tendencias' />
+
             </ul>
+
+
           </div>
 
           <div className="relative inline-flex mt-3">

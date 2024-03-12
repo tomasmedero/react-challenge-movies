@@ -1,11 +1,9 @@
 import { useState } from 'react'
 import { getAPISearch } from '../helpers'
 import { TitleInfo } from '../types/types'
-
-import { usePageInfo } from '../hooks/usePageInfo'
-import { NoResultComponent, TitleCard } from '../components'
-import { useParams } from 'react-router-dom'
+import { CarouselComponent, NoResultComponent, TitleCard } from '../components'
 import { LoadingPage } from '../auth/pages'
+
 
 export const SearchPage = () => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -13,9 +11,6 @@ export const SearchPage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [titles, setTitles] = useState<TitleInfo[]>([])
 
-  const { typeMedia } = useParams()
-
-  const { pageInfo, searchType } = usePageInfo(typeMedia)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -23,7 +18,7 @@ export const SearchPage = () => {
     setSubmitted(true)
     setTitles([])
     try {
-      const result = await getAPISearch({ searchType, searchQuery })
+      const result = await getAPISearch({ searchQuery })
       setTitles(result)
       setSearchQuery('')
     } catch (error) {
@@ -34,6 +29,7 @@ export const SearchPage = () => {
 
   return (
     <>
+
       <form className='m-3' onSubmit={handleSubmit}>
         <label
           htmlFor='default-search'
@@ -63,7 +59,7 @@ export const SearchPage = () => {
             type='search'
             id='default-search'
             className='block ml-2 w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-            placeholder={`Buscar ${pageInfo}...`}
+            placeholder={`Buscar Peliculas y Series...`}
             required
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -77,16 +73,29 @@ export const SearchPage = () => {
           </button>
         </div>
       </form>
-      {isLoading ? (
-        <LoadingPage />
-      ) : (
-        submitted &&
-        (titles.length === 0 ? (
-          <NoResultComponent />
+
+
+      {
+
+        !submitted ? (
+          <div className="2xl:container 2xl:mx-auto 2xl:px-0 py-3 px-10">
+
+            <CarouselComponent />
+
+          </div>
+
         ) : (
-          <TitleCard titles={titles} />
-        ))
-      )}
+          isLoading ? (
+            <LoadingPage />
+          ) : (
+            submitted &&
+            (titles.length === 0 ? (
+              <NoResultComponent />
+            ) : (
+              <TitleCard titles={titles} />
+            ))
+          ))
+      }
     </>
   )
 }

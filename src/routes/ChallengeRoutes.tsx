@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import {
   ChallengePage,
-  SearchPage,
   TitleIdPage,
   TitleTypePage,
   TopTitlePage,
@@ -16,7 +15,6 @@ export const ChallengeRoutes = () => {
         <Navbar />
         <Routes>
           <Route path='tendency/:typeMedia' element={<TopTitlePage />} />
-          <Route path='search/:typeMedia' element={<SearchPage />} />
           <Route path=':typeMedia' element={<TitleTypePage />} />
           <Route path=':typeMedia/:typeSearch' element={<TypeMediaPage />} />
           <Route path='/card/:typeMedia/:id' element={<TitleIdPage />} />

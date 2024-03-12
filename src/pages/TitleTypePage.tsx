@@ -2,6 +2,9 @@ import { useParams } from 'react-router-dom'
 import { CardTypeComponent } from '../components'
 import { usePageInfo } from '../hooks/usePageInfo'
 
+
+//BORRAR
+
 export const TitleTypePage = () => {
   const { typeMedia } = useParams()
 
