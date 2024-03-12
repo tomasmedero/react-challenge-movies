@@ -12,6 +12,7 @@ type Props = {
 
 export const getAPITrending = async (props: Props): Promise<TitleInfo[]> => {
   const { searchType } = props
+
   const url = `https://api.themoviedb.org/3/trending/${searchType}/week?language=es-ES`
   const options = {
     method: 'GET',
