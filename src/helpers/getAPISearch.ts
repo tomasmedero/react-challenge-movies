@@ -7,7 +7,7 @@ type Props = {
 export const getAPISearch = async (props: Props): Promise<TitleInfo[]> => {
   const { searchQuery } = props
 
-  const url = `https://api.themoviedb.org/3/search/multi?query=${searchQuery}&include_adult=true&language=es_ES&page=1`
+  const url = `https://api.themoviedb.org/3/search/multi?query=${searchQuery}&include_adult=true&language=es-ES&page=1`
 
   const options = {
     method: 'GET',
