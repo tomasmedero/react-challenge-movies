@@ -15,10 +15,10 @@ export const ChallengePage = () => {
   )
 }
 
-//TODO Hacer paginas en los que tienen los cuadrados grandes
+//TODO  NO SE QUE SIGNIFICA Hacer paginas en los que tienen los cuadrados grandes
 //TODO  Que funcionen los comentarios
 //TODO  Hacer funcional el Boton de Favorito y el de Viendo
-//TODO hacer banderas
-//TODO Quiero que cuando vuelvas para atras en una card vuelva a la busqueda y no vuelva totalmente al inicio
 //TODO Hacer lo de la geolocalizacion
+//TODO Quiero que cuando vuelvas para atras en una card vuelva a la busqueda y no vuelva totalmente al inicio
+
 

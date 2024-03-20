@@ -63,8 +63,6 @@ export const getTitleById = async (props: Props): Promise<TitleInfo | null> => {
       : '/posterWhite.jpg'
     const year = parseInt(releaseDay.split('-')[0])
 
-    console.log(year)
-
     const rating = parseFloat(data.vote_average.toFixed(1))
     const genres = data.genres
 

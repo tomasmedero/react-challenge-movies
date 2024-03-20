@@ -39,7 +39,6 @@ export const Navbar = () => {
   const dispatch = useDispatch()
   const location = useLocation()
   const isCardRoute = location.pathname.startsWith('/card/')
-
   const { status, photoURL } = useSelector((state: RootState) => state.auth)
   const { name } = useSelector((state: RootState) => state.country)
 
@@ -58,6 +57,10 @@ export const Navbar = () => {
 
     dispatch(setCountry({ name: e.target.value }));
     localStorage.setItem('countryName', e.target.value);
+
+    if (isCardRoute) {
+      window.location.reload();
+    }
 
   }
 
@@ -84,7 +87,7 @@ export const Navbar = () => {
           </div>
 
           <div className="relative inline-flex mt-3">
-            <select value={name} disabled={isCardRoute} onChange={(e) => onChangeCountry(e)} className={`border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none ${isCardRoute && 'text-gray-400 cursor-not-allowed'}`} style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}>
+            <select value={name} onChange={(e) => onChangeCountry(e)} className='border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none' style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}>
               {countries.map(({ name, abbreviation, flag }) => (
                 <option key={abbreviation} value={name}>
                   {flag} {name}

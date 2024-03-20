@@ -15,7 +15,7 @@ export const IdCard: React.FC<IdCardProps> = ({ title }) => {
     <>
       {title ? (
         <>
-          <div className='min-h-screen grid place-items-center font-mono mt-5'>
+          <div className='min-h-screen grid place-items-center font-mono mt-2'>
             <div className=' border-2 border-gray-400  rounded-md bg-zinc-100 shadow-lg  space-x-2'>
               <div className='md:flex px-4 leading-none max-w-4xl'>
                 <div className='flex-none '>

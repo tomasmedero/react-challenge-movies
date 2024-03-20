@@ -50,7 +50,7 @@ export const CarouselComponent: React.FC<CarouselProps> = ({ searchType, title, 
                                         </div>
                                     )}
                                 </div>
-                                <p className="text-center mt-2">{name}</p>
+                                <p className="text-center mt-2 line-clamp-1">{name}</p>
                                 <div className='text-base text-gray-400 text-center '>
                                     {programType && (
                                         <p>

@@ -62,8 +62,6 @@ export const getAPISearch = async (props: Props): Promise<TitleInfo[]> => {
         null
       }
 
-      console.log(releaseDay)
-
       return {
         id,
         name,
