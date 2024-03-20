@@ -34,10 +34,15 @@ export const getAPITrending = async (props: Props): Promise<TitleInfo[]> => {
 
     const media_type = title.media_type ? title.media_type : searchType
 
+    function formatDate(dateString: string): string {
+      const [year, month, day] = dateString.split('-')
+      return `${day}-${month}-${year}`
+    }
+
     if (media_type === 'movie') {
       name = title.title
       originalName = title.original_title
-      releaseDay = title.release_date
+      releaseDay = title.release_date && formatDate(title.release_date)
       programType = 'Pelicula'
       rating = title.vote_average.toFixed(1)
       posterUrl = title.poster_path
@@ -46,7 +51,7 @@ export const getAPITrending = async (props: Props): Promise<TitleInfo[]> => {
     } else if (media_type === 'tv') {
       name = title.name
       originalName = title.original_name
-      releaseDay = title.first_air_date
+      releaseDay = title.first_air_date && formatDate(title.first_air_date)
       programType = 'Serie Tv'
       rating = title.vote_average.toFixed(1)
       posterUrl = title.poster_path

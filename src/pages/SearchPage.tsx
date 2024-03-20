@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { getAPISearch } from '../helpers'
-import { TitleInfo } from '../types/types'
+import { TitleInfo } from '../types/types';
 import { CarouselComponent, NoResultComponent, TitleCard } from '../components'
 import { LoadingPage } from '../auth/pages'
 
@@ -80,7 +80,9 @@ export const SearchPage = () => {
         !submitted ? (
           <div className="2xl:container 2xl:mx-auto 2xl:px-0 py-3 px-10">
 
-            <CarouselComponent />
+            <CarouselComponent searchType='all' title='Todas las Tendencias' />
+            <CarouselComponent searchType='movie' title='Peliculas en Tendencia' className='mt-5' />
+            <CarouselComponent searchType='tv' title='Series en Tendencia' className='mt-5' />
 
           </div>
 

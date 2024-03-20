@@ -12,6 +12,7 @@ export const TypeMediaPage = () => {
 
   const { pageTitle } = useTypeSearch(typeSearch)
 
+
   useEffect(() => {
     async function fetchTitles() {
       try {

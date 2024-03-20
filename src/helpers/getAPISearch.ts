@@ -29,10 +29,15 @@ export const getAPISearch = async (props: Props): Promise<TitleInfo[]> => {
 
       const { id, overview: description, media_type } = search
 
+      function formatDate(dateString: string): string {
+        const [year, month, day] = dateString.split('-')
+        return `${day}-${month}-${year}`
+      }
+
       if (media_type === 'movie') {
         name = search.title
         originalName = search.original_title
-        releaseDay = search.release_date
+        releaseDay = search.release_date && formatDate(search.release_date)
         programType = 'Pelicula'
         rating = search.vote_average.toFixed(1)
         posterUrl = search.poster_path
@@ -41,7 +46,7 @@ export const getAPISearch = async (props: Props): Promise<TitleInfo[]> => {
       } else if (media_type === 'tv') {
         name = search.name
         originalName = search.original_name
-        releaseDay = search.first_air_date
+        releaseDay = search.first_air_date && formatDate(search.first_air_date)
         programType = 'Serie Tv'
         rating = search.vote_average.toFixed(1)
         posterUrl = search.poster_path
@@ -56,6 +61,8 @@ export const getAPISearch = async (props: Props): Promise<TitleInfo[]> => {
         //   : '/posterWhite.jpg'
         null
       }
+
+      console.log(releaseDay)
 
       return {
         id,

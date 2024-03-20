@@ -48,10 +48,10 @@ export const Navbar = () => {
   }
 
   const countries = [
-    { name: 'Argentina', abbreviation: 'AR' },
-    { name: 'España', abbreviation: 'ES' },
-    { name: 'Irlanda', abbreviation: 'IE' },
-    { name: 'USA', abbreviation: 'US' }
+    { name: 'Argentina', abbreviation: 'AR', flag: '🇦🇷' },
+    { name: 'España', abbreviation: 'ES', flag: '🇪🇸' },
+    { name: 'Irlanda', abbreviation: 'IE', flag: '🇮🇪' },
+    { name: 'USA', abbreviation: 'US', flag: '🇺🇸' }
   ];
 
   const onChangeCountry = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -77,7 +77,6 @@ export const Navbar = () => {
 
               <NavOptions optionlink='tv' title='Series' />
               <NavOptions optionlink='movie' title='Peliculas' />
-              <NavOptions optionlink='tendency' title='Tendencias' />
 
             </ul>
 
@@ -86,9 +85,9 @@ export const Navbar = () => {
 
           <div className="relative inline-flex mt-3">
             <select value={name} disabled={isCardRoute} onChange={(e) => onChangeCountry(e)} className={`border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none ${isCardRoute && 'text-gray-400 cursor-not-allowed'}`} style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}>
-              {countries.map(({ name, abbreviation }) => (
+              {countries.map(({ name, abbreviation, flag }) => (
                 <option key={abbreviation} value={name}>
-                  {name}
+                  {flag} {name}
                 </option>
               ))}
             </select>
