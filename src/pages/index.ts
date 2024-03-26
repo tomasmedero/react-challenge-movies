@@ -1,4 +1,5 @@
 export * from './ChallengePage'
+export * from './FavoritesPage'
 export * from './SearchPage'
 export * from './TitleIdPage'
 export * from './TitleTypePage'

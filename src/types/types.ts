@@ -2,6 +2,11 @@ export interface InfoBarProps {
   pageInfo: string
 }
 
+export interface FavoriteTitle {
+  id: string
+  name: string
+}
+
 export interface TitleInfo {
   id: number
   name: string
@@ -24,7 +29,7 @@ export interface SearchData {
   id: number
   overview: string
   vote_average: number
-  name?: string
+  name: string
   original_name?: string
   release_date?: string
   popularity: number

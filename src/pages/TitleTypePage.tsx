@@ -87,32 +87,33 @@ export const TitleTypePage = () => {
         />
       </>
     )
-  } else if (typeMedia === 'search') {
-    cardComponents = (
-      <>
-        <CardTypeComponent
-          titleTypeInfo={searchType}
-          link='multi'
-          image='All'
-        />
-        <CardTypeComponent
-          titleTypeInfo={searchType}
-          link='movie'
-          image='Movie'
-        />
-        <CardTypeComponent
-          titleTypeInfo={searchType}
-          link='tv'
-          image='Tv'
-        />
-        <CardTypeComponent
-          titleTypeInfo={searchType}
-          link='person'
-          image='Person'
-        />
-      </>
-    )
   }
+  //   else if (typeMedia === 'search') {
+  //   cardComponents = (
+  //     <>
+  //       <CardTypeComponent
+  //         titleTypeInfo={searchType}
+  //         link='multi'
+  //         image='All'
+  //       />
+  //       <CardTypeComponent
+  //         titleTypeInfo={searchType}
+  //         link='movie'
+  //         image='Movie'
+  //       />
+  //       <CardTypeComponent
+  //         titleTypeInfo={searchType}
+  //         link='tv'
+  //         image='Tv'
+  //       />
+  //       <CardTypeComponent
+  //         titleTypeInfo={searchType}
+  //         link='person'
+  //         image='Person'
+  //       />
+  //     </>
+  //   )
+  // }
 
   return (
     <>

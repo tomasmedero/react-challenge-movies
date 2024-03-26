@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import {
   ChallengePage,
+  FavoritesPage,
   TitleIdPage,
   TitleTypePage,
   TopTitlePage,
@@ -16,6 +17,7 @@ export const ChallengeRoutes = () => {
         <Routes>
           <Route path='tendency/:typeMedia' element={<TopTitlePage />} />
           <Route path=':typeMedia' element={<TitleTypePage />} />
+          <Route path='favorites' element={<FavoritesPage />} />
           <Route path=':typeMedia/:typeSearch' element={<TypeMediaPage />} />
           <Route path='/card/:typeMedia/:id' element={<TitleIdPage />} />
           <Route path='/' element={<ChallengePage />} />

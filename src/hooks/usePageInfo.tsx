@@ -7,11 +7,14 @@ export const usePageInfo = (typeMedia?: string) => {
     return { pageInfo: 'Personas', searchType: 'person' }
   } else if (typeMedia === 'all') {
     return { pageInfo: 'Todo', searchType: 'all' }
-  } else if (typeMedia === 'tendency') {
+  }
+  else if (typeMedia === 'tendency') {
     return { pageInfo: 'Tendencias', searchType: 'tendency' }
-  } else if (typeMedia === 'search') {
-    return { pageInfo: 'Buscar', searchType: 'search' }
-  } else if (typeMedia === 'multi') {
+  }
+  // else if (typeMedia === 'search') {
+  //   return { pageInfo: 'Buscar', searchType: 'search' }
+  // } 
+  else if (typeMedia === 'multi') {
     return { pageInfo: 'Todos', searchType: 'multi' }
   }
   return { pageInfo: '', searchType: '' }

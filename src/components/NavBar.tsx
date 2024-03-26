@@ -80,6 +80,9 @@ export const Navbar = () => {
 
               <NavOptions optionlink='tv' title='Series' />
               <NavOptions optionlink='movie' title='Peliculas' />
+              <NavOptions optionlink='tendency' title='Tendencias' />
+              {status === 'autenticado' && <NavOptions optionlink='favorites' title='Favoritos' />}
+
 
             </ul>
 

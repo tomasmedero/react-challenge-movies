@@ -27,6 +27,7 @@ export const SearchPage = () => {
     setIsLoading(false)
   }
 
+
   return (
     <>
 

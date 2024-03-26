@@ -1,15 +1,35 @@
 import { LoadingPage } from '../auth/pages'
-import { IdCardProps } from '../types/types'
-import { MdOutlineStarOutline, MdOutlineStar } from 'react-icons/md'
+import { FavoriteTitle, IdCardProps } from '../types/types'
+import { IoHeart, IoHeartOutline } from 'react-icons/io5';
 import { CommentComponent } from './CommentComponent'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../store/store'
+import { toggleFavorite } from '../store/titles/titleSlice'
+
 
 
 
 export const IdCard: React.FC<IdCardProps> = ({ title }) => {
 
+  const id = title?.id;
+  const name = title?.name;
+
   const { status } = useSelector((state: RootState) => state.auth)
+  const favorites = useSelector((state: RootState) => state.title.favorites)
+  const dispatch = useDispatch();
+
+  const isFavorite = id !== undefined && !!favorites[id];
+
+
+  const titleFav: FavoriteTitle = { id: id?.toString() || '', name: name || "" };
+  const onToggle = () => {
+    if (id !== undefined && name !== undefined) {
+      dispatch(toggleFavorite(titleFav));
+    } else {
+      console.error("No se puede agregar un título favorito con valores indefinidos.");
+    }
+  }
+
 
   return (
     <>
@@ -94,16 +114,28 @@ export const IdCard: React.FC<IdCardProps> = ({ title }) => {
                   </div>
                 </div>
               </div>
-              <div className='flex justify-between items-center px-4 mb-4 w-full'>
-                <div className='flex'>
-                  <h1 className='text-4xl'>
-                    <MdOutlineStarOutline />
-                  </h1>
-                  <h2 className='text-4xl'>
-                    <MdOutlineStar />
-                  </h2>
-                </div>
-              </div>
+
+              {status === 'autenticado' &&
+                (
+                  <div className='flex justify-between items-center px-4 mb-4 w-full'>
+                    <div className='flex'>
+                      <div className='text-4xl  px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer' onClick={onToggle}>
+                        <div className="text-red-600">
+
+                          {
+                            isFavorite
+                              ? (<IoHeart />)
+                              : (<IoHeartOutline />)
+                          }
+
+                        </div>
+
+                      </div>
+
+                    </div>
+                  </div>
+                )}
+
             </div>
             {status === 'autenticado' && <CommentComponent />}
           </div>
