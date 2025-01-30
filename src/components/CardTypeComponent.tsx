@@ -2,7 +2,6 @@ import { NavLink } from 'react-router-dom'
 
 type Props = {
   titleTypeInfo: string
-
   link: string
   image: string
 }
