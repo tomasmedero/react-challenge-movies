@@ -2,6 +2,23 @@ import { Link } from 'react-router-dom'
 import { TitleCardProps } from '../types/types'
 
 export const TitleCard: React.FC<TitleCardProps> = ({ titles }) => {
+  // Función para determinar el color del rating según el rango
+  const getRatingColorClass = (rating: number) => {
+    const numRating = parseFloat(String(rating));
+    
+    if (numRating === 0) {
+      return 'bg-gray-100 text-gray-500 border border-gray-300'; // Gris claro para rating 0
+    } else if (numRating <= 3) {
+      return 'bg-red-200 text-red-800 border border-red-800'; // Rojo más intenso para 0-3
+    } else if (numRating <= 6) {
+      return 'bg-yellow-200 text-yellow-800 border border-yellow-800'; // Amarillo más intenso para 4-6
+    } else if (numRating <= 8) {
+      return 'bg-green-200 text-green-800 border border-green-800'; // Verde más intenso para 7-8
+    } else {
+      return 'bg-emerald-200 text-emerald-800 border border-emerald-800'; // Verde esmeralda más intenso para 9-10
+    }
+  };
+
   return (
     <>
       <div className='grid sm:grid-cols-2 md:grid-cols-3 gap-4 m-3'>
@@ -46,11 +63,9 @@ export const TitleCard: React.FC<TitleCardProps> = ({ titles }) => {
                         {name}
                       </h2>
 
-                      {rating && (
-                        <div className='bg-green-300 font-bold rounded-xl p-1'>
-                          {rating}
-                        </div>
-                      )}
+                      <div className={`${getRatingColorClass(rating)} font-bold rounded-lg px-2 py-1 text-sm`}>
+                        {parseFloat(String(rating)) === 0 ? '-' : rating}
+                      </div>
                     </div>
 
                     <div className='max-h-20 overflow-hidden line-clamp-3'>

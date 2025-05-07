@@ -6,14 +6,17 @@ import { useEffect } from 'react'
 import { setFavoritesTitles } from './store/titles/titleSlice'
 
 export const MovieChallenge = () => {
-
   useEffect(() => {
-
-
-    const favorites = JSON.parse(localStorage.getItem('favorite-title') ?? '{}')
-
-    store.dispatch(setFavoritesTitles(favorites))
-  }, [])
+    try {
+      const favoritesJson = localStorage.getItem('favorite-title');    
+      const favorites = JSON.parse(favoritesJson ?? '{}');
+      store.dispatch(setFavoritesTitles(favorites));
+    } catch (error) {
+      console.error("Error al cargar favoritos:", error);
+      // Si hay error, inicializar con objeto vacío
+      store.dispatch(setFavoritesTitles({}));
+    }
+  }, []);
 
   return (
     <Provider store={store}>

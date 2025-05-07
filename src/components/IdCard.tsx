@@ -5,14 +5,41 @@ import { CommentComponent } from './CommentComponent'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../store/store'
 import { toggleFavorite } from '../store/titles/titleSlice'
-
-
-
+import { useState } from 'react'
+import { Toast } from './Toast'
 
 export const IdCard: React.FC<IdCardProps> = ({ title }) => {
+  const [toast, setToast] = useState<{ show: boolean; message: string; type: 'success' | 'error' | 'info' }>({
+    show: false,
+    message: '',
+    type: 'success'
+  });
+
+  // Función para determinar el color del rating según el rango
+  const getRatingColorClass = (rating: number) => {
+    const numRating = parseFloat(String(rating));
+    
+    if (numRating === 0) {
+      return 'bg-gray-100 text-gray-500 border border-gray-300'; // Gris claro para rating 0
+    } else if (numRating <= 3) {
+      return 'bg-red-200 text-red-800 border border-red-800'; // Rojo más intenso para 0-3
+    } else if (numRating <= 6) {
+      return 'bg-yellow-200 text-yellow-800 border border-yellow-800'; // Amarillo más intenso para 4-6
+    } else if (numRating <= 8) {
+      return 'bg-green-200 text-green-800 border border-green-800'; // Verde más intenso para 7-8
+    } else {
+      return 'bg-emerald-200 text-emerald-800 border border-emerald-800'; // Verde esmeralda más intenso para 9-10
+    }
+  };
 
   const id = title?.id;
   const name = title?.name;
+  const media_type = title?.media_type || '';
+  const posterUrl = title?.posterUrl || '';
+  const description = title?.description || '';
+  const rating = title?.rating || 0;
+  const releaseDay = title?.releaseDay || new Date().getFullYear();
+  const programType = media_type === 'movie' ? 'Película' : 'Serie Tv';
 
   const { status } = useSelector((state: RootState) => state.auth)
   const favorites = useSelector((state: RootState) => state.title.favorites)
@@ -20,16 +47,43 @@ export const IdCard: React.FC<IdCardProps> = ({ title }) => {
 
   const isFavorite = id !== undefined && !!favorites[id];
 
+  const titleFav: FavoriteTitle = { 
+    id: id?.toString() || '', 
+    name: name || "",
+    media_type: media_type,
+    posterUrl: posterUrl,
+    description: description,
+    rating: rating,
+    releaseDay: releaseDay,
+    programType: programType
+  };
 
-  const titleFav: FavoriteTitle = { id: id?.toString() || '', name: name || "" };
   const onToggle = () => {
     if (id !== undefined && name !== undefined) {
       dispatch(toggleFavorite(titleFav));
+      
+      // Mostrar toast
+      if (isFavorite) {
+        setToast({
+          show: true,
+          message: `"${name}" se eliminó de tus favoritos`,
+          type: 'error'
+        });
+      } else {
+        setToast({
+          show: true,
+          message: `"${name}" se añadió a tus favoritos`,
+          type: 'success'
+        });
+      }
     } else {
       console.error("No se puede agregar un título favorito con valores indefinidos.");
     }
   }
 
+  const closeToast = () => {
+    setToast({ ...toast, show: false });
+  }
 
   return (
     <>
@@ -55,9 +109,12 @@ export const IdCard: React.FC<IdCardProps> = ({ title }) => {
                     {title?.description}
                   </p>
 
-                  <p className='flex text-base px-4 my-2'>
-                    Rating: {title?.rating}/10
-                  </p>
+                  <div className='flex items-center px-4 my-2'>
+                    <span className="mr-2">Rating:</span>
+                    <span className={`${getRatingColorClass(rating)} inline-block font-bold rounded-lg px-2 py-1 text-sm`}>
+                      {rating === 0 ? '-' : `${rating}/10`}
+                    </span>
+                  </div>
 
                   <p className='flex text-base px-4  mt-3 mb-3'>
                     {title.runtime ? (
@@ -139,6 +196,15 @@ export const IdCard: React.FC<IdCardProps> = ({ title }) => {
             </div>
             {status === 'autenticado' && <CommentComponent />}
           </div>
+
+          {/* Toast de notificación */}
+          {toast.show && (
+            <Toast
+              message={toast.message}
+              type={toast.type}
+              onClose={closeToast}
+            />
+          )}
         </>
       ) : (
         <LoadingPage />

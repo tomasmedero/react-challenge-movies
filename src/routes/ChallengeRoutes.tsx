@@ -6,6 +6,7 @@ import {
   TitleTypePage,
   TopTitlePage,
   TypeMediaPage,
+  SearchPage,
 } from '../pages'
 import { Navbar } from '../components'
 
@@ -15,6 +16,7 @@ export const ChallengeRoutes = () => {
       <div>
         <Navbar />
         <Routes>
+          <Route path='search/:searchQuery' element={<SearchPage />} />
           <Route path='tendency/:typeMedia' element={<TopTitlePage />} />
           <Route path=':typeMedia' element={<TitleTypePage />} />
           <Route path='favorites' element={<FavoritesPage />} />

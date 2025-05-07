@@ -5,6 +5,26 @@ type Props = {
   typeMedia?: string
 }
 
+// Función para formatear la fecha
+function formatDate(dateString: string): string {
+  if (!dateString) return '';
+  
+  const [year, month, day] = dateString.split('-');
+  // Convertir el día a número sin ceros a la izquierda
+  const dayNumber = parseInt(day, 10);
+  
+  // Array de nombres de meses en español
+  const monthNames = [
+    'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+    'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+  ];
+  
+  // Restar 1 porque los meses en JavaScript van de 0 a 11
+  const monthName = monthNames[parseInt(month, 10) - 1];
+  
+  return `${dayNumber} ${monthName} ${year}`;
+}
+
 // now_playing, popular, top_rated, upcoming
 export const getAPIMedia = async (props: Props): Promise<TitleInfo[]> => {
   const { typeSearch, typeMedia } = props
@@ -38,7 +58,7 @@ export const getAPIMedia = async (props: Props): Promise<TitleInfo[]> => {
     if (typeMedia === 'movie') {
       name = media.title
       originalName = media.original_title
-      releaseDay = media.release_date
+      releaseDay = media.release_date ? formatDate(media.release_date) : ''
       programType = 'Pelicula'
       media_type = 'movie'
       rating = media.vote_average.toFixed(1)
@@ -48,7 +68,7 @@ export const getAPIMedia = async (props: Props): Promise<TitleInfo[]> => {
     } else if (typeMedia === 'tv') {
       name = media.name
       originalName = media.original_name
-      releaseDay = media.first_air_date
+      releaseDay = media.first_air_date ? formatDate(media.first_air_date) : ''
       programType = 'Serie Tv'
       media_type = 'tv'
       rating = media.vote_average.toFixed(1)

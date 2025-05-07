@@ -1,24 +1,30 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { getAPISearch } from '../helpers'
 import { TitleInfo } from '../types/types';
 import { CarouselComponent, NoResultComponent, TitleCard } from '../components'
 import { LoadingPage } from '../auth/pages'
+import { useNavigate, useParams } from 'react-router-dom'
 
 
 export const SearchPage = () => {
   const [searchQuery, setSearchQuery] = useState('')
-  const [submitted, setSubmitted] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [titles, setTitles] = useState<TitleInfo[]>([])
-
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  
+  const navigate = useNavigate()
+  const { searchQuery: paramSearchQuery } = useParams()
+  
+  useEffect(() => {
+    if (paramSearchQuery) {
+      fetchResults(paramSearchQuery)
+    }
+  }, [paramSearchQuery])
+  
+  const fetchResults = async (query: string) => {
     setIsLoading(true)
-    setSubmitted(true)
     setTitles([])
     try {
-      const result = await getAPISearch({ searchQuery })
+      const result = await getAPISearch({ searchQuery: query })
       setTitles(result)
       setSearchQuery('')
     } catch (error) {
@@ -27,10 +33,17 @@ export const SearchPage = () => {
     setIsLoading(false)
   }
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      navigate(`/search/${searchQuery}`)
+      setSearchQuery('')
+    }
+  }
+
 
   return (
     <>
-
       <form className='m-3' onSubmit={handleSubmit}>
         <label
           htmlFor='default-search'
@@ -77,27 +90,23 @@ export const SearchPage = () => {
 
 
       {
-
-        !submitted ? (
-          <div className="2xl:container 2xl:mx-auto 2xl:px-0 py-3 px-10">
-
-            <CarouselComponent searchType='all' title='Todas las Tendencias' />
-            <CarouselComponent searchType='movie' title='Peliculas en Tendencia' className='mt-5' />
-            <CarouselComponent searchType='tv' title='Series en Tendencia' className='mt-5' />
-
-          </div>
-
-        ) : (
+        paramSearchQuery ? (
           isLoading ? (
             <LoadingPage />
           ) : (
-            submitted &&
-            (titles.length === 0 ? (
+            titles.length === 0 ? (
               <NoResultComponent />
             ) : (
               <TitleCard titles={titles} />
-            ))
-          ))
+            )
+          )
+        ) : (
+          <div className="2xl:container 2xl:mx-auto 2xl:px-0 py-3 px-10">
+            <CarouselComponent searchType='all' title='Todas las Tendencias' />
+            <CarouselComponent searchType='movie' title='Peliculas en Tendencia' className='mt-5' />
+            <CarouselComponent searchType='tv' title='Series en Tendencia' className='mt-5' />
+          </div>
+        )
       }
     </>
   )

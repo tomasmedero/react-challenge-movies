@@ -33,7 +33,9 @@ export const TitleIdPage = () => {
 
   return (
     <>
-      <IdCard title={title} />
+      <div className="container mx-auto pt-8">
+        <IdCard title={title} />
+      </div>
     </>
   )
 }

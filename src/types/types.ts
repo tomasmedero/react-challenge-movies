@@ -5,6 +5,12 @@ export interface InfoBarProps {
 export interface FavoriteTitle {
   id: string
   name: string
+  media_type: string
+  posterUrl: string
+  description: string
+  rating: number
+  releaseDay: number
+  programType: string
 }
 
 export interface TitleInfo {

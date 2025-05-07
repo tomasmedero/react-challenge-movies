@@ -86,6 +86,8 @@ export const getTitleById = async (props: Props): Promise<TitleInfo | null> => {
       genres,
       watchProviderLink,
       watchProviderFlatrate,
+      media_type: typeMedia,
+      programType: typeMedia === 'movie' ? 'Película' : 'Serie Tv'
     }
 
     return titleRes

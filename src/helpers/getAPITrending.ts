@@ -35,8 +35,20 @@ export const getAPITrending = async (props: Props): Promise<TitleInfo[]> => {
     const media_type = title.media_type ? title.media_type : searchType
 
     function formatDate(dateString: string): string {
-      const [year, month, day] = dateString.split('-')
-      return `${day}-${month}-${year}`
+      const [year, month, day] = dateString.split('-');
+      // Convertir el día a número sin ceros a la izquierda
+      const dayNumber = parseInt(day, 10);
+      
+      // Array de nombres de meses en español
+      const monthNames = [
+        'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+        'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+      ];
+      
+      // Restar 1 porque los meses en JavaScript van de 0 a 11
+      const monthName = monthNames[parseInt(month, 10) - 1];
+      
+      return `${dayNumber} ${monthName} ${year}`;
     }
 
     if (media_type === 'movie') {
