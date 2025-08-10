@@ -50,37 +50,37 @@ export const CountrySelector = () => {
       <button 
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 border border-gray-300 rounded-full text-gray-600 h-10 px-4 bg-white hover:border-gray-400 focus:outline-none"
+        className="flex items-center space-x-1 sm:space-x-2 border border-gray-300 rounded-full text-gray-600 h-8 sm:h-10 px-2 sm:px-4 bg-white hover:border-gray-400 focus:outline-none"
       >
         <img 
           src={selectedCountry.flagImage} 
           alt={`Bandera de ${selectedCountry.name}`} 
-          className="h-5 w-auto mr-2"
+          className="h-4 sm:h-5 w-auto mr-1 sm:mr-2"
         />
-        <span>{selectedCountry.name}</span>
-        <svg className="fill-current h-4 w-4 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+        <span className="text-xs sm:text-sm hidden sm:block">{selectedCountry.name}</span>
+        <svg className="fill-current h-3 w-3 sm:h-4 sm:w-4 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
           <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
         </svg>
       </button>
       
       {/* Dropdown personalizado */}
       {isOpen && (
-        <div className="absolute z-10 mt-1 w-full bg-white rounded-md shadow-lg max-h-60 overflow-auto">
+        <div className="absolute z-10 mt-1 w-32 sm:w-full bg-white rounded-md shadow-lg max-h-60 overflow-auto">
           <ul className="py-1">
             {AVAILABLE_COUNTRIES.map(({ name, abbreviation, flagImage }) => (
               <li 
                 key={abbreviation}
                 onClick={() => handleCountrySelect(name)}
-                className={`flex items-center px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 ${
+                className={`flex items-center px-2 sm:px-4 py-2 text-xs sm:text-sm cursor-pointer hover:bg-gray-100 ${
                   selectedCountry.name === name ? 'bg-gray-50' : ''
                 }`}
               >
                 <img 
                   src={flagImage} 
                   alt={`Bandera de ${name}`} 
-                  className="h-5 w-auto mr-2" 
+                  className="h-4 sm:h-5 w-auto mr-1 sm:mr-2" 
                 />
-                <span>{name}</span>
+                <span className="truncate">{name}</span>
               </li>
             ))}
           </ul>

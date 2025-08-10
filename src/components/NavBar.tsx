@@ -9,9 +9,11 @@ import { CountrySelector } from './CountrySelector'
 export const Navbar = () => {
   const [isOpenProfile, setIsOpenProfile] = useState(false)
   const [isOpenSearch, setIsOpenSearch] = useState(false)
+  const [isOpenMobileMenu, setIsOpenMobileMenu] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const dropdownRef = useRef<HTMLDivElement | null>(null)
   const searchRef = useRef<HTMLDivElement | null>(null)
+  const mobileMenuRef = useRef<HTMLDivElement | null>(null)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { status, photoURL } = useSelector((state: RootState) => state.auth)
@@ -30,6 +32,14 @@ export const Navbar = () => {
 
   const closeSearch = () => {
     setIsOpenSearch(false)
+  }
+
+  const toggleMobileMenu = () => {
+    setIsOpenMobileMenu(!isOpenMobileMenu)
+  }
+
+  const closeMobileMenu = () => {
+    setIsOpenMobileMenu(false)
   }
 
   const handleSearch = (e: React.FormEvent) => {
@@ -58,6 +68,14 @@ export const Navbar = () => {
       ) {
         closeSearch()
       }
+
+      // Cerrar menú móvil si se hace clic fuera
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target as Node)
+      ) {
+        closeMobileMenu()
+      }
     }
 
     document.addEventListener('mousedown', handleClickOutside)
@@ -73,18 +91,18 @@ export const Navbar = () => {
 
   return (
     <nav className='border-gray-200 bg-gray-300 dark:bg-gray-800 dark:border-gray-700'>
-      <div className='max-w-screen-xl flex items-center justify-between mx-auto p-4'>
+      <div className='max-w-screen-xl flex items-center justify-between mx-auto p-2 sm:p-4'>
         {/* Logo */}
         <Link
-          className='flex items-center text-2xl font-extrabold dark:text-white'
+          className='flex items-center text-lg sm:text-2xl font-extrabold dark:text-white'
           to='/'
         >
           STREAMING
         </Link>
 
         {/* Sección central con menú de navegación */}
-        <div className='flex items-center space-x-4'>
-          <ul className='flex items-center space-x-6'>
+        <div className='hidden sm:flex items-center space-x-4'>
+          <ul className='flex items-center space-x-4 sm:space-x-6'>
             <NavOptions optionlink='tv' title='Series' />
             <NavOptions optionlink='movie' title='Peliculas' />
             <NavOptions optionlink='tendency' title='Tendencias' />
@@ -92,15 +110,49 @@ export const Navbar = () => {
           </ul>
         </div>
 
+        {/* Botón de menú móvil */}
+        <div className='sm:hidden' ref={mobileMenuRef}>
+          <button
+            onClick={toggleMobileMenu}
+            className='text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white'
+          >
+            <svg
+              className='h-6 w-6'
+              fill='none'
+              viewBox='0 0 24 24'
+              stroke='currentColor'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth={2}
+                d='M4 6h16M4 12h16M4 18h16'
+              />
+            </svg>
+          </button>
+
+          {/* Menú móvil desplegable */}
+          {isOpenMobileMenu && (
+            <div className='absolute top-full left-0 right-0 bg-white dark:bg-gray-800 shadow-lg z-50'>
+              <div className='px-2 pt-2 pb-3 space-y-1'>
+                <NavOptions optionlink='tv' title='Series' />
+                <NavOptions optionlink='movie' title='Peliculas' />
+                <NavOptions optionlink='tendency' title='Tendencias' />
+                {status === 'autenticado' && <NavOptions optionlink='favorites' title='Favoritos' />}
+              </div>
+            </div>
+          )}
+        </div>
+
         {/* Sección derecha con búsqueda, selector de país y perfil */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 sm:space-x-4">
           {/* Búsqueda */}
           <div className="relative flex items-center" ref={searchRef}>
             {isOpenSearch ? (
               <form onSubmit={handleSearch} className="flex items-center">
                 <input
                   type="search"
-                  className="w-40 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500"
+                  className="w-32 sm:w-40 p-1 sm:p-2 text-xs sm:text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Buscar..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -113,7 +165,7 @@ export const Navbar = () => {
                 >
                   <svg 
                     xmlns="http://www.w3.org/2000/svg" 
-                    className="h-5 w-5" 
+                    className="h-4 w-4 sm:h-5 sm:w-5" 
                     viewBox="0 0 20 20" 
                     fill="currentColor"
                   >
@@ -131,7 +183,7 @@ export const Navbar = () => {
                 >
                   <svg 
                     xmlns="http://www.w3.org/2000/svg" 
-                    className="h-5 w-5" 
+                    className="h-4 w-4 sm:h-5 sm:w-5" 
                     viewBox="0 0 20 20" 
                     fill="currentColor"
                   >
@@ -150,7 +202,7 @@ export const Navbar = () => {
               >
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
-                  className="h-6 w-6" 
+                  className="h-5 w-5 sm:h-6 sm:w-6" 
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor"
@@ -177,14 +229,14 @@ export const Navbar = () => {
                 className='flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300'
               >
                 <img
-                  className='w-8 h-8 rounded-full'
+                  className='w-6 h-6 sm:w-8 sm:h-8 rounded-full'
                   src={photoURL || '/default-avatar.png'}
                   alt='Avatar'
                 />
               </button>
 
               {isOpenProfile && (
-                <div className='origin-top-right absolute right-0 mt-3 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50'>
+                <div className='origin-top-right absolute right-0 mt-3 w-40 sm:w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50'>
                   <div
                     className='py-1'
                     role='menu'
@@ -193,7 +245,7 @@ export const Navbar = () => {
                   >
                     <a
                       onClick={onLogout}
-                      className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer'
+                      className='block px-3 sm:px-4 py-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer'
                       role='menuitem'
                     >
                       Salir
@@ -204,7 +256,7 @@ export const Navbar = () => {
             </div>
           ) : (
             <Link to='/auth/login'>
-              <button className='bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded'>
+              <button className='bg-blue-500 hover:bg-blue-400 text-white font-bold py-1 sm:py-2 px-2 sm:px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded text-xs sm:text-sm'>
                 Ingresar
               </button>
             </Link>

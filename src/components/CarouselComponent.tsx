@@ -48,25 +48,25 @@ export const CarouselComponent: React.FC<CarouselProps> = ({ searchType, title, 
     return (
         <>
             <div className={className}>
-                <h2 className="text-2xl font-bold mb-4 ">{title}</h2>
-                <div className="flex overflow-x-auto space-x-4 p-4 border border-gray-300 rounded-md shadow-md">
+                <h2 className="text-lg sm:text-2xl font-bold mb-2 sm:mb-4">{title}</h2>
+                <div className="flex overflow-x-auto space-x-2 sm:space-x-4 p-2 sm:p-4 border border-gray-300 rounded-md shadow-md">
                     {titles.map(({ id, posterUrl, name, rating, programType, media_type, releaseDay }) => (
-                        <div key={id} className="flex-shrink-0 w-48 min-w-[200px]">
+                        <div key={id} className="flex-shrink-0 w-32 sm:w-48 min-w-[120px] sm:min-w-[200px]">
                             <Link to={`/card/${media_type}/${id}`}>
-                                <div className="relative" style={{ height: '300px' }}>
+                                <div className="relative" style={{ height: '180px', minHeight: '180px' }}>
                                     <img
                                         src={posterUrl}
                                         alt={name}
                                         className="w-full h-full object-cover rounded-md"
                                     />
                                     {rating && (
-                                        <div className={`absolute top-2 right-2 ${getRatingColorClass(rating)} font-bold rounded-lg px-2 py-1 text-sm`}>
+                                        <div className={`absolute top-1 sm:top-2 right-1 sm:right-2 ${getRatingColorClass(rating)} font-bold rounded-lg px-1 sm:px-2 py-1 text-xs sm:text-sm`}>
                                             {parseFloat(String(rating)) === 0 ? '-' : rating}
                                         </div>
                                     )}
                                 </div>
-                                <p className="text-center mt-2 line-clamp-1">{name}</p>
-                                <div className='text-base text-gray-400 text-center '>
+                                <p className="text-center mt-1 sm:mt-2 line-clamp-1 text-xs sm:text-sm">{name}</p>
+                                <div className='text-xs sm:text-base text-gray-400 text-center'>
                                     {programType && (
                                         <p>
                                             {programType.charAt(0).toUpperCase() +
@@ -74,7 +74,7 @@ export const CarouselComponent: React.FC<CarouselProps> = ({ searchType, title, 
                                         </p>
                                     )}
                                 </div>
-                                <div className='text-base text-gray-400 text-center '>
+                                <div className='text-xs sm:text-base text-gray-400 text-center'>
                                     {releaseDay && (
                                         <p>
                                             {releaseDay}
