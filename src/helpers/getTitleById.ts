@@ -25,6 +25,7 @@ export const getTitleById = async (props: Props): Promise<TitleInfo | null> => {
 
   const countryCodeName = countryCode[countryName || 'Argentina']
 
+ 
   try {
     const res = await fetch(url, options)
     const data = await res.json()
