@@ -4,4 +4,5 @@ export const countryCode: { [key: string]: string } = {
   Irlanda: 'IE',
   USA: 'US',
   Bélgica: 'BE',
+  Japón: 'JP',
 }

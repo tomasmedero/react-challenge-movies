@@ -30,5 +30,11 @@ export const AVAILABLE_COUNTRIES: CountryData[] = [
     abbreviation: 'BE', 
     flag: '🇧🇪',
     flagImage: 'https://flagcdn.com/28x21/be.png'
+  },
+  { 
+    name: 'Japón', 
+    abbreviation: 'JP', 
+    flag: '🇯🇵',
+    flagImage: 'https://flagcdn.com/28x21/jp.png'
   }
 ] 
