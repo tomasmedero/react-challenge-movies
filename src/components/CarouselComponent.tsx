@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getAPITrending } from '../helpers'
 import { TitleInfo } from '../types/types'
@@ -19,6 +19,18 @@ const getRatingColorClass = (rating: number) => {
 export const CarouselComponent = ({ searchType, title, className }: CarouselProps) => {
   const [titles, setTitles] = useState<TitleInfo[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const carouselRef = useRef<HTMLDivElement>(null)
+
+  const scrollCarousel = (direction: 'previous' | 'next') => {
+    const carousel = carouselRef.current
+    if (!carousel) return
+
+    const distance = Math.max(280, carousel.clientWidth * 0.75)
+    carousel.scrollBy({
+      left: direction === 'next' ? distance : -distance,
+      behavior: 'smooth',
+    })
+  }
 
   useEffect(() => {
     let isActive = true
@@ -44,10 +56,38 @@ export const CarouselComponent = ({ searchType, title, className }: CarouselProp
           <p className='mb-1 text-xs font-bold uppercase tracking-[0.18em] text-cyan-400'>Selección destacada</p>
           <h2 className='text-xl font-extrabold text-white sm:text-3xl'>{title}</h2>
         </div>
-        <span className='hidden text-sm text-slate-500 sm:block'>Deslizá para explorar →</span>
+        <div className='flex items-center gap-2'>
+          <button
+            type='button'
+            onClick={() => scrollCarousel('previous')}
+            aria-label={`Ver títulos anteriores en ${title}`}
+            className='grid h-10 w-10 place-items-center rounded-full border border-white/15 bg-white/5 text-xl text-slate-200 transition hover:border-cyan-400/60 hover:bg-cyan-400/10 hover:text-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-400'
+          >
+            <span aria-hidden='true'>‹</span>
+          </button>
+          <button
+            type='button'
+            onClick={() => scrollCarousel('next')}
+            aria-label={`Ver más títulos en ${title}`}
+            className='grid h-10 w-10 place-items-center rounded-full border border-white/15 bg-white/5 text-xl text-slate-200 transition hover:border-cyan-400/60 hover:bg-cyan-400/10 hover:text-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-400'
+          >
+            <span aria-hidden='true'>›</span>
+          </button>
+        </div>
       </div>
 
-      <div className='no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 sm:gap-5'>
+      <div
+        ref={carouselRef}
+        className='no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-4 sm:gap-5'
+        tabIndex={0}
+        aria-label={title}
+        onKeyDown={(event) => {
+          if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+            event.preventDefault()
+            scrollCarousel(event.key === 'ArrowRight' ? 'next' : 'previous')
+          }
+        }}
+      >
         {isLoading
           ? Array.from({ length: 6 }, (_, index) => (
               <div key={index} className='w-36 flex-none animate-pulse sm:w-48'>
