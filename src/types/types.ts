@@ -9,7 +9,7 @@ export interface FavoriteTitle {
   posterUrl: string
   description: string
   rating: number
-  releaseDay: number
+  releaseDay: number | string
   programType: string
 }
 
@@ -20,15 +20,23 @@ export interface TitleInfo {
   description: string
   programType?: string
   posterUrl: string
-  releaseDay: number
+  releaseDay: number | string
   rating: number
   episodes?: number
   seasons?: number
   runtime?: number
   genres?: GenresProps[]
   watchProviderFlatrate?: FlatRateProps[]
+  watchProviderRent?: FlatRateProps[]
+  watchProviderBuy?: FlatRateProps[]
   watchProviderLink?: string
   media_type?: string
+}
+
+export interface SearchResponse {
+  results: TitleInfo[]
+  page: number
+  totalPages: number
 }
 
 export interface SearchData {

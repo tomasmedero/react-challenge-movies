@@ -1,91 +1,78 @@
-import { SearchData, TitleInfo } from '../types/types'
+import { SearchData, SearchResponse, TitleInfo } from '../types/types'
 
 type Props = {
   searchQuery: string
+  page?: number
+  signal?: AbortSignal
 }
 
-export const getAPISearch = async (props: Props): Promise<TitleInfo[]> => {
-  const { searchQuery } = props
+const formatDate = (dateString?: string): string => {
+  if (!dateString) return ''
 
-  const url = `https://api.themoviedb.org/3/search/multi?query=${searchQuery}&include_adult=true&language=es-ES&page=1`
+  const date = new Date(`${dateString}T00:00:00`)
+  if (Number.isNaN(date.getTime())) return ''
 
-  const options = {
+  return new Intl.DateTimeFormat('es-ES', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  }).format(date)
+}
+
+export const getAPISearch = async ({
+  searchQuery,
+  page = 1,
+  signal,
+}: Props): Promise<SearchResponse> => {
+  const params = new URLSearchParams({
+    query: searchQuery,
+    include_adult: 'false',
+    language: 'es-ES',
+    page: String(page),
+  })
+  const url = `https://api.themoviedb.org/3/search/multi?${params}`
+
+  const res = await fetch(url, {
     method: 'GET',
+    signal,
     headers: {
       accept: 'application/json',
       Authorization:
         'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NWVmZWE5YmY0ZDE2YTI4MjUyM2MzN2IzMGNiNTY0MyIsInN1YiI6IjY0ZjdkMzFkNGNjYzUwMDEzODhkMTUzYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.h-99PXOZw4FE5uFD613iE26WD81LEeycSyirgNJ99OQ',
     },
+  })
+
+  if (!res.ok) {
+    throw new Error(`TMDB respondió con el estado ${res.status}`)
   }
 
-  const res = await fetch(url, options)
-
   const data = await res.json()
-
-  const searchData: TitleInfo[] = data.results
-    .filter((search: SearchData) => search.media_type !== 'person')
-    .map((search: SearchData) => {
-      let name, originalName, releaseDay, programType, rating, posterUrl
-
-      const { id, overview: description, media_type } = search
-
-      function formatDate(dateString: string): string {
-        const [year, month, day] = dateString.split('-');
-        // Convertir el día a número sin ceros a la izquierda
-        const dayNumber = parseInt(day, 10);
-        
-        // Array de nombres de meses en español
-        const monthNames = [
-          'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
-          'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
-        ];
-        
-        // Restar 1 porque los meses en JavaScript van de 0 a 11
-        const monthName = monthNames[parseInt(month, 10) - 1];
-        
-        return `${dayNumber} ${monthName} ${year}`;
-      }
-
-      if (media_type === 'movie') {
-        name = search.title
-        originalName = search.original_title
-        releaseDay = search.release_date && formatDate(search.release_date)
-        programType = 'Película'
-        rating = search.vote_average.toFixed(1)
-        posterUrl = search.poster_path
-          ? `https://image.tmdb.org/t/p/w500/${search.poster_path}`
-          : '/posterWhite.jpg'
-      } else if (media_type === 'tv') {
-        name = search.name
-        originalName = search.original_name
-        releaseDay = search.first_air_date && formatDate(search.first_air_date)
-        programType = 'Serie Tv'
-        rating = search.vote_average.toFixed(1)
-        posterUrl = search.poster_path
-          ? `https://image.tmdb.org/t/p/w500/${search.poster_path}`
-          : '/posterWhite.jpg'
-      } else if (media_type === 'person') {
-        // name = search.name
-        // originalName = search.original_name
-        // programType = 'Persona'
-        // posterUrl = search.profile_path
-        //   ? `https://image.tmdb.org/t/p/w500${search.profile_path}`
-        //   : '/posterWhite.jpg'
-        null
-      }
+  const results: TitleInfo[] = (data.results as SearchData[])
+    .filter(({ media_type }) => media_type === 'movie' || media_type === 'tv')
+    .map((search) => {
+      const isMovie = search.media_type === 'movie'
 
       return {
-        id,
-        name,
-        originalName,
-        description,
-        programType,
-        posterUrl,
-        releaseDay,
-        rating,
-        media_type,
+        id: search.id,
+        name: (isMovie ? search.title : search.name) || 'Sin título',
+        originalName:
+          (isMovie ? search.original_title : search.original_name) || '',
+        description: search.overview || 'Sin descripción disponible.',
+        programType: isMovie ? 'Película' : 'Serie TV',
+        posterUrl: search.poster_path
+          ? `https://image.tmdb.org/t/p/w500/${search.poster_path}`
+          : '/posterWhite.jpg',
+        releaseDay: formatDate(
+          isMovie ? search.release_date : search.first_air_date
+        ),
+        rating: Number(search.vote_average.toFixed(1)),
+        media_type: search.media_type,
       }
     })
 
-  return searchData
+  return {
+    results,
+    page: data.page,
+    totalPages: Math.min(data.total_pages, 500),
+  }
 }

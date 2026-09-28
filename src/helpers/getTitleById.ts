@@ -1,6 +1,4 @@
-//API eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NWVmZWE5YmY0ZDE2YTI4MjUyM2MzN2IzMGNiNTY0MyIsInN1YiI6IjY0ZjdkMzFkNGNjYzUwMDEzODhkMTUzYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.h-99PXOZw4FE5uFD613iE26WD81LEeycSyirgNJ99OQ
-
-import { TitleInfo } from '../types/types'
+import { FlatRateProps, TitleInfo } from '../types/types'
 import { countryCode } from './countryCode'
 
 type Props = {
@@ -9,11 +7,20 @@ type Props = {
   countryName?: string
 }
 
-export const getTitleById = async (props: Props): Promise<TitleInfo | null> => {
-  const { id, typeMedia, countryName } = props
+type ProviderCountry = {
+  link?: string
+  flatrate?: FlatRateProps[]
+  rent?: FlatRateProps[]
+  buy?: FlatRateProps[]
+}
+
+export const getTitleById = async ({
+  id,
+  typeMedia,
+  countryName,
+}: Props): Promise<TitleInfo | null> => {
   const url = `https://api.themoviedb.org/3/${typeMedia}/${id}?language=es-ES`
   const urlNetworks = `https://api.themoviedb.org/3/${typeMedia}/${id}/watch/providers`
-
   const options = {
     method: 'GET',
     headers: {
@@ -23,80 +30,49 @@ export const getTitleById = async (props: Props): Promise<TitleInfo | null> => {
     },
   }
 
-  const countryCodeName = countryCode[countryName || 'Argentina']
-
- 
   try {
-    const res = await fetch(url, options)
-    const data = await res.json()
+    const [res, resNetwork] = await Promise.all([
+      fetch(url, options),
+      fetch(urlNetworks, options),
+    ])
 
-    const resNetwork = await fetch(urlNetworks, options)
-    const dataNetwork = await resNetwork.json()
-
-    const id = data.id
-
-    const description = data.overview
-
-    let releaseDay
-    let name
-    let originalName
-    let seasons
-    let episodes
-    let runtime
-    let watchProviderLink = ''
-    let watchProviderFlatrate = []
-
-    if (typeMedia === 'tv') {
-      releaseDay = data.first_air_date
-      name = data.name
-      originalName = data.original_name
-      seasons = data.number_of_seasons
-      episodes = data.number_of_episodes
-    } else if (typeMedia === 'movie') {
-      releaseDay = data.release_date
-      name = data.title
-      originalName = data.original_title
-      runtime = data.runtime
+    if (!res.ok || !resNetwork.ok) {
+      throw new Error(`TMDB respondió con estado ${res.status}/${resNetwork.status}`)
     }
 
-    const posterUrl = data.poster_path
-      ? `https://image.tmdb.org/t/p/w500/${data.poster_path}`
-      : '/posterWhite.jpg'
-    const year = parseInt(releaseDay.split('-')[0])
+    const [data, dataNetwork] = await Promise.all([
+      res.json(),
+      resNetwork.json(),
+    ])
+    const isMovie = typeMedia === 'movie'
+    const releaseDate = isMovie ? data.release_date : data.first_air_date
+    const selectedCountryCode = countryCode[countryName || 'Argentina'] || 'AR'
+    const providers: ProviderCountry =
+      dataNetwork.results?.[selectedCountryCode] || {}
 
-    const rating = parseFloat(data.vote_average.toFixed(1))
-    const genres = data.genres
-
-    if (dataNetwork.results && dataNetwork.results[countryCodeName]) {
-      watchProviderLink = dataNetwork.results[countryCodeName].link || ''
-      watchProviderFlatrate =
-        dataNetwork.results[countryCodeName].flatrate || ''
-    }
-
-    const titleRes: TitleInfo = {
-      id,
-      name,
-      originalName,
-      description,
-      posterUrl,
-      releaseDay: year,
-      rating,
-      seasons,
-      episodes,
-      runtime,
-      genres,
-      watchProviderLink,
-      watchProviderFlatrate,
+    return {
+      id: data.id,
+      name: isMovie ? data.title : data.name,
+      originalName: isMovie ? data.original_title : data.original_name,
+      description: data.overview || 'Sin descripción disponible.',
+      posterUrl: data.poster_path
+        ? `https://image.tmdb.org/t/p/w500/${data.poster_path}`
+        : '/posterWhite.jpg',
+      releaseDay: releaseDate ? Number(releaseDate.slice(0, 4)) : '',
+      rating: Number(data.vote_average.toFixed(1)),
+      seasons: isMovie ? undefined : data.number_of_seasons,
+      episodes: isMovie ? undefined : data.number_of_episodes,
+      runtime: isMovie ? data.runtime : undefined,
+      genres: data.genres,
+      watchProviderLink: providers.link || '',
+      watchProviderFlatrate: providers.flatrate || [],
+      watchProviderRent: providers.rent || [],
+      watchProviderBuy: providers.buy || [],
       media_type: typeMedia,
-      programType: typeMedia === 'movie' ? 'Película' : 'Serie Tv'
+      programType: isMovie ? 'Película' : 'Serie TV',
     }
-
-    return titleRes
   } catch (error) {
-    console.error(
-      'Hubo un error cuando se quiso traer los datos de la API',
-      error
-    )
+    console.error('No se pudieron cargar los datos del título:', error)
     return null
   }
 }

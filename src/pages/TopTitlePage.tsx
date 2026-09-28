@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getAPITrending } from '../helpers'
 import { TitleInfo } from '../types/types'
-import { Pagination, TitleCard } from '../components'
+import { TitleCard } from '../components'
 import { usePageInfo } from '../hooks/usePageInfo'
 import { useParams } from 'react-router-dom'
 
@@ -43,7 +43,6 @@ export const TopTitlePage = () => {
       </h2>
       <TitleCard titles={titles} />
       {/* <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} /> */}
-      <Pagination />
 
     </>
   )

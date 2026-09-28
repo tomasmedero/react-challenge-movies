@@ -1,44 +1,62 @@
-import { useState } from "react";
+type PaginationProps = {
+  activePage: number
+  totalPages: number
+  onPageChange: (page: number) => void
+}
 
-export const Pagination = () => {
+export const Pagination = ({
+  activePage,
+  totalPages,
+  onPageChange,
+}: PaginationProps) => {
+  if (totalPages <= 1) return null
 
-    const [activePage, setActivePage] = useState(1);
+  const firstPage = Math.max(1, Math.min(activePage - 2, totalPages - 4))
+  const pages = Array.from(
+    { length: Math.min(5, totalPages) },
+    (_, index) => firstPage + index
+  )
 
-    const handlePageClick = (pageNumber: number) => {
-        setActivePage(pageNumber);
-
-    }
-
-    return (
-        <>
-
-            <nav aria-label="Page navigation" className="flex items-center justify-center mt-4">
-                <ul className="inline-flex -space-x-px text-sm">
-                    <li>
-                        <a href="#" className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            Anterior
-                        </a>
-                    </li>
-                    {[1, 2, 3, 4, 5].map((pageNumber) => (
-                        <li key={pageNumber}>
-                            <button
-                                className={`flex items-center justify-center px-3 h-8 leading-tight ${pageNumber === activePage
-                                    ? 'text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700'
-                                    : 'text-gray-500 border border-gray-300 bg-white hover:bg-gray-100 hover:text-gray-700'
-                                    }`}
-                                onClick={() => handlePageClick(pageNumber)}
-                            >
-                                {pageNumber}
-                            </button>
-                        </li>
-                    ))}
-                    <li>
-                        <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            Siguiente
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </>
-    );
-};
+  return (
+    <nav aria-label='Paginación de resultados' className='flex items-center justify-center my-6'>
+      <ul className='inline-flex -space-x-px text-sm'>
+        <li>
+          <button
+            type='button'
+            disabled={activePage === 1}
+            onClick={() => onPageChange(activePage - 1)}
+            className='flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50'
+          >
+            Anterior
+          </button>
+        </li>
+        {pages.map((pageNumber) => (
+          <li key={pageNumber}>
+            <button
+              type='button'
+              aria-current={pageNumber === activePage ? 'page' : undefined}
+              className={`flex items-center justify-center px-3 h-8 leading-tight border border-gray-300 ${
+                pageNumber === activePage
+                  ? 'text-blue-600 bg-blue-50'
+                  : 'text-gray-500 bg-white hover:bg-gray-100'
+              }`}
+              onClick={() => onPageChange(pageNumber)}
+            >
+              {pageNumber}
+            </button>
+          </li>
+        ))}
+        <li>
+          <button
+            type='button'
+            disabled={activePage === totalPages}
+            onClick={() => onPageChange(activePage + 1)}
+            className='flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50'
+          >
+            Siguiente
+          </button>
+        </li>
+      </ul>
+    </nav>
+  )
+}

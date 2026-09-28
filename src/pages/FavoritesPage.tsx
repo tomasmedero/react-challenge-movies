@@ -21,8 +21,6 @@ export const FavoritesPage = () => {
         };
     });
     
-    console.log("TitleInfo generados:", favoriteTitles);
-
     return (
         <div className="container mx-auto pt-8">
             <h2 className='text-4xl font-extrabold text-center dark:text-white mt-5 ml-3 mb-5'>
