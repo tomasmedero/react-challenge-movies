@@ -29,7 +29,7 @@ function formatDate(dateString: string): string {
 export const getAPIMedia = async (props: Props): Promise<TitleInfo[]> => {
   const { typeSearch, typeMedia } = props
 
-  const url = `https://api.themoviedb.org/3/${typeMedia}/${typeSearch}?language=es-ES&page=1'`
+  const url = `https://api.themoviedb.org/3/${typeMedia}/${typeSearch}?language=es-ES&page=1`
 
   const options = {
     method: 'GET',
@@ -42,9 +42,15 @@ export const getAPIMedia = async (props: Props): Promise<TitleInfo[]> => {
 
   const res = await fetch(url, options)
 
+  if (!res.ok) {
+    throw new Error(`TMDB respondió con el estado ${res.status}`)
+  }
+
   const data = await res.json()
 
-  const mediaData: TitleInfo[] = data.results.map((media: SearchData) => {
+  const mediaData: TitleInfo[] = data.results
+  .filter((media: SearchData) => !media.adult)
+  .map((media: SearchData) => {
     let name,
       originalName,
       releaseDay,
@@ -59,7 +65,7 @@ export const getAPIMedia = async (props: Props): Promise<TitleInfo[]> => {
       name = media.title
       originalName = media.original_title
       releaseDay = media.release_date ? formatDate(media.release_date) : ''
-      programType = 'Pelicula'
+      programType = 'Película'
       media_type = 'movie'
       rating = media.vote_average.toFixed(1)
       posterUrl = media.poster_path
@@ -69,7 +75,7 @@ export const getAPIMedia = async (props: Props): Promise<TitleInfo[]> => {
       name = media.name
       originalName = media.original_name
       releaseDay = media.first_air_date ? formatDate(media.first_air_date) : ''
-      programType = 'Serie Tv'
+      programType = 'Serie TV'
       media_type = 'tv'
       rating = media.vote_average.toFixed(1)
       posterUrl = media.poster_path

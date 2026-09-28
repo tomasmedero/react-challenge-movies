@@ -20,6 +20,7 @@ export interface TitleInfo {
   description: string
   programType?: string
   posterUrl: string
+  backdropUrl?: string
   releaseDay: number | string
   rating: number
   episodes?: number

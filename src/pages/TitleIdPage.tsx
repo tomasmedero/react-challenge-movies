@@ -1,41 +1,53 @@
-import { useParams } from 'react-router-dom'
-import { getTitleById } from '../helpers'
 import { useEffect, useState } from 'react'
-import { TitleInfo } from '../types/types'
-import { IdCard } from '../components/IdCard'
 import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { LoadingPage } from '../auth/pages'
+import { IdCard } from '../components/IdCard'
+import { getTitleById } from '../helpers'
 import { RootState } from '../store/store'
+import { TitleInfo } from '../types/types'
 
 export const TitleIdPage = () => {
-  const [title, setTitle] = useState<TitleInfo | undefined>(undefined)
+  const [title, setTitle] = useState<TitleInfo>()
+  const [isLoading, setIsLoading] = useState(true)
+  const [hasError, setHasError] = useState(false)
   const { id, typeMedia } = useParams()
   const { name } = useSelector((state: RootState) => state.country)
 
   useEffect(() => {
-    async function fetchTitle() {
-      if (id !== undefined && typeMedia !== undefined) {
-        try {
-          const data = await getTitleById({ id: Number(id), typeMedia, countryName: name })
+    let isActive = true
 
-          if (data !== null) {
-            setTitle(data)
-          } else {
-            console.error('Hiciste mal un error en el fetch:')
-          }
-        } catch (error) {
-          console.error('Hubo un tremendo error en el catch:', error)
-        }
-      }
+    const fetchTitle = async () => {
+      if (!id || !typeMedia) return
+
+      setIsLoading(true)
+      setHasError(false)
+      const data = await getTitleById({ id: Number(id), typeMedia, countryName: name })
+
+      if (!isActive) return
+      if (data) setTitle(data)
+      else setHasError(true)
+      setIsLoading(false)
     }
 
     fetchTitle()
+    return () => {
+      isActive = false
+    }
   }, [id, typeMedia, name])
 
-  return (
-    <>
-      <div className="container mx-auto pt-8">
-        <IdCard title={title} />
-      </div>
-    </>
-  )
+  if (isLoading) return <div className='min-h-[calc(100vh-4rem)] bg-slate-950'><LoadingPage /></div>
+
+  if (hasError || !title) {
+    return (
+      <main className='grid min-h-[calc(100vh-4rem)] place-items-center bg-slate-950 px-4 text-center text-white'>
+        <div>
+          <h1 className='text-3xl font-black'>No pudimos cargar este título</h1>
+          <p className='mt-3 text-slate-400'>Intentá nuevamente en unos minutos.</p>
+        </div>
+      </main>
+    )
+  }
+
+  return <IdCard title={title} />
 }

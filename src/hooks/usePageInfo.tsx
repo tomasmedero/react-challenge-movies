@@ -1,6 +1,6 @@
 export const usePageInfo = (typeMedia?: string) => {
   if (typeMedia === 'movie') {
-    return { pageInfo: 'Peliculas', searchType: 'movie' }
+    return { pageInfo: 'Películas', searchType: 'movie' }
   } else if (typeMedia === 'tv') {
     return { pageInfo: 'Series', searchType: 'tv' }
   } else if (typeMedia === 'person') {

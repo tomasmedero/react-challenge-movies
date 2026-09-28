@@ -58,6 +58,9 @@ export const getTitleById = async ({
       posterUrl: data.poster_path
         ? `https://image.tmdb.org/t/p/w500/${data.poster_path}`
         : '/posterWhite.jpg',
+      backdropUrl: data.backdrop_path
+        ? `https://image.tmdb.org/t/p/original/${data.backdrop_path}`
+        : undefined,
       releaseDay: releaseDate ? Number(releaseDate.slice(0, 4)) : '',
       rating: Number(data.vote_average.toFixed(1)),
       seasons: isMovie ? undefined : data.number_of_seasons,

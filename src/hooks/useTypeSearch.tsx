@@ -6,11 +6,11 @@ export const useTypeSearch = (typeSearch?: string) => {
   } else if (typeSearch === 'top_rated') {
     return { pageTitle: 'Mejor Valorados' }
   } else if (typeSearch === 'popular') {
-    return { pageTitle: 'Mas Populares' }
+    return { pageTitle: 'Más populares' }
   } else if (typeSearch === 'now_playing') {
     return { pageTitle: 'En El Cine' }
   } else if (typeSearch === 'upcoming') {
-    return { pageTitle: 'Proximos Estrenos' }
+    return { pageTitle: 'Próximos estrenos' }
   }
   return { pageTitle: '' }
 }

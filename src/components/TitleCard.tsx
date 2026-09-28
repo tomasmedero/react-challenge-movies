@@ -1,96 +1,38 @@
 import { Link } from 'react-router-dom'
 import { TitleCardProps } from '../types/types'
 
-export const TitleCard: React.FC<TitleCardProps> = ({ titles }) => {
-  // Función para determinar el color del rating según el rango
-  const getRatingColorClass = (rating: number) => {
-    const numRating = parseFloat(String(rating));
-    
-    if (numRating === 0) {
-      return 'bg-gray-100 text-gray-500 border border-gray-300'; // Gris claro para rating 0
-    } else if (numRating <= 3) {
-      return 'bg-red-200 text-red-800 border border-red-800'; // Rojo más intenso para 0-3
-    } else if (numRating <= 6) {
-      return 'bg-yellow-200 text-yellow-800 border border-yellow-800'; // Amarillo más intenso para 4-6
-    } else if (numRating <= 8) {
-      return 'bg-green-200 text-green-800 border border-green-800'; // Verde más intenso para 7-8
-    } else {
-      return 'bg-emerald-200 text-emerald-800 border border-emerald-800'; // Verde esmeralda más intenso para 9-10
-    }
-  };
-
-  return (
-    <>
-      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 m-2 sm:m-3'>
-        {titles.map(
-          ({
-            id,
-            programType,
-            posterUrl,
-            name,
-            rating,
-            description,
-            releaseDay,
-            media_type,
-          }) => (
-            // Card
-
-            <div className='py-1 sm:py-2 max-w-xl mx-auto h-max-150' key={id}>
-              <Link to={`/card/${media_type}/${id}`}>
-                {/* Contenido de la card */}
-                <div
-                  className='bg-white shadow-lg border-gray-100 
-            h-full border rounded-2xl sm:rounded-3xl p-2 sm:p-3 items-center flex space-x-2 sm:space-x-4'
-                >
-                  {/* Columna Izquierda  */}
-                  <div className='overflow-visible w-1/2  '>
-                    <img
-                      className=' shadow-lg object-contain rounded-3xl'
-                      src={posterUrl}
-                      alt=''
-                    />
-                  </div>
-
-                  {/* Columna Derecha */}
-                  <div className='flex flex-col w-1/2 justify-between h-full '>
-                    {/* Titulo y rating */}
-                    <div className='flex justify-between items-start gap-2 '>
-                                          <h2
-                      className='line-clamp-2 text-sm sm:text-lg font-bold tracking-tight'
-                      data-te-toggle='tooltip'
-                      title={name}
-                    >
-                      {name}
-                    </h2>
-
-                    <div className={`${getRatingColorClass(rating)} font-bold rounded-lg px-1 sm:px-2 py-1 text-xs sm:text-sm`}>
-                      {parseFloat(String(rating)) === 0 ? '-' : rating}
-                    </div>
-                    </div>
-
-                    <div className='max-h-16 sm:max-h-20 overflow-hidden line-clamp-3 text-xs sm:text-sm'>
-                      {description}
-                    </div>
-
-                    {/* Tipo de programa y Fecha */}
-                    <div>
-                      <div className='text-xs sm:text-base text-gray-400'>
-                        {programType && (
-                          <p>
-                            {programType.charAt(0).toUpperCase() +
-                              programType.slice(1)}
-                          </p>
-                        )}
-                      </div>
-                      <div className='text-sm sm:text-lg text-gray-800'>{releaseDay}</div>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          )
-        )}
-      </div>
-    </>
-  )
+const getRatingColorClass = (rating: number) => {
+  if (rating >= 8) return 'bg-emerald-400 text-emerald-950'
+  if (rating >= 6) return 'bg-amber-300 text-amber-950'
+  if (rating > 0) return 'bg-rose-400 text-rose-950'
+  return 'bg-slate-700 text-slate-200'
 }
+
+export const TitleCard: React.FC<TitleCardProps> = ({ titles }) => (
+  <div className='grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4 xl:grid-cols-5'>
+    {titles.map(({ id, programType, posterUrl, name, rating, releaseDay, media_type }) => (
+      <article key={`${media_type}-${id}`} className='group min-w-0'>
+        <Link to={`/card/${media_type}/${id}`} className='block focus:outline-none'>
+          <div className='relative aspect-[2/3] overflow-hidden rounded-2xl bg-slate-200 shadow-lg shadow-slate-900/10 ring-1 ring-slate-900/5 transition duration-300 group-hover:-translate-y-1 group-hover:shadow-2xl group-hover:shadow-slate-900/20 group-focus-within:ring-2 group-focus-within:ring-cyan-500'>
+            <img
+              src={posterUrl}
+              alt={`Póster de ${name}`}
+              loading='lazy'
+              className='h-full w-full object-cover transition duration-500 group-hover:scale-105'
+            />
+            <div className='absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-black/75 to-transparent' />
+            <span className={`absolute right-2 top-2 rounded-lg px-2 py-1 text-xs font-black shadow ${getRatingColorClass(Number(rating))}`}>
+              {Number(rating) === 0 ? '—' : Number(rating).toFixed(1)}
+            </span>
+          </div>
+          <h2 className='mt-3 line-clamp-2 text-sm font-extrabold leading-5 text-slate-900 transition group-hover:text-cyan-700 sm:text-base'>{name}</h2>
+          <div className='mt-1 flex flex-wrap items-center gap-x-2 text-xs text-slate-500 sm:text-sm'>
+            {programType && <span>{programType}</span>}
+            {releaseDay && <span aria-hidden='true'>•</span>}
+            {releaseDay && <span>{releaseDay}</span>}
+          </div>
+        </Link>
+      </article>
+    ))}
+  </div>
+)
