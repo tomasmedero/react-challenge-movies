@@ -1,266 +1,108 @@
+import { FormEvent, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { startLogout } from '../store/auth/thunks'
-import { useEffect, useRef, useState } from 'react'
 import { RootState } from '../store/store'
-import { NavOptions } from '.'
+import { NavOptions } from './NavOptions'
 import { CountrySelector } from './CountrySelector'
 
 export const Navbar = () => {
   const [isOpenProfile, setIsOpenProfile] = useState(false)
-  const [isOpenSearch, setIsOpenSearch] = useState(false)
   const [isOpenMobileMenu, setIsOpenMobileMenu] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const dropdownRef = useRef<HTMLDivElement | null>(null)
-  const searchRef = useRef<HTMLDivElement | null>(null)
   const mobileMenuRef = useRef<HTMLDivElement | null>(null)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { status, photoURL } = useSelector((state: RootState) => state.auth)
 
-  const toggleDropdownProfile = () => {
-    setIsOpenProfile(!isOpenProfile)
-  }
-  
-  const closeDropdownProfile = () => {
-    setIsOpenProfile(false)
-  }
+  const handleSearch = (event: FormEvent) => {
+    event.preventDefault()
+    const query = searchQuery.trim().replace(/\s+/g, ' ')
+    if (query.length < 2) return
 
-  const toggleSearch = () => {
-    setIsOpenSearch(!isOpenSearch)
-  }
-
-  const closeSearch = () => {
-    setIsOpenSearch(false)
-  }
-
-  const toggleMobileMenu = () => {
-    setIsOpenMobileMenu(!isOpenMobileMenu)
-  }
-
-  const closeMobileMenu = () => {
-    setIsOpenMobileMenu(false)
-  }
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (searchQuery.trim()) {
-      navigate(`/search/${searchQuery}`)
-      setSearchQuery('')
-      closeSearch()
-    }
+    navigate(`/search/${encodeURIComponent(query)}`)
+    setSearchQuery('')
   }
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      // Cerrar dropdown de perfil si se hace clic fuera
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        closeDropdownProfile()
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpenProfile(false)
       }
-      
-      // Cerrar búsqueda si se hace clic fuera
-      if (
-        searchRef.current &&
-        !searchRef.current.contains(event.target as Node)
-      ) {
-        closeSearch()
-      }
-
-      // Cerrar menú móvil si se hace clic fuera
-      if (
-        mobileMenuRef.current &&
-        !mobileMenuRef.current.contains(event.target as Node)
-      ) {
-        closeMobileMenu()
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+        setIsOpenMobileMenu(false)
       }
     }
 
     document.addEventListener('mousedown', handleClickOutside)
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
+    return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const onLogout = () => {
-    dispatch(startLogout())
-  }
-
   return (
-    <nav className='border-gray-200 bg-gray-300 dark:bg-gray-800 dark:border-gray-700'>
-      <div className='max-w-screen-xl flex items-center justify-between mx-auto p-2 sm:p-4'>
-        {/* Logo */}
-        <Link
-          className='flex items-center text-lg sm:text-2xl font-extrabold dark:text-white'
-          to='/'
-        >
-          STREAMING
+    <nav className='sticky top-0 z-50 border-b border-white/10 bg-slate-950/95 text-white shadow-lg shadow-black/10 backdrop-blur'>
+      <div className='mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:px-8'>
+        <Link className='flex flex-none items-center gap-2 font-black tracking-tight' to='/'>
+          <span className='grid h-9 w-9 place-items-center rounded-xl bg-cyan-500 text-lg text-slate-950'>S</span>
+          <span className='hidden text-lg sm:block'>STREAMING</span>
         </Link>
 
-        {/* Sección central con menú de navegación */}
-        <div className='hidden sm:flex items-center space-x-4'>
-          <ul className='flex items-center space-x-4 sm:space-x-6'>
-            <NavOptions optionlink='tv' title='Series' />
-            <NavOptions optionlink='movie' title='Peliculas' />
-            <NavOptions optionlink='tendency' title='Tendencias' />
-            {status === 'autenticado' && <NavOptions optionlink='favorites' title='Favoritos' />}
-          </ul>
-        </div>
+        <ul className='hidden items-center gap-5 md:flex'>
+          <NavOptions optionlink='tv' title='Series' />
+          <NavOptions optionlink='movie' title='Películas' />
+          <NavOptions optionlink='tendency/movie' title='Tendencias' />
+          {status === 'autenticado' && <NavOptions optionlink='favorites' title='Favoritos' />}
+        </ul>
 
-        {/* Botón de menú móvil */}
-        <div className='sm:hidden' ref={mobileMenuRef}>
-          <button
-            onClick={toggleMobileMenu}
-            className='text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white'
-          >
-            <svg
-              className='h-6 w-6'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke='currentColor'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={2}
-                d='M4 6h16M4 12h16M4 18h16'
-              />
+        <form onSubmit={handleSearch} role='search' className='ml-auto hidden min-w-0 max-w-xs flex-1 lg:block'>
+          <label htmlFor='nav-search' className='sr-only'>Buscar películas y series</label>
+          <div className='relative'>
+            <svg className='pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400' aria-hidden='true' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='m21 21-4.35-4.35m2.1-5.4a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z' />
+            </svg>
+            <input id='nav-search' type='search' value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder='Buscar...' autoComplete='off' className='w-full rounded-xl border border-white/10 bg-white/10 py-2 pl-9 pr-3 text-sm text-white placeholder:text-slate-400 focus:border-cyan-400 focus:bg-white/15 focus:outline-none focus:ring-2 focus:ring-cyan-400/20' />
+          </div>
+        </form>
+
+        <div className='ml-auto flex items-center gap-2 lg:ml-0'>
+          <button type='button' onClick={() => navigate('/')} aria-label='Ir a buscar' className='rounded-lg p-2 text-slate-300 transition hover:bg-white/10 hover:text-white lg:hidden'>
+            <svg className='h-5 w-5' aria-hidden='true' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='m21 21-4.35-4.35m2.1-5.4a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z' />
             </svg>
           </button>
 
-          {/* Menú móvil desplegable */}
-          {isOpenMobileMenu && (
-            <div className='absolute top-full left-0 right-0 bg-white dark:bg-gray-800 shadow-lg z-50'>
-              <div className='px-2 pt-2 pb-3 space-y-1'>
-                <NavOptions optionlink='tv' title='Series' />
-                <NavOptions optionlink='movie' title='Peliculas' />
-                <NavOptions optionlink='tendency' title='Tendencias' />
-                {status === 'autenticado' && <NavOptions optionlink='favorites' title='Favoritos' />}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Sección derecha con búsqueda, selector de país y perfil */}
-        <div className="flex items-center space-x-2 sm:space-x-4">
-          {/* Búsqueda */}
-          <div className="relative flex items-center" ref={searchRef}>
-            {isOpenSearch ? (
-              <form onSubmit={handleSearch} className="flex items-center">
-                <input
-                  type="search"
-                  className="w-32 sm:w-40 p-1 sm:p-2 text-xs sm:text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Buscar..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  autoComplete="off"
-                  autoFocus
-                />
-                <button
-                  type="submit"
-                  className="ml-1 text-blue-600 hover:text-blue-700"
-                >
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    className="h-4 w-4 sm:h-5 sm:w-5" 
-                    viewBox="0 0 20 20" 
-                    fill="currentColor"
-                  >
-                    <path 
-                      fillRule="evenodd" 
-                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" 
-                      clipRule="evenodd" 
-                    />
-                  </svg>
-                </button>
-                <button 
-                  type="button" 
-                  className="ml-1 text-gray-600 hover:text-gray-900"
-                  onClick={closeSearch}
-                >
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    className="h-4 w-4 sm:h-5 sm:w-5" 
-                    viewBox="0 0 20 20" 
-                    fill="currentColor"
-                  >
-                    <path 
-                      fillRule="evenodd" 
-                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" 
-                      clipRule="evenodd" 
-                    />
-                  </svg>
-                </button>
-              </form>
-            ) : (
-              <button 
-                onClick={toggleSearch} 
-                className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-              >
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-5 w-5 sm:h-6 sm:w-6" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor"
-                >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth={2} 
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" 
-                  />
-                </svg>
-              </button>
-            )}
-          </div>
-
-          {/* Selector de País */}
           <CountrySelector />
 
-          {/* Perfil de Usuario */}
           {status === 'autenticado' ? (
-            <div className='relative inline-block text-left' ref={dropdownRef}>
-              <button
-                onClick={toggleDropdownProfile}
-                className='flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300'
-              >
-                <img
-                  className='w-6 h-6 sm:w-8 sm:h-8 rounded-full'
-                  src={photoURL || '/default-avatar.png'}
-                  alt='Avatar'
-                />
+            <div className='relative' ref={dropdownRef}>
+              <button type='button' onClick={() => setIsOpenProfile((open) => !open)} aria-expanded={isOpenProfile} aria-label='Menú de perfil' className='rounded-full ring-2 ring-transparent transition hover:ring-cyan-400 focus:outline-none focus:ring-cyan-400'>
+                <img className='h-9 w-9 rounded-full object-cover' src={photoURL || '/default-avatar.png'} alt='' />
               </button>
-
               {isOpenProfile && (
-                <div className='origin-top-right absolute right-0 mt-3 w-40 sm:w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50'>
-                  <div
-                    className='py-1'
-                    role='menu'
-                    aria-orientation='vertical'
-                    aria-labelledby='options-menu'
-                  >
-                    <a
-                      onClick={onLogout}
-                      className='block px-3 sm:px-4 py-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer'
-                      role='menuitem'
-                    >
-                      Salir
-                    </a>
-                  </div>
+                <div className='absolute right-0 mt-3 w-44 rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl'>
+                  <button type='button' onClick={() => dispatch(startLogout())} className='w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-100'>Cerrar sesión</button>
                 </div>
               )}
             </div>
           ) : (
-            <Link to='/auth/login'>
-              <button className='bg-blue-500 hover:bg-blue-400 text-white font-bold py-1 sm:py-2 px-2 sm:px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded text-xs sm:text-sm'>
-                Ingresar
-              </button>
-            </Link>
+            <Link to='/auth/login' className='rounded-xl bg-cyan-500 px-3 py-2 text-xs font-bold text-slate-950 transition hover:bg-cyan-400 sm:px-4 sm:text-sm'>Ingresar</Link>
           )}
+
+          <div className='relative md:hidden' ref={mobileMenuRef}>
+            <button type='button' onClick={() => setIsOpenMobileMenu((open) => !open)} aria-expanded={isOpenMobileMenu} aria-label='Abrir menú' className='rounded-lg p-2 text-slate-300 hover:bg-white/10 hover:text-white'>
+              <svg className='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor' aria-hidden='true'>
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d={isOpenMobileMenu ? 'M6 18 18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'} />
+              </svg>
+            </button>
+            {isOpenMobileMenu && (
+              <ul className='absolute right-0 mt-3 w-52 space-y-1 rounded-xl border border-slate-200 bg-white p-2 text-slate-900 shadow-xl' onClick={() => setIsOpenMobileMenu(false)}>
+                <NavOptions optionlink='tv' title='Series' />
+                <NavOptions optionlink='movie' title='Películas' />
+                <NavOptions optionlink='tendency/movie' title='Tendencias' />
+                {status === 'autenticado' && <NavOptions optionlink='favorites' title='Favoritos' />}
+              </ul>
+            )}
+          </div>
         </div>
       </div>
     </nav>

@@ -41,6 +41,7 @@ export interface SearchResponse {
 
 export interface SearchData {
   id: number
+  adult?: boolean
   overview: string
   vote_average: number
   name: string

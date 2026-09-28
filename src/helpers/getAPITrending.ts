@@ -27,7 +27,15 @@ export const getAPITrending = async (props: Props): Promise<TitleInfo[]> => {
 
   const data = await res.json()
 
-  const titleData: TitleInfo[] = data.results.map((title: SearchData) => {
+  const titleData: TitleInfo[] = data.results
+    .filter(
+      (title: SearchData) =>
+        !title.adult &&
+        (searchType !== 'all' ||
+          title.media_type === 'movie' ||
+          title.media_type === 'tv')
+    )
+    .map((title: SearchData) => {
     let name, originalName, releaseDay, programType, rating, posterUrl
 
     const { id, overview: description } = title

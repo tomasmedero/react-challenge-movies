@@ -39,7 +39,7 @@ export const CountrySelector = () => {
   }, [])
 
   return (
-    <div className='relative mt-3' ref={dropdownRef} onKeyDown={handleKeyDown}>
+    <div className='relative' ref={dropdownRef} onKeyDown={handleKeyDown}>
       <button
         type='button'
         aria-haspopup='listbox'
@@ -47,10 +47,10 @@ export const CountrySelector = () => {
         aria-controls={listboxId}
         aria-label={`País seleccionado: ${selectedCountry.name}`}
         onClick={() => setIsOpen((open) => !open)}
-        className='flex items-center space-x-1 sm:space-x-2 border border-gray-300 rounded-full text-gray-600 h-8 sm:h-10 px-2 sm:px-4 bg-white hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500'
+        className='flex h-9 items-center rounded-xl border border-white/10 bg-white/10 px-2 text-slate-200 transition hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-cyan-400 sm:px-3'
       >
         <img src={selectedCountry.flagImage} alt='' className='h-4 sm:h-5 w-auto mr-1 sm:mr-2' />
-        <span className='text-xs sm:text-sm hidden sm:block'>{selectedCountry.name}</span>
+        <span className='hidden text-xs sm:block'>{selectedCountry.name}</span>
         <svg className='fill-current h-3 w-3 sm:h-4 sm:w-4 ml-1' aria-hidden='true' viewBox='0 0 20 20'>
           <path d='M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z' />
         </svg>

@@ -6,6 +6,30 @@ type Props = {
   signal?: AbortSignal
 }
 
+const restrictedTerms = [
+  'porn',
+  'porno',
+  'pornografia',
+  'pornography',
+  'xxx',
+  'hentai',
+  'erotica',
+]
+
+const normalizeQuery = (query: string) =>
+  query
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim()
+
+export const isRestrictedSearchQuery = (query: string) => {
+  const normalizedQuery = normalizeQuery(query)
+  return restrictedTerms.some((term) =>
+    new RegExp(`(^|\\W)${term}(\\W|$)`, 'i').test(normalizedQuery)
+  )
+}
+
 const formatDate = (dateString?: string): string => {
   if (!dateString) return ''
 
@@ -24,6 +48,10 @@ export const getAPISearch = async ({
   page = 1,
   signal,
 }: Props): Promise<SearchResponse> => {
+  if (isRestrictedSearchQuery(searchQuery)) {
+    return { results: [], page: 1, totalPages: 1 }
+  }
+
   const params = new URLSearchParams({
     query: searchQuery,
     include_adult: 'false',
@@ -48,7 +76,10 @@ export const getAPISearch = async ({
 
   const data = await res.json()
   const results: TitleInfo[] = (data.results as SearchData[])
-    .filter(({ media_type }) => media_type === 'movie' || media_type === 'tv')
+    .filter(
+      ({ media_type, adult }) =>
+        !adult && (media_type === 'movie' || media_type === 'tv')
+    )
     .map((search) => {
       const isMovie = search.media_type === 'movie'
 

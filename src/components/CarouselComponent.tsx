@@ -1,97 +1,76 @@
-import { useEffect, useState } from "react";
-import { getAPITrending } from "../helpers";
-import { TitleInfo } from "../types/types";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { getAPITrending } from '../helpers'
+import { TitleInfo } from '../types/types'
 
 interface CarouselProps {
-    searchType: string
-    title: string
-    className?: string
+  searchType: string
+  title: string
+  className?: string
 }
 
-export const CarouselComponent: React.FC<CarouselProps> = ({ searchType, title, className }) => {
+const getRatingColorClass = (rating: number) => {
+  if (rating >= 8) return 'bg-emerald-400 text-emerald-950'
+  if (rating >= 6) return 'bg-amber-300 text-amber-950'
+  if (rating > 0) return 'bg-rose-400 text-rose-950'
+  return 'bg-slate-700 text-slate-200'
+}
 
-    const [titles, setTitles] = useState<TitleInfo[]>([])
+export const CarouselComponent = ({ searchType, title, className }: CarouselProps) => {
+  const [titles, setTitles] = useState<TitleInfo[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
-    // Función para determinar el color del rating según el rango
-    const getRatingColorClass = (rating: number) => {
-        const numRating = parseFloat(String(rating));
-        
-        if (numRating === 0) {
-            return 'bg-gray-100 text-gray-500 border border-gray-300'; // Gris claro para rating 0
-        } else if (numRating <= 3) {
-            return 'bg-red-200 text-red-800 border border-red-800'; // Rojo más intenso para 0-3
-        } else if (numRating <= 6) {
-            return 'bg-yellow-200 text-yellow-800 border border-yellow-800'; // Amarillo más intenso para 4-6
-        } else if (numRating <= 8) {
-            return 'bg-green-200 text-green-800 border border-green-800'; // Verde más intenso para 7-8
-        } else {
-            return 'bg-emerald-200 text-emerald-800 border border-emerald-800'; // Verde esmeralda más intenso para 9-10
-        }
-    };
+  useEffect(() => {
+    let isActive = true
 
-    useEffect(() => {
-        async function fetchTitles() {
-            try {
-                const data = await getAPITrending({ searchType })
-                setTitles(data)
-            } catch (error) {
-                console.error('Error fetching movie name:', error)
-            }
-        }
+    getAPITrending({ searchType })
+      .then((data) => {
+        if (isActive) setTitles(data)
+      })
+      .catch((error) => console.error('No se pudieron cargar las tendencias:', error))
+      .finally(() => {
+        if (isActive) setIsLoading(false)
+      })
 
-        fetchTitles()
-    }, [searchType])
+    return () => {
+      isActive = false
+    }
+  }, [searchType])
 
+  return (
+    <section className={className}>
+      <div className='mb-5 flex items-end justify-between gap-4'>
+        <div>
+          <p className='mb-1 text-xs font-bold uppercase tracking-[0.18em] text-cyan-400'>Selección destacada</p>
+          <h2 className='text-xl font-extrabold text-white sm:text-3xl'>{title}</h2>
+        </div>
+        <span className='hidden text-sm text-slate-500 sm:block'>Deslizá para explorar →</span>
+      </div>
 
-
-    return (
-        <>
-            <div className={className}>
-                <h2 className="text-lg sm:text-2xl font-bold mb-2 sm:mb-4">{title}</h2>
-                <div className="flex overflow-x-auto space-x-2 sm:space-x-4 p-2 sm:p-4 border border-gray-300 rounded-md shadow-md">
-                    {titles.map(({ id, posterUrl, name, rating, programType, media_type, releaseDay }) => (
-                        <div key={id} className="flex-shrink-0 w-32 sm:w-48 min-w-[120px] sm:min-w-[200px]">
-                            <Link to={`/card/${media_type}/${id}`}>
-                                <div className="relative" style={{ height: '180px', minHeight: '180px' }}>
-                                    <img
-                                        src={posterUrl}
-                                        alt={name}
-                                        className="w-full h-full object-cover rounded-md"
-                                    />
-                                    {rating && (
-                                        <div className={`absolute top-1 sm:top-2 right-1 sm:right-2 ${getRatingColorClass(rating)} font-bold rounded-lg px-1 sm:px-2 py-1 text-xs sm:text-sm`}>
-                                            {parseFloat(String(rating)) === 0 ? '-' : rating}
-                                        </div>
-                                    )}
-                                </div>
-                                <p className="text-center mt-1 sm:mt-2 line-clamp-1 text-xs sm:text-sm">{name}</p>
-                                <div className='text-xs sm:text-base text-gray-400 text-center'>
-                                    {programType && (
-                                        <p>
-                                            {programType.charAt(0).toUpperCase() +
-                                                programType.slice(1)}
-                                        </p>
-                                    )}
-                                </div>
-                                <div className='text-xs sm:text-base text-gray-400 text-center'>
-                                    {releaseDay && (
-                                        <p>
-                                            {releaseDay}
-                                        </p>
-                                    )}
-                                </div>
-                            </Link >
-
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </>
-    );
-
-
-
-
-
+      <div className='no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 sm:gap-5'>
+        {isLoading
+          ? Array.from({ length: 6 }, (_, index) => (
+              <div key={index} className='w-36 flex-none animate-pulse sm:w-48'>
+                <div className='aspect-[2/3] rounded-2xl bg-slate-800' />
+                <div className='mt-3 h-4 rounded bg-slate-800' />
+              </div>
+            ))
+          : titles.map(({ id, posterUrl, name, rating, media_type, releaseDay }) => (
+              <article key={`${media_type}-${id}`} className='group w-36 flex-none snap-start sm:w-48'>
+                <Link to={`/card/${media_type}/${id}`} className='block focus:outline-none'>
+                  <div className='relative aspect-[2/3] overflow-hidden rounded-2xl bg-slate-800 shadow-xl shadow-black/20 ring-1 ring-white/10 transition duration-300 group-hover:-translate-y-1 group-hover:ring-cyan-400/60 group-focus-within:ring-2 group-focus-within:ring-cyan-400'>
+                    <img src={posterUrl} alt={`Póster de ${name}`} loading='lazy' className='h-full w-full object-cover transition duration-500 group-hover:scale-105' />
+                    <div className='absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-slate-950/90 to-transparent' />
+                    <span className={`absolute right-2 top-2 rounded-lg px-2 py-1 text-xs font-black shadow ${getRatingColorClass(Number(rating))}`}>
+                      {Number(rating) === 0 ? '—' : Number(rating).toFixed(1)}
+                    </span>
+                  </div>
+                  <h3 className='mt-3 line-clamp-2 text-sm font-bold leading-5 text-slate-100 transition group-hover:text-cyan-300 sm:text-base'>{name}</h3>
+                  <p className='mt-1 text-xs text-slate-500'>{releaseDay || 'Fecha por confirmar'}</p>
+                </Link>
+              </article>
+            ))}
+      </div>
+    </section>
+  )
 }

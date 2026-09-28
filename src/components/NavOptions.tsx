@@ -13,7 +13,7 @@ export const NavOptions = ({ title, optionlink }: NavDropdownOption) => {
     return (
         <li>
             <NavLink
-                className='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 sm:hover:bg-transparent sm:border-0 sm:hover:text-blue-700 sm:p-0 dark:text-white sm:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white sm:dark:hover:bg-transparent text-sm sm:text-base'
+                className={({ isActive }) => `block rounded-lg px-3 py-2 text-sm font-medium transition md:px-0 ${isActive ? 'text-cyan-400' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950 md:text-slate-300 md:hover:bg-transparent md:hover:text-white'}`}
                 to={`/${optionlink}`}
             >
                 {title}
