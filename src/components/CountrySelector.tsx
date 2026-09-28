@@ -57,13 +57,13 @@ export const CountrySelector = () => {
       </button>
 
       {isOpen && (
-        <ul id={listboxId} role='listbox' aria-label='Seleccionar país' className='absolute z-10 mt-1 w-36 sm:w-full bg-white rounded-md shadow-lg max-h-60 overflow-auto py-1'>
+        <ul id={listboxId} role='listbox' aria-label='Seleccionar país' className='absolute right-0 z-10 mt-2 w-40 max-h-60 overflow-auto rounded-xl border border-slate-200 bg-white py-1 text-slate-800 shadow-xl'>
           {AVAILABLE_COUNTRIES.map((country) => (
             <li key={country.abbreviation} role='option' aria-selected={selectedCountry.name === country.name}>
               <button
                 type='button'
                 onClick={() => handleCountrySelect(country.name)}
-                className={`flex w-full items-center px-2 sm:px-4 py-2 text-xs sm:text-sm text-left hover:bg-gray-100 focus:bg-gray-100 focus:outline-none ${selectedCountry.name === country.name ? 'bg-gray-50 font-semibold' : ''}`}
+                className={`flex w-full items-center px-3 py-2.5 text-left text-sm text-slate-800 hover:bg-slate-100 focus:bg-slate-100 focus:outline-none ${selectedCountry.name === country.name ? 'bg-cyan-50 font-semibold text-cyan-800' : ''}`}
               >
                 <img src={country.flagImage} alt='' className='h-4 sm:h-5 w-auto mr-1 sm:mr-2' />
                 <span className='truncate'>{country.name}</span>

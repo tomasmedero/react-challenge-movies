@@ -1,5 +1,5 @@
 import { FormEvent, useCallback, useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { LoadingPage } from '../auth/pages'
 import {
   CarouselComponent,
@@ -127,29 +127,14 @@ export const SearchPage = () => {
   if (!paramSearchQuery) {
     return (
       <main className='min-h-screen bg-slate-950 text-white'>
-        <section className='relative isolate overflow-hidden px-4 pb-20 pt-20 sm:px-6 sm:pb-24 sm:pt-28'>
+        <section className='relative isolate overflow-hidden px-4 py-16 sm:px-6 sm:py-20'>
           <div className='absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,_rgba(8,145,178,0.32),_transparent_38%),radial-gradient(circle_at_80%_20%,_rgba(124,58,237,0.24),_transparent_34%),linear-gradient(to_bottom,_#0f172a,_#020617)]' />
           <div className='absolute left-1/2 top-8 -z-10 h-64 w-64 -translate-x-1/2 rounded-full bg-cyan-500/10 blur-3xl sm:h-96 sm:w-96' />
           <div className='mx-auto max-w-4xl text-center'>
-            <span className='inline-flex items-center rounded-full border border-cyan-400/25 bg-cyan-400/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300'>
-              Tu próxima historia empieza acá
-            </span>
-            <h1 className='mt-7 text-4xl font-black tracking-tight text-white sm:text-6xl lg:text-7xl'>
-              Encontrá qué ver, <span className='text-cyan-400'>sin perder tiempo.</span>
-            </h1>
-            <p className='mx-auto mt-6 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg'>
-              Explorá películas y series, compará valoraciones y descubrí dónde están disponibles en tu país.
-            </p>
-            <div className='mt-10'>
+            <div>
               <SearchBar value={searchQuery} onChange={setSearchQuery} onSubmit={handleSubmit} />
             </div>
             {notice && <p role='alert' className='mx-auto mt-4 max-w-2xl rounded-xl border border-amber-400/30 bg-amber-400/10 px-4 py-3 text-sm text-amber-200'>{notice}</p>}
-            <div className='mt-7 flex flex-wrap items-center justify-center gap-2 text-sm text-slate-400'>
-              <span>Explorá:</span>
-              <Link to='/movie' className='rounded-full border border-white/10 px-3 py-1.5 transition hover:border-cyan-400/60 hover:text-cyan-300'>Películas</Link>
-              <Link to='/tv' className='rounded-full border border-white/10 px-3 py-1.5 transition hover:border-cyan-400/60 hover:text-cyan-300'>Series</Link>
-              <Link to='/tendency/movie' className='rounded-full border border-white/10 px-3 py-1.5 transition hover:border-cyan-400/60 hover:text-cyan-300'>Tendencias</Link>
-            </div>
           </div>
         </section>
 
